@@ -4,97 +4,142 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gimica — Mobile F2P Portfolio | Aitor Morales — Game & Level Designer</title>
-  <meta name="description" content="Sole game designer for a large portfolio of free-to-play mobile games at Gimica (JustPlay) — systems, economy, adaptive difficulty and hundreds of shipped levels.">
+  <meta name="description" content="Sole game designer for Gimica's portfolio of free-to-play mobile games (JustPlay) — systems, economy, adaptive difficulty and hundreds of shipped levels.">
   <link rel="canonical" href="https://aitormorales.com/projects/gimica.html">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://aitormorales.com/projects/gimica.html">
   <meta property="og:site_name" content="Aitor Morales — Portfolio">
   <meta property="og:title" content="Gimica — Mobile F2P Portfolio | Aitor Morales">
-  <meta property="og:description" content="Sole game designer for a large portfolio of free-to-play mobile games at Gimica (JustPlay) — systems, economy, adaptive difficulty and hundreds of shipped levels.">
-  <meta property="og:image" content="https://aitormorales.com/assets/img/scene/justin-squirrel.svg">
+  <meta property="og:description" content="Sole game designer for Gimica's portfolio of free-to-play mobile games (JustPlay) — systems, economy, adaptive difficulty and hundreds of shipped levels.">
+  <meta property="og:image" content="https://aitormorales.com/assets/img/ogp.png">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="shortcut icon" href="../favicon.png">
+  <link rel="preload" href="../assets/font/Futura-Med.woff" as="font" type="font/woff" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap">
-  <link rel="stylesheet" href="../assets/css/v2.css">
+  <link rel="stylesheet" href="../assets/css/v2.css?v=2026071201">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
+  <div class="loader" aria-hidden="true"></div>
+  <div class="curtain" aria-hidden="true"></div>
 
   <header class="site-header">
-    <a class="brand" href="../">Aitor <span>Morales</span></a>
-    <button class="nav-toggle" aria-expanded="false" aria-label="Menu"><span class="bar"></span></button>
-    <nav class="site-nav" aria-label="Main">
-      <a href="../#work" aria-current="page">Work</a>
-      <a href="../about.html">About</a>
-      <a href="../resume.html">Resume</a>
-      <a href="../#contact">Contact</a>
-    </nav>
+    <a class="name" href="../index.html">Aitor Morales</a>
+    <div class="head-right">
+      <div class="head-links">
+        <a href="https://aitormorales.itch.io/" target="_blank" rel="noopener">itch.io</a>
+        <a href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="../resume.html">Resume</a>
+      </div>
+      <button class="menuIcon js-menuBtn" aria-label="Menu" aria-expanded="false"></button>
+    </div>
   </header>
 
+  <nav class="global-nav" aria-label="Main">
+    <ul class="global-nav__list">
+      <li><a href="../index.html#top">HOME</a></li>
+      <li><a href="../index.html#works">WORKS</a></li>
+      <li><a href="../about.html">ABOUT</a></li>
+      <li><a href="../resume.html">RESUME</a></li>
+      <li><a href="../index.html#contact">CONTACT</a></li>
+    </ul>
+    <div class="global-nav__sns" style="position:absolute;bottom:6vh;left:0;right:0">
+      <a href="https://aitormorales.itch.io/" target="_blank" rel="noopener">itch.io</a>
+      <a href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/Aitor21" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.instagram.com/aitor_21m/" target="_blank" rel="noopener">Instagram</a>
+    </div>
+  </nav>
+
   <main id="main">
-    <article class="project-hero container">
-      <p class="kicker">Professional Work · Gimica, a JustPlay company</p>
-      <h1>Designing a Live Mobile F2P Portfolio</h1>
-      <p class="lead">As the sole game designer for a large free-to-play mobile portfolio, I design, build and test the systems and levels behind many live games — end to end, from hypothesis to rollout.</p>
-      <p class="notice">This work is under NDA, so game names and internal material aren't shown. Justin the squirrel kindly stands in as the face of this chapter.</p>
-
-      <div class="project-cover project-cover--art">
-        <img src="../assets/img/scene/justin-squirrel.svg" alt="Justin the squirrel — placeholder art representing Gimica">
+    <a class="back-arrow" href="../index.html#works" aria-label="Back to works"><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="34" viewBox="0 0 67 34"><g fill="none" fill-rule="evenodd" stroke="#FFF" stroke-linecap="round" transform="translate(2 1)"><path stroke-width="2" d="M0,15.5533333 L64,15.5533333"/><polyline stroke-width="2" points="15.556 0 0 15.556 15.556 31.111"/></g></svg></a>
+    <div class="page-top">
+      <div class="title">
+        <span class="kicker js-letter" style="--d:0s">Professional Work · 2025 — Present</span>
+        <h1 class="title__text"><span class="js-letter" style="--d:0.08s">Gimica</span></h1>
+        <span class="js-letter" style="--d:.24s"><span class="border"><span></span><span></span></span></span>
+        <p class="title__lead"><span class="js-letter" style="--d:0.32s">Level & systems design for a live</span><span class="js-letter" style="--d:0.40s">portfolio of 35+ mobile games.</span></p>
+        <span class="js-letter" style="--d:.48s"><span class="btn-wrap"><a class="btn" href="https://justplayapps.com/" target="_blank" rel="noopener">JustPlay ↗</a></span></span>
       </div>
+    </div>
 
-      <dl class="meta-grid">
+    <div class="wrapper container">
+      <p class="note js-scroll">This work is under NDA — individual game names and internal material aren't shown.</p>
+      <div class="page-cover page-cover--type js-scroll">
+        <div class="t"><strong>Gimica × JustPlay</strong><span>Berlin · Casual games · Founded 2021</span></div>
+      </div>
+      <div class="stat-row js-scroll"><div class="stat"><strong>35<i>+</i></strong><span>Live games</span></div><div class="stat"><strong>25M<i>+</i></strong><span>Downloads</span></div><div class="stat"><strong>500K<i>+</i></strong><span>Daily players</span></div><div class="stat"><strong>100s</strong><span>Levels authored</span></div></div>
+
+      <dl class="meta-row js-scroll">
         <div><dt>Role</dt><dd>Game & Level Designer (sole designer)</dd></div>
-        <div><dt>Studio</dt><dd>Gimica — Berlin (remote), part of JustPlay</dd></div>
-        <div><dt>When</dt><dd>Feb 2025 — Present</dd></div>
+        <div><dt>Studio</dt><dd>Gimica GmbH — Berlin, remote · founded 2021</dd></div>
+        <div><dt>Platform</dt><dd><a href="https://justplayapps.com/" target="_blank" rel="noopener">JustPlay</a> — casual games with real-world rewards</dd></div>
         <div><dt>Engines</dt><dd>Unity · Babylon.js · Godot</dd></div>
-        <div><dt>Link</dt><dd><a href="https://justplayapps.com/" target="_blank" rel="noopener">justplayapps.com</a></dd></div>
+        <div><dt>When</dt><dd>Feb 2025 — Present</dd></div>
       </dl>
 
-      <div class="prose">
-<h2>The context</h2>
-<p>Gimica runs a large portfolio of free-to-play mobile games. I act as the portfolio's sole game
-designer, working across game design, development, product, UX and QA — often on the same feature.
-That breadth is the job: a booster idea isn't done until it's specced, built, tested, measured and live.</p>
-
-<h2>Systems that scale across games</h2>
+      <section class="sec js-scroll">
+        <div class="sec-head"><p class="heading-num">01</p><h2 class="heading">THE STUDIO</h2></div>
+        <div class="prose">
+<p>Gimica is a Berlin games studio founded in 2021 that creates and publishes casual games enjoyed
+by a very wide audience. Its games power <strong>JustPlay</strong>, a loyalty app where players earn
+real-world rewards for playtime — a portfolio of <strong>35+ games with over 25 million downloads
+and 500,000+ daily active users</strong>. I'm the portfolio's sole game designer, working across
+game design, development, product, UX and QA — often on the same feature.</p>
+        </div>
+      </section>
+      <section class="sec js-scroll">
+        <div class="sec-head"><p class="heading-num">02</p><h2 class="heading">SYSTEMS THAT SCALE</h2></div>
+        <div class="prose">
 <p>The most leveraged work is reusable systems design. I've designed and shipped boosters, combo
-systems, rewarded-video minigames and chest-reward systems that are deployed across many titles in
-the portfolio — designed once, themed per game, tuned per audience.</p>
-
-<h2>Levels by the hundreds</h2>
+systems, rewarded-video minigames and chest-reward systems that are deployed across many titles —
+designed once, themed per game, tuned per audience.</p>
+        </div>
+      </section>
+      <section class="sec js-scroll">
+        <div class="sec-head"><p class="heading-num">03</p><h2 class="heading">LEVELS BY THE HUNDREDS</h2></div>
+        <div class="prose">
 <p>I designed the adaptive difficulty and level-progression systems and have authored hundreds of
 levels. At portfolio scale, level design becomes a pipeline problem as much as a craft problem:
-building difficulty curves that keep players challenged but never stuck, and tooling that makes
-authoring fast without flattening variety.</p>
-
-<h2>From hypothesis to rollout</h2>
+difficulty curves that keep players challenged but never stuck, and authoring approaches that keep
+variety high and production fast.</p>
+        </div>
+      </section>
+      <section class="sec js-scroll">
+        <div class="sec-head"><p class="heading-num">04</p><h2 class="heading">HYPOTHESIS TO ROLLOUT</h2></div>
+        <div class="prose">
 <ul>
 <li>Plan and run A/B tests end to end — hypothesis, variant design, rollout, readout.</li>
 <li>Own features from design through implementation, QA and launch.</li>
-<li>Prioritize roadmaps and coordinate work across art, development and QA.</li>
+<li>Prioritize roadmaps and coordinate across art, development and QA.</li>
 <li>Started a recurring cross-functional design review for the team.</li>
 </ul>
-
-<h2>Technical design</h2>
+        </div>
+      </section>
+      <section class="sec js-scroll">
+        <div class="sec-head"><p class="heading-num">05</p><h2 class="heading">TECHNICAL DESIGN</h2></div>
+        <div class="prose">
 <p>I build what I design: shipped features in Unity, with additional work in Babylon.js and Godot,
-and engineered tools and game systems solo from prototype to release. Specs are written for hand-off —
-clear enough that engineering and art can build from them without me in the room.</p>
-      </div>
+and engineered tools and game systems solo from prototype to release. Specs are written for
+hand-off — clear enough that engineering and art can build from them without me in the room.</p>
+        </div>
+      </section>
 
       <nav class="project-nav" aria-label="More projects">
-        <a href="la-ruleta-del-infortunio.html"><span class="dir">&larr; Previous</span>La Ruleta del Infortunio</a>
+        <a href="la-ruleta-del-infortunio.html"><span class="dir">&larr; Previous</span>Viktor's Mayhem (La Ruleta del Infortunio)</a>
         <a href="love-at-first-bite.html" style="text-align:right"><span class="dir">Next &rarr;</span>Love at First Bite</a>
       </nav>
-    </article>
+    </div>
   </main>
 
-  <footer class="site-footer">
-    <p>&copy; 2026 Aitor Morales &middot; <a href="../resume.html">Resume</a> &middot; <a href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a></p>
+  <footer class="footer">
+    <p>&copy; 2026 Aitor Morales</p>
+    <p><a href="../resume.html">Resume</a> &middot; <a href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a></p>
   </footer>
 
-  <script src="../assets/js/v2.js" defer></script>
+  <script src="../assets/js/v2.js?v=2026071201" defer></script>
 </body>
 </html>

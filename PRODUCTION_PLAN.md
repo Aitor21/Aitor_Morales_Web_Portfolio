@@ -122,18 +122,29 @@ Pages as now. See the parity table in Vision — every current feature is kept o
 - [ ] `sitemap.xml`, `robots.txt`; submit to Google Search Console.
 - [ ] Cross-link everything: site ↔ LinkedIn ↔ itch.io ↔ GitHub (consistent name/headline/avatar).
 
-### Build status (branch `website-v2`, July 2026)
-First full iteration built with placeholder art:
-- ✅ New design system (`assets/css/v2.css`) + vanilla JS (`assets/js/v2.js`) — no jQuery,
-  parallax (mouse + gyroscope w/ iOS permission), scroll reveals, View Transitions API.
-- ✅ `index.html` — Living World hero (7 clickable scene elements), work grid, about teaser, contact.
-- ✅ 7 case-study pages in `projects/` (Gimica, LAFB, Luzia, R4D10HEAD, Blaster Buds,
-  Birds of a Feather, La Ruleta) with per-page SEO + VideoGame JSON-LD.
-- ✅ `about.html` rewrite, `resume.html` (HTML CV + print→ATS-safe PDF + Person JSON-LD).
-- ✅ `404.html`, `robots.txt`, `sitemap.xml`, old `blasterbuds.html` → redirect.
-- ⏳ TODO: GA4 tag (Aitor must create the GA4 property), image optimization (GIF→MPV/WebM),
-  delete unused v1 assets (jquery.fullPage.*, common.css/min.js) after sign-off,
-  Search Console submission after launch, phone number on resume (left off deliberately — confirm).
+### Build status (branch `website-v2`, July 2026) — v2.2 after Aitor's design review
+Aitor's verdict on v2.1: worse than the old site — free-scroll home lost the slide feel, curtain
+transitions missing, hamburger broken, horizontal overflow, disliked the generated SVGs, buttons
+felt "AI". v2.2 rebuilt faithfully on the v1 architecture (extracted from `main`'s common.css /
+common.min.js) with modern dependency-free code:
+- ✅ FullPage slide sections restored on home (wheel/touch/keyboard, 1s cubic-bezier like v1),
+  left nav dots with labels, hash anchors, moon slides out on leave, letters slide in per section,
+  double-cover panel sweeps, page numbers rise — the v1 anime.js timelines re-created in CSS.
+- ✅ Curtain page transitions on every internal link (barba.js-style, all browsers) + prefetch
+  on hover. Loader curtain on first visit.
+- ✅ v1 fullscreen gradient menu (two-bar icon → X, staggered giant links) — fixed the v2.1
+  breakage (backdrop-filter containing block); nav now lives outside the header.
+- ✅ v1 button style restored (solid violet pill), 62.5% rem base, v1 title/border language.
+- ✅ Placeholder scene SVGs deleted; hero uses original moon + asteroids + stars. Gimica/Luzia
+  use typographic panels. Living-World element idea parked until real art exists.
+- ✅ Gimica facts scraped & added (Berlin, founded 2021; JustPlay: 35+ games, 25M+ downloads,
+  500K+ DAU) — stats row on the Gimica page.
+- ✅ Responsive verified programmatically: no horizontal overflow at 360×800, 800×360, 1280×800
+  on home/about/resume/project pages; short-landscape falls back to normal scroll.
+- ✅ Cache-busted asset URLs (?v=…). Gyroscope parallax kept (iOS permission button).
+- ⏳ TODO: GA4 tag (Aitor must create the property), image optimization (GIF→MP4/WebM),
+  delete unused v1 assets after sign-off, Search Console after launch, Aitor's visual pass
+  on a real browser + phone (pane can't render animations).
 
 ### Phase 5 — QA & launch
 - [ ] Accessibility pass (contrast, keyboard nav, alt text, heading order).

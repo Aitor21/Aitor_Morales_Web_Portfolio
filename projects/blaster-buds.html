@@ -15,67 +15,101 @@
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="shortcut icon" href="../favicon.png">
+  <link rel="preload" href="../assets/font/Futura-Med.woff" as="font" type="font/woff" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap">
-  <link rel="stylesheet" href="../assets/css/v2.css">
+  <link rel="stylesheet" href="../assets/css/v2.css?v=2026071201">
   <script type="application/ld+json">
   {"@context": "https://schema.org", "@type": "VideoGame", "name": "Blaster Buds", "url": "https://albertoportero.itch.io/blaster-buds", "contributor": {"@type": "Person", "name": "Aitor Morales"}, "award": "Winner, Mechanics category — Spain Game Devs Jam II", "genre": ["Puzzle"], "gamePlatform": "PC"}
   </script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
+  <div class="loader" aria-hidden="true"></div>
+  <div class="curtain" aria-hidden="true"></div>
 
   <header class="site-header">
-    <a class="brand" href="../">Aitor <span>Morales</span></a>
-    <button class="nav-toggle" aria-expanded="false" aria-label="Menu"><span class="bar"></span></button>
-    <nav class="site-nav" aria-label="Main">
-      <a href="../#work" aria-current="page">Work</a>
-      <a href="../about.html">About</a>
-      <a href="../resume.html">Resume</a>
-      <a href="../#contact">Contact</a>
-    </nav>
+    <a class="name" href="../index.html">Aitor Morales</a>
+    <div class="head-right">
+      <div class="head-links">
+        <a href="https://aitormorales.itch.io/" target="_blank" rel="noopener">itch.io</a>
+        <a href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="../resume.html">Resume</a>
+      </div>
+      <button class="menuIcon js-menuBtn" aria-label="Menu" aria-expanded="false"></button>
+    </div>
   </header>
 
-  <main id="main">
-    <article class="project-hero container">
-      <p class="kicker">SGD Jam II · 2020 · Winner — Mechanics</p>
-      <h1>Blaster Buds</h1>
-      <p class="lead">A cute grid-based puzzle duel in the vacuum of space. Your opponent mirrors your every action: when you move, it moves; when you shoot, it shoots. The environment decides who wins and who falls.</p>
+  <nav class="global-nav" aria-label="Main">
+    <ul class="global-nav__list">
+      <li><a href="../index.html#top">HOME</a></li>
+      <li><a href="../index.html#works">WORKS</a></li>
+      <li><a href="../about.html">ABOUT</a></li>
+      <li><a href="../resume.html">RESUME</a></li>
+      <li><a href="../index.html#contact">CONTACT</a></li>
+    </ul>
+    <div class="global-nav__sns" style="position:absolute;bottom:6vh;left:0;right:0">
+      <a href="https://aitormorales.itch.io/" target="_blank" rel="noopener">itch.io</a>
+      <a href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/Aitor21" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.instagram.com/aitor_21m/" target="_blank" rel="noopener">Instagram</a>
+    </div>
+  </nav>
 
-      <div class="project-cover">
+  <main id="main">
+    <a class="back-arrow" href="../index.html#works" aria-label="Back to works"><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="34" viewBox="0 0 67 34"><g fill="none" fill-rule="evenodd" stroke="#FFF" stroke-linecap="round" transform="translate(2 1)"><path stroke-width="2" d="M0,15.5533333 L64,15.5533333"/><polyline stroke-width="2" points="15.556 0 0 15.556 15.556 31.111"/></g></svg></a>
+    <div class="page-top">
+      <div class="title">
+        <span class="kicker js-letter" style="--d:0s">SGD Jam II · 2020 · Winner — Mechanics</span>
+        <h1 class="title__text"><span class="js-letter" style="--d:0.08s">Blaster Buds</span></h1>
+        <span class="js-letter" style="--d:.24s"><span class="border"><span></span><span></span></span></span>
+        <p class="title__lead"><span class="js-letter" style="--d:0.32s">A duel of wits where your rival</span><span class="js-letter" style="--d:0.40s">mirrors your every move.</span></p>
+        <span class="js-letter" style="--d:.48s"><span class="btn-wrap"><a class="btn" href="https://albertoportero.itch.io/blaster-buds" target="_blank" rel="noopener">Play on itch.io</a></span></span>
+      </div>
+    </div>
+
+    <div class="wrapper container">
+      <div class="page-cover js-scroll">
         <img src="../assets/img/projects/blaster-buds/cover.png" alt="Blaster Buds key art">
       </div>
 
-      <dl class="meta-grid">
+      <dl class="meta-row js-scroll">
         <div><dt>Role</dt><dd>Game Designer</dd></div>
         <div><dt>Team</dt><dd>5 — with Teresa Costas, Alberto Portero, Irene S. Carbonell, Carlos Fernández</dd></div>
         <div><dt>Award</dt><dd>★ Winner — Mechanics category, Spain Game Devs Jam II</dd></div>
         <div><dt>Year</dt><dd>2020</dd></div>
-        <div><dt>Play</dt><dd><a href="https://albertoportero.itch.io/blaster-buds" target="_blank" rel="noopener">itch.io</a></dd></div>
+        <div><dt>Links</dt><dd><a href="https://albertoportero.itch.io/blaster-buds" target="_blank" rel="noopener">itch.io</a></dd></div>
       </dl>
 
-      <div class="prose">
-<h2>The game</h2>
-<p>Blaster Buds is a duel of wits on a grid. You and your mirrored opponent share every input —
-move and it moves, shoot and it shoots. Victory never comes from outgunning the other side;
-it comes from reading the level and making the environment fight for you.</p>
-
-<h2>One input, two agents</h2>
+      <section class="sec js-scroll">
+        <div class="sec-head"><p class="heading-num">01</p><h2 class="heading">THE GAME</h2></div>
+        <div class="prose">
+<p>Blaster Buds is a duel of wits on a grid, set in the vacuum of space. You and your mirrored
+opponent share every input — move and it moves, shoot and it shoots. Victory never comes from
+outgunning the other side; it comes from reading the level and making the environment fight for you.</p>
+        </div>
+      </section>
+      <section class="sec js-scroll">
+        <div class="sec-head"><p class="heading-num">02</p><h2 class="heading">ONE INPUT, TWO AGENTS</h2></div>
+        <div class="prose">
 <p>The mirror mechanic means every level is designed twice at once: each tile placed for the player
 is also a tile placed for the opponent. Asymmetric level geometry becomes the only source of
 advantage, which turns level design into the game's real antagonist — exactly why the jam awarded
 it <strong>Best Mechanics</strong>.</p>
-
-<h2>What I designed</h2>
+        </div>
+      </section>
+      <section class="sec js-scroll">
+        <div class="sec-head"><p class="heading-num">03</p><h2 class="heading">WHAT I DESIGNED</h2></div>
+        <div class="prose">
 <ul>
 <li>The mirrored-action core mechanic and its rule set (movement, shooting, hazards).</li>
 <li>Puzzle levels ordered as a difficulty curve that teaches through play, not tutorials.</li>
 <li>Hazard vocabulary — asteroids, walls and pits that convert symmetry into strategy.</li>
 </ul>
-      </div>
-
-      <div class="gallery reveal">
+        </div>
+      </section>
+      <div class="gallery js-scroll">
         <figure><img src="../assets/img/projects/blaster-buds/shot-1.gif" alt="Mirrored movement in Blaster Buds" loading="lazy"></figure>
         <figure><img src="../assets/img/projects/blaster-buds/shot-2.gif" alt="Puzzle duel gameplay" loading="lazy"></figure>
         <figure><img src="../assets/img/projects/blaster-buds/shot-3.gif" alt="Environmental hazards deciding a duel" loading="lazy"></figure>
@@ -85,13 +119,14 @@ it <strong>Best Mechanics</strong>.</p>
         <a href="r4d10head.html"><span class="dir">&larr; Previous</span>R4D10HEAD</a>
         <a href="birds-of-a-feather.html" style="text-align:right"><span class="dir">Next &rarr;</span>Birds of a Feather</a>
       </nav>
-    </article>
+    </div>
   </main>
 
-  <footer class="site-footer">
-    <p>&copy; 2026 Aitor Morales &middot; <a href="../resume.html">Resume</a> &middot; <a href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a></p>
+  <footer class="footer">
+    <p>&copy; 2026 Aitor Morales</p>
+    <p><a href="../resume.html">Resume</a> &middot; <a href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a></p>
   </footer>
 
-  <script src="../assets/js/v2.js" defer></script>
+  <script src="../assets/js/v2.js?v=2026071201" defer></script>
 </body>
 </html>

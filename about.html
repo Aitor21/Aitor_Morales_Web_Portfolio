@@ -4,147 +4,238 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About Me | Aitor Morales — Game & Level Designer</title>
-  <meta name="description" content="About Aitor Morales — game & level designer in Madrid. From U-tad to Bliss Pictures, Honey Bun Games and Gimica: how I work and what I bring to a team.">
+  <meta name="description" content="About Aitor Morales — game & level designer in Madrid. From U-tad to Bliss Pictures, Honey Bun Games and Gimica: who I am, what drives me and my skill set.">
   <link rel="canonical" href="https://aitormorales.com/about.html">
   <meta property="og:type" content="profile">
   <meta property="og:url" content="https://aitormorales.com/about.html">
   <meta property="og:site_name" content="Aitor Morales — Portfolio">
   <meta property="og:title" content="About Me | Aitor Morales">
-  <meta property="og:description" content="Game & level designer in Madrid — how I work and what I bring to a team.">
+  <meta property="og:description" content="Game & level designer in Madrid — who I am, what drives me and my skill set.">
   <meta property="og:image" content="https://aitormorales.com/assets/img/portrait.jpg">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="shortcut icon" href="./favicon.png">
+  <link rel="preload" href="./assets/font/Futura-Med.woff" as="font" type="font/woff" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap">
-  <link rel="stylesheet" href="./assets/css/v2.css">
+  <link rel="stylesheet" href="./assets/css/v2.css?v=2026071201">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
+  <div class="loader" aria-hidden="true"></div>
+  <div class="curtain" aria-hidden="true"></div>
 
   <header class="site-header">
-    <a class="brand" href="./">Aitor <span>Morales</span></a>
-    <button class="nav-toggle" aria-expanded="false" aria-label="Menu"><span class="bar"></span></button>
-    <nav class="site-nav" aria-label="Main">
-      <a href="./#work">Work</a>
-      <a href="./about.html" aria-current="page">About</a>
-      <a href="./resume.html">Resume</a>
-      <a href="./#contact">Contact</a>
-    </nav>
+    <a class="name" href="./index.html">Aitor Morales</a>
+    <div class="head-right">
+      <div class="head-links">
+        <a href="https://aitormorales.itch.io/" target="_blank" rel="noopener">itch.io</a>
+        <a href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="./resume.html">Resume</a>
+      </div>
+      <button class="menuIcon js-menuBtn" aria-label="Menu" aria-expanded="false"></button>
+    </div>
   </header>
 
+  <nav class="global-nav" aria-label="Main">
+    <ul class="global-nav__list">
+      <li><a href="./index.html#top">HOME</a></li>
+      <li><a href="./index.html#works">WORKS</a></li>
+      <li><a href="./about.html">ABOUT</a></li>
+      <li><a href="./resume.html">RESUME</a></li>
+      <li><a href="./index.html#contact">CONTACT</a></li>
+    </ul>
+    <div class="global-nav__sns" style="position:absolute;bottom:6vh;left:0;right:0">
+      <a href="https://aitormorales.itch.io/" target="_blank" rel="noopener">itch.io</a>
+      <a href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/Aitor21" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.instagram.com/aitor_21m/" target="_blank" rel="noopener">Instagram</a>
+    </div>
+  </nav>
+
   <main id="main">
-    <section class="project-hero container">
-      <p class="kicker">About Me</p>
-      <h1>Designer, builder,<br>occasional pigeon.</h1>
-      <p class="lead">I'm Aitor Morales, a game & level designer based in Madrid. I design systems and
-        levels for live mobile games by day and build my own vampire dating sim by night — and I've
-        been making games, in teams and alone, for over a decade.</p>
-    </section>
+    <a class="back-arrow" href="./index.html#about" aria-label="Back to home"><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="34" viewBox="0 0 67 34"><g fill="none" fill-rule="evenodd" stroke="#FFF" stroke-linecap="round" transform="translate(2 1)"><path stroke-width="2" d="M0,15.5533333 L64,15.5533333"/><polyline stroke-width="2" points="15.556 0 0 15.556 15.556 31.111"/></g></svg></a>
 
-    <section class="section container" aria-label="Who I am">
-      <div class="about-grid">
-        <div class="prose reveal">
-          <h2>The short story</h2>
-          <p>I studied Software Engineering and then Game & Interactive Media Design at U-tad, which is
-            why I've never fully picked a side between design and code. That mix became the job:
-            today I'm the sole game designer for a large mobile free-to-play portfolio at
-            <strong>Gimica</strong> (a JustPlay company), where I design economy systems and boosters,
-            author hundreds of levels, and ship what I spec — in Unity, Godot and Babylon.js.</p>
-          <p>Before that I helped film studio <strong>Bliss Pictures</strong> build the playable demo of
-            <em>Luzia: Rainbow in the Darkness</em>, doing game design, level design, cameras and
-            cutscenes. And with <strong>Honey Bun Games</strong>, the indie team I co-founded, I'm
-            making <em>Love at First Bite</em> — a vampire dating sim born in a game jam that refused
-            to stay there.</p>
-          <p>Teamwork, attention to detail and clear communication are the things I hold myself to on
-            every project. Outside of games: photography, film analysis and cooking — all of which are
-            just design with different constraints.</p>
-        </div>
-        <div class="about-portrait reveal">
-          <img src="./assets/img/portrait.jpg" alt="Portrait of Aitor Morales">
-        </div>
+    <div class="page-top">
+      <div class="title">
+        <span class="kicker js-letter" style="--d:0s">Aitor Morales · Madrid</span>
+        <h1 class="title__text"><span class="js-letter" style="--d:.08s">About Me</span></h1>
+        <span class="js-letter" style="--d:.16s"><span class="border"><span></span><span></span></span></span>
+        <p class="title__lead"><span class="js-letter" style="--d:.24s">I love Design, Technology,</span><span class="js-letter" style="--d:.32s">and Stories.</span></p>
+        <span class="js-letter" style="--d:.4s"><span class="btn-wrap"><a class="btn" href="./resume.html">My Resume</a></span></span>
       </div>
-    </section>
+    </div>
 
-    <section class="section container" aria-label="How I work">
-      <h2 class="section-title reveal">How I work</h2>
-      <div class="value-grid">
-        <div class="value-card reveal">
-          <h3>Design that ships</h3>
-          <p>A mechanic isn't finished when it's clever — it's finished when it's specced, built,
-            tested and live. I own features end to end, from the first prototype to the A/B readout,
-            and I write documentation that engineering and art can build from without me in the room.</p>
+    <div class="wrapper container">
+      <!-- 01 · WHO I AM -->
+      <section class="sec js-scroll">
+        <div class="sec-head"><p class="heading-num">01</p><h2 class="heading">WHO I AM</h2></div>
+        <div class="who-grid">
+          <div class="prose">
+            <p>I'm Aitor Morales, a game &amp; level designer based in Madrid. I studied Software
+              Engineering and then Game &amp; Interactive Media Design at U-tad, which is why I've never
+              fully picked a side between design and code — that mix became the job.</p>
+            <p>Today I'm the sole game designer for a large mobile free-to-play portfolio at
+              <strong>Gimica</strong> (Berlin), where I design economy systems and boosters, author
+              hundreds of levels, and ship what I spec in Unity, Godot and Babylon.js. Before that I
+              helped film studio <strong>Bliss Pictures</strong> build the playable demo of
+              <em>Luzia: Rainbow in the Darkness</em>, and with <strong>Honey Bun Games</strong> — the
+              indie team I co-founded — I'm making <em>Love at first Bite</em>.</p>
+            <p>I am a proactive person who loves learning new things and experiencing challenges.
+              Teamwork, attention to detail and communication are things that I strive for in every
+              project. My interests lie in photography, game design, UX/UI design, film analysis and
+              cooking.</p>
+          </div>
+          <div class="portrait"><img src="./assets/img/portrait.jpg" alt="Portrait of Aitor Morales"></div>
         </div>
-        <div class="value-card reveal">
-          <h3>Technology as a design tool</h3>
-          <p>I prototype my own ideas in-engine because the fastest way to evaluate a design is to
-            play it. Knowing how things are built keeps my designs honest — and lets me build the
-            tools and systems myself when that's the shortest path.</p>
-        </div>
-        <div class="value-card reveal">
-          <h3>Stories everywhere</h3>
-          <p>Games, films, manga, a good meal — stories make things easier to understand and impossible
-            to forget. I steal structure shamelessly from every medium I love, because a level is a
-            story the player tells themselves.</p>
-        </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="section container" aria-label="Skills">
-      <h2 class="section-title reveal">Skill set</h2>
-      <div class="skills-cols reveal">
-        <div>
-          <h3>Design</h3>
-          <ul>
-            <li>Level design & progression</li>
-            <li>Systems & economy design</li>
-            <li>Adaptive difficulty</li>
-            <li>A/B testing & LiveOps</li>
-            <li>Game design documentation</li>
-            <li>UX/UI design</li>
+      <!-- 02 · PASSION -->
+      <section class="sec js-scroll">
+        <div class="sec-head"><p class="heading-num">02</p><h2 class="heading">PASSION</h2></div>
+        <ul class="passion-list">
+          <li>
+            <img src="./assets/img/design-skills.svg" alt="">
+            <h3>DESIGN</h3>
+            <p>I think design is like a "magic wand". If a service or product is magic to solve a
+              problem, it is the role of design to act as an intermediary for users to master it.
+              We strive every day to create a "magic wand" that matches the users needs or desires.</p>
+          </li>
+          <li>
+            <img src="./assets/img/tech.svg" alt="">
+            <h3>TECHNOLOGY</h3>
+            <p>Technology has the power to change the lives of the world and individuals. As Arthur C.
+              Clarke wrote, "Any sufficiently advanced technology is indistinguishable from magic."
+              I want to be a person who can always catch up with the latest technology and respond to
+              changes. I think it is the mission of designers as well as engineers to promote innovation.</p>
+          </li>
+          <li>
+            <img src="./assets/img/book-open.svg" alt="">
+            <h3>STORIES</h3>
+            <p>I love watching TV shows, movies, playing games and reading manga. Stories can get
+              people's attention and make things easier to understand and remember. I believe that any
+              type of designer should consume every type of media to expand their minds and find new
+              angles on how to tell their story.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 03 · SKILL SET -->
+      <section class="sec">
+        <div class="sec-head js-scroll"><p class="heading-num">03</p><h2 class="heading">SKILL SET</h2></div>
+        <div class="skill-flex">
+          <ul class="skill-list">
+            <li class="skill-item js-scroll" style="--p:.9">
+              <div class="icon"><img src="./assets/img/unity.png" alt=""></div>
+              <div class="detail">
+                <div class="row1"><h4>Unity</h4><span class="years">13 years</span></div>
+                <div class="skill-bar"><i></i></div>
+              </div>
+            </li>
+            <li class="skill-item js-scroll" style="--p:.8">
+              <div class="icon"><img src="./assets/img/csharp.png" alt=""></div>
+              <div class="detail">
+                <div class="row1"><h4>C#</h4><span class="years">13 years</span></div>
+                <div class="skill-bar"><i></i></div>
+              </div>
+            </li>
+            <li class="skill-item js-scroll" style="--p:.55">
+              <div class="icon"><img src="./assets/img/ue.png" alt=""></div>
+              <div class="detail">
+                <div class="row1"><h4>Unreal Engine</h4><span class="years">4 years</span></div>
+                <div class="skill-bar"><i></i></div>
+              </div>
+            </li>
+            <li class="skill-item js-scroll" style="--p:.6">
+              <div class="detail">
+                <div class="row1"><h4>Godot</h4><span class="years">2 years</span></div>
+                <div class="skill-bar"><i></i></div>
+              </div>
+            </li>
+            <li class="skill-item js-scroll" style="--p:.6">
+              <div class="detail">
+                <div class="row1"><h4>Babylon.js</h4><span class="years">2 years</span></div>
+                <div class="skill-bar"><i></i></div>
+              </div>
+            </li>
+            <li class="skill-item js-scroll" style="--p:.85">
+              <div class="icon"><img src="./assets/img/html.svg" alt=""></div>
+              <div class="detail">
+                <div class="row1"><h4>HTML / CSS / JS</h4><span class="years">9 years</span></div>
+                <div class="skill-bar"><i></i></div>
+              </div>
+            </li>
+          </ul>
+          <ul class="skill-list">
+            <li class="skill-item js-scroll" style="--p:.9">
+              <div class="icon"><img src="./assets/img/ps.png" alt=""></div>
+              <div class="detail">
+                <div class="row1"><h4>Photoshop</h4><span class="years">17 years</span></div>
+                <div class="skill-bar"><i></i></div>
+              </div>
+            </li>
+            <li class="skill-item js-scroll" style="--p:.8">
+              <div class="icon"><img src="./assets/img/figma.png" alt=""></div>
+              <div class="detail">
+                <div class="row1"><h4>Figma</h4><span class="years">4 years</span></div>
+                <div class="skill-bar"><i></i></div>
+              </div>
+            </li>
+            <li class="skill-item js-scroll" style="--p:.7">
+              <div class="icon"><img src="./assets/img/id.png" alt=""></div>
+              <div class="detail">
+                <div class="row1"><h4>InDesign</h4><span class="years">9 years</span></div>
+                <div class="skill-bar"><i></i></div>
+              </div>
+            </li>
+            <li class="skill-item js-scroll" style="--p:.7">
+              <div class="icon"><img src="./assets/img/pr.png" alt=""></div>
+              <div class="detail">
+                <div class="row1"><h4>Premiere Pro</h4><span class="years">11 years</span></div>
+                <div class="skill-bar"><i></i></div>
+              </div>
+            </li>
+            <li class="skill-item js-scroll" style="--p:.6">
+              <div class="icon"><img src="./assets/img/3dmax.png" alt=""></div>
+              <div class="detail">
+                <div class="row1"><h4>3ds Max / Maya</h4><span class="years">6 years</span></div>
+                <div class="skill-bar"><i></i></div>
+              </div>
+            </li>
           </ul>
         </div>
-        <div>
-          <h3>Engines & code</h3>
+      </section>
+
+      <!-- 04 · EARLIER WORK -->
+      <section class="sec js-scroll" id="earlier">
+        <div class="sec-head"><p class="heading-num">04</p><h2 class="heading">EARLIER WORK</h2></div>
+        <div class="prose">
           <ul>
-            <li>Unity · C# (10+ years)</li>
-            <li>Godot</li>
-            <li>Babylon.js</li>
-            <li>Unreal Engine</li>
-            <li>HTML / CSS / JavaScript</li>
+            <li><strong>Finding The Colmers</strong> (2017) — U-tad team project, covered by
+              <strong>IGN, HobbyConsolas, Alfa Beta Juega and Vandal</strong>.</li>
+            <li><strong>Pizzarre</strong> (2018) — Game Designer.</li>
+            <li><strong>Nyama</strong> (2015 — 2017) — U-tad team project.</li>
+            <li><strong>FriendShip</strong> (2011) — short film.</li>
           </ul>
         </div>
-        <div>
-          <h3>Tools</h3>
-          <ul>
-            <li>Figma</li>
-            <li>Photoshop · InDesign</li>
-            <li>Premiere Pro</li>
-            <li>3ds Max · Maya</li>
-            <li>Git</li>
-          </ul>
+      </section>
+
+      <!-- CTA -->
+      <section class="sec js-scroll">
+        <div class="btn-wrap">
+          <a class="btn" href="./resume.html">See the full resume</a>
+          <a class="btn btn--ghost" href="./index.html#contact">Get in touch</a>
         </div>
-        <div>
-          <h3>Languages</h3>
-          <ul>
-            <li>Spanish — native</li>
-            <li>English — bilingual (Cambridge C1)</li>
-            <li>Basque — basic</li>
-          </ul>
-        </div>
-      </div>
-      <div class="hero-cta reveal" style="margin-top:2.5rem">
-        <a class="btn btn--primary" href="./resume.html">See the full resume</a>
-        <a class="btn" href="./#contact">Get in touch</a>
-      </div>
-    </section>
+      </section>
+    </div>
   </main>
 
-  <footer class="site-footer">
-    <p>© 2026 Aitor Morales · <a href="./resume.html">Resume</a> · <a href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a></p>
+  <footer class="footer">
+    <p>© 2026 Aitor Morales</p>
+    <p><a href="./resume.html">Resume</a> · <a href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a></p>
   </footer>
 
-  <script src="./assets/js/v2.js" defer></script>
+  <script src="./assets/js/v2.js?v=2026071201" defer></script>
 </body>
 </html>

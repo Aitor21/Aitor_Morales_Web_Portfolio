@@ -15,57 +15,92 @@
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="shortcut icon" href="../favicon.png">
+  <link rel="preload" href="../assets/font/Futura-Med.woff" as="font" type="font/woff" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap">
-  <link rel="stylesheet" href="../assets/css/v2.css">
+  <link rel="stylesheet" href="../assets/css/v2.css?v=2026071201">
   <script type="application/ld+json">
   {"@context": "https://schema.org", "@type": "VideoGame", "name": "Birds of a Feather", "url": "https://aitormorales.itch.io/birds-of-a-feather", "author": {"@type": "Person", "name": "Aitor Morales"}, "genre": ["Action", "Adventure"], "gamePlatform": "Web"}
   </script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
+  <div class="loader" aria-hidden="true"></div>
+  <div class="curtain" aria-hidden="true"></div>
 
   <header class="site-header">
-    <a class="brand" href="../">Aitor <span>Morales</span></a>
-    <button class="nav-toggle" aria-expanded="false" aria-label="Menu"><span class="bar"></span></button>
-    <nav class="site-nav" aria-label="Main">
-      <a href="../#work" aria-current="page">Work</a>
-      <a href="../about.html">About</a>
-      <a href="../resume.html">Resume</a>
-      <a href="../#contact">Contact</a>
-    </nav>
+    <a class="name" href="../index.html">Aitor Morales</a>
+    <div class="head-right">
+      <div class="head-links">
+        <a href="https://aitormorales.itch.io/" target="_blank" rel="noopener">itch.io</a>
+        <a href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="../resume.html">Resume</a>
+      </div>
+      <button class="menuIcon js-menuBtn" aria-label="Menu" aria-expanded="false"></button>
+    </div>
   </header>
 
-  <main id="main">
-    <article class="project-hero container">
-      <p class="kicker">Level Up Game Jam 2024 · Solo Dev</p>
-      <h1>Birds of a Feather</h1>
-      <p class="lead">The world used to be kind to pigeons — war heroes, peace bringers, companions. Now they're pests. Legend says one pigeon can unite the flock and bring the glory back. I made all of it, alone.</p>
+  <nav class="global-nav" aria-label="Main">
+    <ul class="global-nav__list">
+      <li><a href="../index.html#top">HOME</a></li>
+      <li><a href="../index.html#works">WORKS</a></li>
+      <li><a href="../about.html">ABOUT</a></li>
+      <li><a href="../resume.html">RESUME</a></li>
+      <li><a href="../index.html#contact">CONTACT</a></li>
+    </ul>
+    <div class="global-nav__sns" style="position:absolute;bottom:6vh;left:0;right:0">
+      <a href="https://aitormorales.itch.io/" target="_blank" rel="noopener">itch.io</a>
+      <a href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/Aitor21" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.instagram.com/aitor_21m/" target="_blank" rel="noopener">Instagram</a>
+    </div>
+  </nav>
 
-      <div class="project-cover">
+  <main id="main">
+    <a class="back-arrow" href="../index.html#works" aria-label="Back to works"><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="34" viewBox="0 0 67 34"><g fill="none" fill-rule="evenodd" stroke="#FFF" stroke-linecap="round" transform="translate(2 1)"><path stroke-width="2" d="M0,15.5533333 L64,15.5533333"/><polyline stroke-width="2" points="15.556 0 0 15.556 15.556 31.111"/></g></svg></a>
+    <div class="page-top">
+      <div class="title">
+        <span class="kicker js-letter" style="--d:0s">Level Up Game Jam 2024 · Solo Dev</span>
+        <h1 class="title__text"><span class="js-letter" style="--d:0.08s">Birds of</span><span class="js-letter" style="--d:0.16s">a Feather</span></h1>
+        <span class="js-letter" style="--d:.24s"><span class="border"><span></span><span></span></span></span>
+        <p class="title__lead"><span class="js-letter" style="--d:0.32s">One legendary pigeon.</span><span class="js-letter" style="--d:0.40s">One developer. All of it.</span></p>
+        <span class="js-letter" style="--d:.48s"><span class="btn-wrap"><a class="btn" href="https://aitormorales.itch.io/birds-of-a-feather" target="_blank" rel="noopener">Play on itch.io</a></span></span>
+      </div>
+    </div>
+
+    <div class="wrapper container">
+      <div class="page-cover js-scroll">
         <img src="../assets/img/projects/birds-of-a-feather/cover.png" alt="Birds of a Feather key art">
       </div>
 
-      <dl class="meta-grid">
+      <dl class="meta-row js-scroll">
         <div><dt>Role</dt><dd>Solo Developer — design, code, content</dd></div>
         <div><dt>Jam</dt><dd>Level Up Game Jam 2024</dd></div>
         <div><dt>Year</dt><dd>Jul 2024</dd></div>
-        <div><dt>Play</dt><dd><a href="https://aitormorales.itch.io/birds-of-a-feather" target="_blank" rel="noopener">itch.io</a></dd></div>
+        <div><dt>Links</dt><dd><a href="https://aitormorales.itch.io/birds-of-a-feather" target="_blank" rel="noopener">itch.io</a></dd></div>
       </dl>
 
-      <div class="prose">
-<h2>The game</h2>
-<p>Fly across the city as the chosen pigeon, win over scattered birds, and grow a flock big enough
-to take on the enemy leaders who keep pigeonkind down. Part 3D exploration, part crowd-combat —
-your followers are your health bar, your army and your responsibility.</p>
-
-<h2>Why it matters in this portfolio</h2>
+      <section class="sec js-scroll">
+        <div class="sec-head"><p class="heading-num">01</p><h2 class="heading">THE GAME</h2></div>
+        <div class="prose">
+<p>The world used to be kind to pigeons — war heroes, peace bringers, companions. Now they're pests.
+Fly across the city as the chosen pigeon, win over scattered birds, and grow a flock big enough to
+take on the enemy leaders who keep pigeonkind down. Part 3D exploration, part crowd-combat — your
+followers are your health bar, your army and your responsibility.</p>
+        </div>
+      </section>
+      <section class="sec js-scroll">
+        <div class="sec-head"><p class="heading-num">02</p><h2 class="heading">WHY IT MATTERS</h2></div>
+        <div class="prose">
 <p>Everything in the build is mine: concept, systems, flocking follower AI, enemy leaders, level
 layout, UI, dialogue and the web build itself — scoped, built and shipped within jam deadlines.
 It's the clearest proof of range: I can design a game and then actually make it exist.</p>
-
-<h2>Design notes</h2>
+        </div>
+      </section>
+      <section class="sec js-scroll">
+        <div class="sec-head"><p class="heading-num">03</p><h2 class="heading">DESIGN NOTES</h2></div>
+        <div class="prose">
 <ul>
 <li><strong>Followers as a resource</strong> — recruiting birds is progression, combat power and
 risk all in one number.</li>
@@ -74,24 +109,25 @@ perch-to-perch hops with landmark navigation.</li>
 <li><strong>Honest jank</strong> — the itch page documents known bugs openly; shipping and
 transparency beat polish theatre in jam builds.</li>
 </ul>
-      </div>
-
-      <div class="gallery reveal">
+        </div>
+      </section>
+      <div class="gallery js-scroll">
         <figure><img src="../assets/img/projects/birds-of-a-feather/shot-1.gif" alt="Flying across the city" loading="lazy"></figure>
         <figure><img src="../assets/img/projects/birds-of-a-feather/shot-2.gif" alt="Recruiting the flock" loading="lazy"></figure>
       </div>
 
       <nav class="project-nav" aria-label="More projects">
         <a href="blaster-buds.html"><span class="dir">&larr; Previous</span>Blaster Buds</a>
-        <a href="la-ruleta-del-infortunio.html" style="text-align:right"><span class="dir">Next &rarr;</span>La Ruleta del Infortunio</a>
+        <a href="la-ruleta-del-infortunio.html" style="text-align:right"><span class="dir">Next &rarr;</span>Viktor's Mayhem (La Ruleta del Infortunio)</a>
       </nav>
-    </article>
+    </div>
   </main>
 
-  <footer class="site-footer">
-    <p>&copy; 2026 Aitor Morales &middot; <a href="../resume.html">Resume</a> &middot; <a href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a></p>
+  <footer class="footer">
+    <p>&copy; 2026 Aitor Morales</p>
+    <p><a href="../resume.html">Resume</a> &middot; <a href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a></p>
   </footer>
 
-  <script src="../assets/js/v2.js" defer></script>
+  <script src="../assets/js/v2.js?v=2026071201" defer></script>
 </body>
 </html>

@@ -15,69 +15,102 @@
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="shortcut icon" href="../favicon.png">
+  <link rel="preload" href="../assets/font/Futura-Med.woff" as="font" type="font/woff" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap">
-  <link rel="stylesheet" href="../assets/css/v2.css">
+  <link rel="stylesheet" href="../assets/css/v2.css?v=2026071201">
   <script type="application/ld+json">
   {"@context": "https://schema.org", "@type": "VideoGame", "name": "La Ruleta del Infortunio", "alternateName": "Viktor's Mayhem", "url": "https://teresa-costas.itch.io/la-ruleta-del-infortunio", "contributor": {"@type": "Person", "name": "Aitor Morales"}, "genre": ["Action"], "gamePlatform": "PC", "inLanguage": "es"}
   </script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
+  <div class="loader" aria-hidden="true"></div>
+  <div class="curtain" aria-hidden="true"></div>
 
   <header class="site-header">
-    <a class="brand" href="../">Aitor <span>Morales</span></a>
-    <button class="nav-toggle" aria-expanded="false" aria-label="Menu"><span class="bar"></span></button>
-    <nav class="site-nav" aria-label="Main">
-      <a href="../#work" aria-current="page">Work</a>
-      <a href="../about.html">About</a>
-      <a href="../resume.html">Resume</a>
-      <a href="../#contact">Contact</a>
-    </nav>
+    <a class="name" href="../index.html">Aitor Morales</a>
+    <div class="head-right">
+      <div class="head-links">
+        <a href="https://aitormorales.itch.io/" target="_blank" rel="noopener">itch.io</a>
+        <a href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="../resume.html">Resume</a>
+      </div>
+      <button class="menuIcon js-menuBtn" aria-label="Menu" aria-expanded="false"></button>
+    </div>
   </header>
 
-  <main id="main">
-    <article class="project-hero container">
-      <p class="kicker">Game Jam · 2022</p>
-      <h1>La Ruleta del Infortunio</h1>
-      <p class="lead" style="margin-top:.4rem;color:var(--moon);font-size:1rem">English title: Viktor's Mayhem</p>
-      <p class="lead">Welcome, dear viewers, to the show where the slot machine decides your destiny! Pull the lever, collect your misfortune, and step into the arena — the prize is a surprise, the punishment you can imagine.</p>
+  <nav class="global-nav" aria-label="Main">
+    <ul class="global-nav__list">
+      <li><a href="../index.html#top">HOME</a></li>
+      <li><a href="../index.html#works">WORKS</a></li>
+      <li><a href="../about.html">ABOUT</a></li>
+      <li><a href="../resume.html">RESUME</a></li>
+      <li><a href="../index.html#contact">CONTACT</a></li>
+    </ul>
+    <div class="global-nav__sns" style="position:absolute;bottom:6vh;left:0;right:0">
+      <a href="https://aitormorales.itch.io/" target="_blank" rel="noopener">itch.io</a>
+      <a href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/Aitor21" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.instagram.com/aitor_21m/" target="_blank" rel="noopener">Instagram</a>
+    </div>
+  </nav>
 
-      <div class="project-cover">
-        <img src="../assets/img/projects/la-ruleta-del-infortunio/cover.png" alt="La Ruleta del Infortunio key art">
+  <main id="main">
+    <a class="back-arrow" href="../index.html#works" aria-label="Back to works"><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="34" viewBox="0 0 67 34"><g fill="none" fill-rule="evenodd" stroke="#FFF" stroke-linecap="round" transform="translate(2 1)"><path stroke-width="2" d="M0,15.5533333 L64,15.5533333"/><polyline stroke-width="2" points="15.556 0 0 15.556 15.556 31.111"/></g></svg></a>
+    <div class="page-top">
+      <div class="title">
+        <span class="kicker js-letter" style="--d:0s">Game Jam · 2022 · "La Ruleta del Infortunio"</span>
+        <h1 class="title__text"><span class="js-letter" style="--d:0.08s">Viktor's</span><span class="js-letter" style="--d:0.16s">Mayhem</span></h1>
+        <span class="js-letter" style="--d:.24s"><span class="border"><span></span><span></span></span></span>
+        <p class="title__lead"><span class="js-letter" style="--d:0.32s">Pull the lever. Take your curse.</span><span class="js-letter" style="--d:0.40s">Survive the arena.</span></p>
+        <span class="js-letter" style="--d:.48s"><span class="btn-wrap"><a class="btn" href="https://teresa-costas.itch.io/la-ruleta-del-infortunio" target="_blank" rel="noopener">Play on itch.io</a></span></span>
+      </div>
+    </div>
+
+    <div class="wrapper container">
+      <div class="page-cover js-scroll">
+        <img src="../assets/img/projects/la-ruleta-del-infortunio/cover.png" alt="Viktor's Mayhem (La Ruleta del Infortunio) key art">
       </div>
 
-      <dl class="meta-grid">
+      <dl class="meta-row js-scroll">
         <div><dt>Role</dt><dd>Game Designer</dd></div>
         <div><dt>Team</dt><dd>5 — with Teresa Costas, Alberto Portero, XMaxQ, SlowpokeSama</dd></div>
+        <div><dt>Spanish title</dt><dd>La Ruleta del Infortunio</dd></div>
         <div><dt>Year</dt><dd>2022</dd></div>
-        <div><dt>English title</dt><dd>Viktor's Mayhem</dd></div>
-        <div><dt>Language</dt><dd>Spanish</dd></div>
-        <div><dt>Play</dt><dd><a href="https://teresa-costas.itch.io/la-ruleta-del-infortunio" target="_blank" rel="noopener">itch.io</a></dd></div>
+        <div><dt>Links</dt><dd><a href="https://teresa-costas.itch.io/la-ruleta-del-infortunio" target="_blank" rel="noopener">itch.io</a></dd></div>
       </dl>
 
-      <div class="prose">
-<h2>The game</h2>
-<p>La Ruleta del Infortunio is a TV game show nobody should want to be on. A slot machine rolls
-your fate; whatever misfortune it lands on, you carry into an arena fight — move, dodge and attack
-your way through while a delighted host commentates your suffering.</p>
-
-<h2>Designing around randomness</h2>
+      <section class="sec js-scroll">
+        <div class="sec-head"><p class="heading-num">01</p><h2 class="heading">THE GAME</h2></div>
+        <div class="prose">
+<p>Viktor's Mayhem — released in Spanish as <em>La Ruleta del Infortunio</em> — is a TV game show
+nobody should want to be on. A slot machine rolls your fate; whatever misfortune it lands on, you
+carry into an arena fight — move, dodge and attack your way through while a delighted host
+commentates your suffering.</p>
+        </div>
+      </section>
+      <section class="sec js-scroll">
+        <div class="sec-head"><p class="heading-num">02</p><h2 class="heading">DESIGNING AROUND RANDOMNESS</h2></div>
+        <div class="prose">
 <p>The design bet: make the <em>punishment</em> the content. Random handicaps re-texture the same
 arena every run — each curse changes how you must play rather than just making numbers worse.
 The challenge was balancing misfortunes to stay genuinely fun: cruel enough to earn the show's
 premise, never so cruel that a run feels pre-lost.</p>
-
-<h2>What I designed</h2>
+        </div>
+      </section>
+      <section class="sec js-scroll">
+        <div class="sec-head"><p class="heading-num">03</p><h2 class="heading">WHAT I DESIGNED</h2></div>
+        <div class="prose">
 <ul>
 <li>The show-format game loop: slot machine → curse → arena → payoff.</li>
 <li>The misfortune roster and its balance rules.</li>
 <li>Combat and arena encounters tuned around WASD movement, dodges and melee attacks.</li>
 </ul>
-      </div>
-
-      <div class="gallery reveal">
+        </div>
+      </section>
+      <div class="gallery js-scroll">
         <figure><img src="../assets/img/projects/la-ruleta-del-infortunio/shot-1.png" alt="The slot machine of fate" loading="lazy"></figure>
         <figure><img src="../assets/img/projects/la-ruleta-del-infortunio/shot-2.png" alt="Arena combat" loading="lazy"></figure>
         <figure><img src="../assets/img/projects/la-ruleta-del-infortunio/shot-3.png" alt="The show's host" loading="lazy"></figure>
@@ -87,13 +120,14 @@ premise, never so cruel that a run feels pre-lost.</p>
         <a href="birds-of-a-feather.html"><span class="dir">&larr; Previous</span>Birds of a Feather</a>
         <a href="gimica.html" style="text-align:right"><span class="dir">Next &rarr;</span>Gimica — Mobile F2P Portfolio</a>
       </nav>
-    </article>
+    </div>
   </main>
 
-  <footer class="site-footer">
-    <p>&copy; 2026 Aitor Morales &middot; <a href="../resume.html">Resume</a> &middot; <a href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a></p>
+  <footer class="footer">
+    <p>&copy; 2026 Aitor Morales</p>
+    <p><a href="../resume.html">Resume</a> &middot; <a href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a></p>
   </footer>
 
-  <script src="../assets/js/v2.js" defer></script>
+  <script src="../assets/js/v2.js?v=2026071201" defer></script>
 </body>
 </html>

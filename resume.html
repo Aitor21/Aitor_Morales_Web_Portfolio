@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap">
-  <link rel="stylesheet" href="./assets/css/v2.css">
+  <link rel="stylesheet" href="./assets/css/v2.css?v=2026071201">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -53,23 +53,42 @@
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
+  <div class="loader" aria-hidden="true"></div>
+  <div class="curtain" aria-hidden="true"></div>
 
   <header class="site-header">
-    <a class="brand" href="./">Aitor <span>Morales</span></a>
-    <button class="nav-toggle" aria-expanded="false" aria-label="Menu"><span class="bar"></span></button>
-    <nav class="site-nav" aria-label="Main">
-      <a href="./#work">Work</a>
-      <a href="./about.html">About</a>
-      <a href="./resume.html" aria-current="page">Resume</a>
-      <a href="./#contact">Contact</a>
-    </nav>
+    <a class="name" href="./index.html">Aitor Morales</a>
+    <div class="head-right">
+      <div class="head-links">
+        <a href="https://aitormorales.itch.io/" target="_blank" rel="noopener">itch.io</a>
+        <a href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="./resume.html">Resume</a>
+      </div>
+      <button class="menuIcon js-menuBtn" aria-label="Menu" aria-expanded="false"></button>
+    </div>
   </header>
+
+  <nav class="global-nav" aria-label="Main">
+    <ul class="global-nav__list">
+      <li><a href="./index.html#top">HOME</a></li>
+      <li><a href="./index.html#works">WORKS</a></li>
+      <li><a href="./about.html">ABOUT</a></li>
+      <li><a href="./resume.html">RESUME</a></li>
+      <li><a href="./index.html#contact">CONTACT</a></li>
+    </ul>
+    <div class="global-nav__sns" style="position:absolute;bottom:6vh;left:0;right:0">
+      <a href="https://aitormorales.itch.io/" target="_blank" rel="noopener">itch.io</a>
+      <a href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/Aitor21" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.instagram.com/aitor_21m/" target="_blank" rel="noopener">Instagram</a>
+    </div>
+  </nav>
 
   <main id="main" class="resume-page">
     <div class="container">
       <div class="resume-actions">
-        <button class="btn btn--primary" onclick="window.print()">Download as PDF</button>
-        <a class="btn" href="./#contact">Contact me</a>
+        <button class="btn" onclick="window.print()">Download as PDF</button>
+        <a class="btn btn--ghost" href="./index.html#contact">Contact me</a>
       </div>
 
       <article class="resume-sheet">
@@ -253,10 +272,11 @@
     </div>
   </main>
 
-  <footer class="site-footer">
-    <p>© 2026 Aitor Morales · <a href="./">aitormorales.com</a> · <a href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a></p>
+  <footer class="footer">
+    <p>© 2026 Aitor Morales</p>
+    <p><a href="./index.html">aitormorales.com</a> · <a href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a></p>
   </footer>
 
-  <script src="./assets/js/v2.js" defer></script>
+  <script src="./assets/js/v2.js?v=2026071201" defer></script>
 </body>
 </html>

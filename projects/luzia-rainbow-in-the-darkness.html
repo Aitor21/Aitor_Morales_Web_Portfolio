@@ -11,91 +11,130 @@
   <meta property="og:site_name" content="Aitor Morales — Portfolio">
   <meta property="og:title" content="Luzia: Rainbow in the Darkness | Aitor Morales">
   <meta property="og:description" content="Game design, level design, cameras and cutscenes for the playable demo of Luzia: Rainbow in the Darkness by Bliss Pictures.">
-  <meta property="og:image" content="https://aitormorales.com/assets/img/scene/rainbow-luzia.svg">
+  <meta property="og:image" content="https://aitormorales.com/assets/img/ogp.png">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="shortcut icon" href="../favicon.png">
+  <link rel="preload" href="../assets/font/Futura-Med.woff" as="font" type="font/woff" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap">
-  <link rel="stylesheet" href="../assets/css/v2.css">
+  <link rel="stylesheet" href="../assets/css/v2.css?v=2026071201">
   <script type="application/ld+json">
   {"@context": "https://schema.org", "@type": "VideoGame", "name": "Luzia: Rainbow in the Darkness", "author": {"@type": "Organization", "name": "Bliss Pictures"}, "contributor": {"@type": "Person", "name": "Aitor Morales"}, "genre": ["Adventure", "Narrative"]}
   </script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
+  <div class="loader" aria-hidden="true"></div>
+  <div class="curtain" aria-hidden="true"></div>
 
   <header class="site-header">
-    <a class="brand" href="../">Aitor <span>Morales</span></a>
-    <button class="nav-toggle" aria-expanded="false" aria-label="Menu"><span class="bar"></span></button>
-    <nav class="site-nav" aria-label="Main">
-      <a href="../#work" aria-current="page">Work</a>
-      <a href="../about.html">About</a>
-      <a href="../resume.html">Resume</a>
-      <a href="../#contact">Contact</a>
-    </nav>
+    <a class="name" href="../index.html">Aitor Morales</a>
+    <div class="head-right">
+      <div class="head-links">
+        <a href="https://aitormorales.itch.io/" target="_blank" rel="noopener">itch.io</a>
+        <a href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="../resume.html">Resume</a>
+      </div>
+      <button class="menuIcon js-menuBtn" aria-label="Menu" aria-expanded="false"></button>
+    </div>
   </header>
 
-  <main id="main">
-    <article class="project-hero container">
-      <p class="kicker">Bliss Pictures · 2022 — 2023</p>
-      <h1>Luzia: Rainbow in the Darkness</h1>
-      <p class="lead">Game and level design for the playable demo of a story-driven adventure by film studio Bliss Pictures — where cinematic cameras and level pacing had to serve a narrative first.</p>
-      <p class="notice">Media and further details for this project are being gathered — placeholder art meanwhile.</p>
+  <nav class="global-nav" aria-label="Main">
+    <ul class="global-nav__list">
+      <li><a href="../index.html#top">HOME</a></li>
+      <li><a href="../index.html#works">WORKS</a></li>
+      <li><a href="../about.html">ABOUT</a></li>
+      <li><a href="../resume.html">RESUME</a></li>
+      <li><a href="../index.html#contact">CONTACT</a></li>
+    </ul>
+    <div class="global-nav__sns" style="position:absolute;bottom:6vh;left:0;right:0">
+      <a href="https://aitormorales.itch.io/" target="_blank" rel="noopener">itch.io</a>
+      <a href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/Aitor21" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.instagram.com/aitor_21m/" target="_blank" rel="noopener">Instagram</a>
+    </div>
+  </nav>
 
-      <div class="project-cover project-cover--art">
-        <img src="../assets/img/scene/rainbow-luzia.svg" alt="Rainbow emerging from dark clouds — placeholder art for Luzia">
+  <main id="main">
+    <a class="back-arrow" href="../index.html#works" aria-label="Back to works"><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="34" viewBox="0 0 67 34"><g fill="none" fill-rule="evenodd" stroke="#FFF" stroke-linecap="round" transform="translate(2 1)"><path stroke-width="2" d="M0,15.5533333 L64,15.5533333"/><polyline stroke-width="2" points="15.556 0 0 15.556 15.556 31.111"/></g></svg></a>
+    <div class="page-top">
+      <div class="title">
+        <span class="kicker js-letter" style="--d:0s">Bliss Pictures · 2022 — 2023</span>
+        <h1 class="title__text"><span class="js-letter" style="--d:0.08s">Luzia: Rainbow</span><span class="js-letter" style="--d:0.16s">in the Darkness</span></h1>
+        <span class="js-letter" style="--d:.24s"><span class="border"><span></span><span></span></span></span>
+        <p class="title__lead"><span class="js-letter" style="--d:0.32s">Game & level design for a</span><span class="js-letter" style="--d:0.40s">story-driven adventure demo.</span></p>
+
+      </div>
+    </div>
+
+    <div class="wrapper container">
+      <p class="note js-scroll">Media and further details for this project are being gathered.</p>
+      <div class="page-cover page-cover--type js-scroll">
+        <div class="t"><strong>Luzia: Rainbow in the Darkness</strong><span>Bliss Pictures · Playable demo</span></div>
       </div>
 
-      <dl class="meta-grid">
+      <dl class="meta-row js-scroll">
         <div><dt>Role</dt><dd>Game Developer · Game & Level Designer</dd></div>
         <div><dt>Studio</dt><dd>Bliss Pictures (remote)</dd></div>
-        <div><dt>When</dt><dd>Jul 2022 — Sep 2023 · Consultant Dec 2021 — Feb 2022</dd></div>
         <div><dt>Deliverable</dt><dd>Playable demo</dd></div>
+        <div><dt>When</dt><dd>Jul 2022 — Sep 2023 · Consultant Dec 2021 — Feb 2022</dd></div>
       </dl>
 
-      <div class="prose">
-<h2>The project</h2>
+      <section class="sec js-scroll">
+        <div class="sec-head"><p class="heading-num">01</p><h2 class="heading">THE PROJECT</h2></div>
+        <div class="prose">
 <p>Bliss Pictures, a film production company, set out to bring one of its stories to games. I joined
 to help make the demo of <strong>Luzia: Rainbow in the Darkness</strong> real — first as a consultant
 advising the studio's leadership on how game development actually works, then as a game developer on
 the demo itself.</p>
-
-<h2>Game design</h2>
+        </div>
+      </section>
+      <section class="sec js-scroll">
+        <div class="sec-head"><p class="heading-num">02</p><h2 class="heading">GAME DESIGN</h2></div>
+        <div class="prose">
 <ul>
 <li>Conceptualized and designed mechanics, gameplay systems and rules with engagement and challenge in mind.</li>
 <li>Wrote the game design documents — concept, story integration, mechanics, characters and levels.</li>
 <li>Prototyped mechanics directly in-engine to bridge communication between design and programming.</li>
 <li>Balanced gameplay, difficulty and player progression throughout.</li>
 </ul>
-
-<h2>Level design</h2>
+        </div>
+      </section>
+      <section class="sec js-scroll">
+        <div class="sec-head"><p class="heading-num">03</p><h2 class="heading">LEVEL DESIGN</h2></div>
+        <div class="prose">
 <ul>
 <li>Designed and built levels end to end: layout, terrain, lighting and gameplay elements.</li>
 <li>Balanced difficulty and pacing for a challenging-but-fair experience aligned with the narrative.</li>
-<li>Kept levels within technical requirements and limitations of the production.</li>
+<li>Kept levels within the technical requirements and limitations of the production.</li>
 </ul>
-
-<h2>Cameras & cinematics</h2>
+        </div>
+      </section>
+      <section class="sec js-scroll">
+        <div class="sec-head"><p class="heading-num">04</p><h2 class="heading">CAMERAS &amp; CINEMATICS</h2></div>
+        <div class="prose">
 <ul>
 <li>Designed and animated camera movements — pans, zooms, tilts — to highlight key moments.</li>
 <li>Implemented multiple camera modes matched to the game's genre and mechanics.</li>
 <li>Scripted events and cutscenes that carry the story between gameplay beats.</li>
 </ul>
-      </div>
+        </div>
+      </section>
 
       <nav class="project-nav" aria-label="More projects">
         <a href="love-at-first-bite.html"><span class="dir">&larr; Previous</span>Love at First Bite</a>
         <a href="r4d10head.html" style="text-align:right"><span class="dir">Next &rarr;</span>R4D10HEAD</a>
       </nav>
-    </article>
+    </div>
   </main>
 
-  <footer class="site-footer">
-    <p>&copy; 2026 Aitor Morales &middot; <a href="../resume.html">Resume</a> &middot; <a href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a></p>
+  <footer class="footer">
+    <p>&copy; 2026 Aitor Morales</p>
+    <p><a href="../resume.html">Resume</a> &middot; <a href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a></p>
   </footer>
 
-  <script src="../assets/js/v2.js" defer></script>
+  <script src="../assets/js/v2.js?v=2026071201" defer></script>
 </body>
 </html>

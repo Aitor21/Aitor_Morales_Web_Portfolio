@@ -15,59 +15,93 @@
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="shortcut icon" href="../favicon.png">
+  <link rel="preload" href="../assets/font/Futura-Med.woff" as="font" type="font/woff" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap">
-  <link rel="stylesheet" href="../assets/css/v2.css">
+  <link rel="stylesheet" href="../assets/css/v2.css?v=2026071201">
   <script type="application/ld+json">
   {"@context": "https://schema.org", "@type": "VideoGame", "name": "Love at First Bite", "url": "https://honeybun-games.itch.io/love-at-first-bite", "author": {"@type": "Organization", "name": "Honey Bun Games"}, "contributor": {"@type": "Person", "name": "Aitor Morales"}, "genre": ["Dating Sim", "Narrative", "Investigation"], "gamePlatform": "PC"}
   </script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
+  <div class="loader" aria-hidden="true"></div>
+  <div class="curtain" aria-hidden="true"></div>
 
   <header class="site-header">
-    <a class="brand" href="../">Aitor <span>Morales</span></a>
-    <button class="nav-toggle" aria-expanded="false" aria-label="Menu"><span class="bar"></span></button>
-    <nav class="site-nav" aria-label="Main">
-      <a href="../#work" aria-current="page">Work</a>
-      <a href="../about.html">About</a>
-      <a href="../resume.html">Resume</a>
-      <a href="../#contact">Contact</a>
-    </nav>
+    <a class="name" href="../index.html">Aitor Morales</a>
+    <div class="head-right">
+      <div class="head-links">
+        <a href="https://aitormorales.itch.io/" target="_blank" rel="noopener">itch.io</a>
+        <a href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="../resume.html">Resume</a>
+      </div>
+      <button class="menuIcon js-menuBtn" aria-label="Menu" aria-expanded="false"></button>
+    </div>
   </header>
 
-  <main id="main">
-    <article class="project-hero container">
-      <p class="kicker">Honey Bun Games · 2023 — Present</p>
-      <h1>Love at First Bite</h1>
-      <p class="lead">Swipe, match, savor. You're a modern vampire, and online dating has made finding dinner so much easier — if you can spot the humans from the hidden vampires before your thirst takes over.</p>
+  <nav class="global-nav" aria-label="Main">
+    <ul class="global-nav__list">
+      <li><a href="../index.html#top">HOME</a></li>
+      <li><a href="../index.html#works">WORKS</a></li>
+      <li><a href="../about.html">ABOUT</a></li>
+      <li><a href="../resume.html">RESUME</a></li>
+      <li><a href="../index.html#contact">CONTACT</a></li>
+    </ul>
+    <div class="global-nav__sns" style="position:absolute;bottom:6vh;left:0;right:0">
+      <a href="https://aitormorales.itch.io/" target="_blank" rel="noopener">itch.io</a>
+      <a href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/Aitor21" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.instagram.com/aitor_21m/" target="_blank" rel="noopener">Instagram</a>
+    </div>
+  </nav>
 
-      <div class="project-cover">
+  <main id="main">
+    <a class="back-arrow" href="../index.html#works" aria-label="Back to works"><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="34" viewBox="0 0 67 34"><g fill="none" fill-rule="evenodd" stroke="#FFF" stroke-linecap="round" transform="translate(2 1)"><path stroke-width="2" d="M0,15.5533333 L64,15.5533333"/><polyline stroke-width="2" points="15.556 0 0 15.556 15.556 31.111"/></g></svg></a>
+    <div class="page-top">
+      <div class="title">
+        <span class="kicker js-letter" style="--d:0s">Honey Bun Games · 2023 — Present</span>
+        <h1 class="title__text"><span class="js-letter" style="--d:0.08s">Love at</span><span class="js-letter" style="--d:0.16s">first Bite</span></h1>
+        <span class="js-letter" style="--d:.24s"><span class="border"><span></span><span></span></span></span>
+        <p class="title__lead"><span class="js-letter" style="--d:0.32s">Swipe, match, savor —</span><span class="js-letter" style="--d:0.40s">a vampire dating sim.</span></p>
+        <span class="js-letter" style="--d:.48s"><span class="btn-wrap"><a class="btn" href="https://honeybun-games.itch.io/love-at-first-bite" target="_blank" rel="noopener">Play on itch.io</a></span></span>
+      </div>
+    </div>
+
+    <div class="wrapper container">
+      <div class="page-cover js-scroll">
         <img src="../assets/img/projects/love-at-first-bite/cover.png" alt="Love at First Bite key art">
       </div>
 
-      <dl class="meta-grid">
+      <dl class="meta-row js-scroll">
         <div><dt>Role</dt><dd>Game Designer & Developer · Co-creator</dd></div>
         <div><dt>Team</dt><dd>Honey Bun Games — with Teresa Costas & Carlos Fernández</dd></div>
-        <div><dt>When</dt><dd>Sep 2023 — Present</dd></div>
         <div><dt>Engine</dt><dd>Unity</dd></div>
-        <div><dt>Play</dt><dd><a href="https://honeybun-games.itch.io/love-at-first-bite" target="_blank" rel="noopener">itch.io</a> · <a href="https://honeybungames.com" target="_blank" rel="noopener">honeybungames.com</a></dd></div>
+        <div><dt>When</dt><dd>Sep 2023 — Present</dd></div>
+        <div><dt>Links</dt><dd><a href="https://honeybun-games.itch.io/love-at-first-bite" target="_blank" rel="noopener">itch.io</a> · <a href="https://honeybungames.com" target="_blank" rel="noopener">honeybungames.com</a></dd></div>
       </dl>
 
-      <div class="prose">
-<h2>The game</h2>
+      <section class="sec js-scroll">
+        <div class="sec-head"><p class="heading-num">01</p><h2 class="heading">THE GAME</h2></div>
+        <div class="prose">
 <p>Love at First Bite is a dating sim with a focus on narrative and investigation. You live the life
 of a vampire surviving through a dating app: swipe right on tasty humans, swipe left when a profile
 feels <em>off</em> — some vampires are better at hiding than others. Matches are limited each day,
 and your thirst only grows while you decide on tonight's dinner.</p>
-
-<h2>From jam to production</h2>
+        </div>
+      </section>
+      <section class="sec js-scroll">
+        <div class="sec-head"><p class="heading-num">02</p><h2 class="heading">JAM TO PRODUCTION</h2></div>
+        <div class="prose">
 <p>The game started as our entry to the <strong>Indie Spain Jam 2023</strong>. The concept held up,
 so we took it through the <strong>PowerUp+ pre-incubation program</strong> (Oct–Dec 2023) and founded
 <strong>Honey Bun Games</strong> to build the full version, in production since 2024.</p>
-
-<h2>Design highlights</h2>
+        </div>
+      </section>
+      <section class="sec js-scroll">
+        <div class="sec-head"><p class="heading-num">03</p><h2 class="heading">DESIGN HIGHLIGHTS</h2></div>
+        <div class="prose">
 <ul>
 <li><strong>Deduction as the core verb</strong> — profiles are puzzles. Reading bios, photos and chat
 behaviour to unmask hidden vampires turns a swipe into a risk/reward decision.</li>
@@ -76,9 +110,9 @@ soft timer that forces commitment without hard fail states.</li>
 <li><strong>Dates as minigames</strong> — conversations run on a click-and-drag tension bar:
 keep the date charmed, don't let suspicion peak.</li>
 </ul>
-      </div>
-
-      <div class="gallery reveal">
+        </div>
+      </section>
+      <div class="gallery js-scroll">
         <figure><img src="../assets/img/projects/love-at-first-bite/shot-1.png" alt="Swiping through profiles in Love at First Bite" loading="lazy"></figure>
         <figure><img src="../assets/img/projects/love-at-first-bite/shot-2.png" alt="Chat conversation gameplay" loading="lazy"></figure>
         <figure><img src="../assets/img/projects/love-at-first-bite/shot-3.png" alt="Date minigame" loading="lazy"></figure>
@@ -88,13 +122,14 @@ keep the date charmed, don't let suspicion peak.</li>
         <a href="gimica.html"><span class="dir">&larr; Previous</span>Gimica — Mobile F2P Portfolio</a>
         <a href="luzia-rainbow-in-the-darkness.html" style="text-align:right"><span class="dir">Next &rarr;</span>Luzia: Rainbow in the Darkness</a>
       </nav>
-    </article>
+    </div>
   </main>
 
-  <footer class="site-footer">
-    <p>&copy; 2026 Aitor Morales &middot; <a href="../resume.html">Resume</a> &middot; <a href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a></p>
+  <footer class="footer">
+    <p>&copy; 2026 Aitor Morales</p>
+    <p><a href="../resume.html">Resume</a> &middot; <a href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a></p>
   </footer>
 
-  <script src="../assets/js/v2.js" defer></script>
+  <script src="../assets/js/v2.js?v=2026071201" defer></script>
 </body>
 </html>
