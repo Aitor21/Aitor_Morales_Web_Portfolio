@@ -1,270 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta property="og:type" content="website">
-    <meta property="og:description" content="AITOR MORALES PORTFOLIO / Game Designer / UX/UI Designer">
-    <meta property="og:image" content="./assets/img/ogp.png">
-    <meta name="instagram:card" content="summary_large_image">
-    <meta name="instagram:site" content="@aitor_21m">
-    <meta property="og:site_name" content="AITOR MORALES PORTFOLIO">
-    <meta property="og:locale" content="sp_ES">
-    <link rel="stylesheet" href="./assets/css/jquery.fullPage.css">
-    <link rel="stylesheet" href="./assets/css/common.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface">
-    <link rel="shortcut icon" href="./favicon.png">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    <meta property="og:url" content="https://aitormorales.com/about.html">
-    <meta property="og:title" content="About Me | AITOR MORALES PORTFOLIO">
-    <title>About Me | Aitor Morales PORTFOLIO</title><!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-115155070-1"></script>
-    <script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'UA-115155070-1');</script>
-  </head>
-  <body>
-    <header><a class="name" href="./index.html">Aitor Morales</a>
-      <div class="wrap">
-        <div class="icons"><a href="https://aitormorales.itch.io/" target="_blank"><i class="fab fa-itch-io"></i></a><a href="https://www.instagram.com/aitor_21m/" target="_blank"><i class="fab fa-instagram"></i></a><a href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank"><i class="fab fa-linkedin"></i></a><a href="https://itch.io/jam/spain-game-devs-jam-ii/rate/771265" target="_blank">Blaster Buds</a></div>
-        <div class="menuIcon js-menuBtn"></div>
-      </div>
-      <nav class="global-nav">
-        <ul class="global-nav__list">
-          <li><a href="./">HOME</a></li>
-          <li><a href="./blasterbuds.html">PROJECTS</a></li>
-          <li><a href="./about.html">ABOUT ME</a></li>
-          <li><a class="js-contact" href="./#contact">CONTACT</a></li>
-          <li class="global-nav__sns"><a href="https://aitormorales.itch.io/" target="_blank"><i class="fab fa-itch-io"></i></a><a href="https://www.instagram.com/aitor_21m/" target="_blank"><i class="fab fa-instagram"></i></a><a href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank"><i class="fab fa-linkedin"></i></a></li>
-        </ul>
-      </nav>
-      <div class="curtain"></div>
-      <div class="loader"></div>
-    </header>
-    <main id="barba-wrapper">
-      <div class="barba-container" data-namespace="underlayer">
-        <div class="page-top">
-          <div class="page-top__inner"><a class="back-arrow" href="./#about"><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="34" viewBox="0 0 67 34"><g fill="none" fill-rule="evenodd" stroke="#FFF" stroke-linecap="round" transform="translate(2 1)"><path stroke-width="2" d="M0,15.5533333 L64,15.5533333"/><polyline stroke-width="2" points="15.556 0 0 15.556 15.556 31.111"/></g></svg></a>
-            <p class="scrollDown">SCROLLDOWN</p>
-            <div class="title">
-              <h2 class="title__text">About Me</h2>
-              <div class="border js-toRight"><span></span><span></span></div>
-              <p class="title__lead">I love Design, Technology,<br>and Stories.</p>
-              <div class="btn-wrap"><a class="btn" href="https://drive.google.com/file/d/1EOAkdZJZY9RIsmmezjPp4CzNWVOfTTX2/view?usp=sharing" target="_balnk">My Resume</a></div>
-            </div>
-            <div class="image image__about"></div>
-          </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Me | Aitor Morales — Game & Level Designer</title>
+  <meta name="description" content="About Aitor Morales — game & level designer in Madrid. From U-tad to Bliss Pictures, Honey Bun Games and Gimica: how I work and what I bring to a team.">
+  <link rel="canonical" href="https://aitormorales.com/about.html">
+  <meta property="og:type" content="profile">
+  <meta property="og:url" content="https://aitormorales.com/about.html">
+  <meta property="og:site_name" content="Aitor Morales — Portfolio">
+  <meta property="og:title" content="About Me | Aitor Morales">
+  <meta property="og:description" content="Game & level designer in Madrid — how I work and what I bring to a team.">
+  <meta property="og:image" content="https://aitormorales.com/assets/img/portrait.jpg">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="shortcut icon" href="./favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap">
+  <link rel="stylesheet" href="./assets/css/v2.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <a class="brand" href="./">Aitor <span>Morales</span></a>
+    <button class="nav-toggle" aria-expanded="false" aria-label="Menu"><span class="bar"></span></button>
+    <nav class="site-nav" aria-label="Main">
+      <a href="./#work">Work</a>
+      <a href="./about.html" aria-current="page">About</a>
+      <a href="./resume.html">Resume</a>
+      <a href="./#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="project-hero container">
+      <p class="kicker">About Me</p>
+      <h1>Designer, builder,<br>occasional pigeon.</h1>
+      <p class="lead">I'm Aitor Morales, a game & level designer based in Madrid. I design systems and
+        levels for live mobile games by day and build my own vampire dating sim by night — and I've
+        been making games, in teams and alone, for over a decade.</p>
+    </section>
+
+    <section class="section container" aria-label="Who I am">
+      <div class="about-grid">
+        <div class="prose reveal">
+          <h2>The short story</h2>
+          <p>I studied Software Engineering and then Game & Interactive Media Design at U-tad, which is
+            why I've never fully picked a side between design and code. That mix became the job:
+            today I'm the sole game designer for a large mobile free-to-play portfolio at
+            <strong>Gimica</strong> (a JustPlay company), where I design economy systems and boosters,
+            author hundreds of levels, and ship what I spec — in Unity, Godot and Babylon.js.</p>
+          <p>Before that I helped film studio <strong>Bliss Pictures</strong> build the playable demo of
+            <em>Luzia: Rainbow in the Darkness</em>, doing game design, level design, cameras and
+            cutscenes. And with <strong>Honey Bun Games</strong>, the indie team I co-founded, I'm
+            making <em>Love at First Bite</em> — a vampire dating sim born in a game jam that refused
+            to stay there.</p>
+          <p>Teamwork, attention to detail and clear communication are the things I hold myself to on
+            every project. Outside of games: photography, film analysis and cooking — all of which are
+            just design with different constraints.</p>
         </div>
-        <section class="wrapper">
-          <div class="who container">
-            <div class="text text--top">
-              <p class="heading-num">01</p>
-              <div class="text__wrap text__wrap--top content">
-                <h2 class="heading heading--top">WHO I AM</h2>
-                <div class="who__wrap">
-                  <div class="who__name">
-                    <h3 class="who__es">Aitor Morales</h3>
-                    <!--<p class="who__en">Aitor Morales</p>-->
-                  </div>
-                  <p class="who__text">I am a proactive person who loves learning new things and experiencing challenges. Teamwork, attention to details and communication are things that I strive for in every project.<br><br>My interest lay in photography, game design, UX/UI design, film analysis and cooking.</p>
-                  <div class="who__image"><img src="./assets/img/portrait.jpg" alt="AITOR MORALES"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="passion container">
-            <div class="text">
-              <p class="heading-num">02</p>
-              <div class="text__wrap content">
-                <h2 class="heading">PASSION</h2>
-              </div>
-            </div>
-            <div class="content content--mlarge">
-              <ul class="passion__list">
-                <li class="passion__item">
-                  <div class="passion__image"><img src="./assets/img/design-skills.svg" alt="design"></div>
-                  <h3 class="sub-title">DESIGN</h3>
-                  <p class="passion__text">I think design is like a "magic wand". If a service or product is magic to solve a problem, it is the role of design to act as an intermediary for users to master it. We strive every day to create a "magic wand" that matches the users needs or desires.</p>
-                </li>
-                <li class="passion__item">
-                  <div class="passion__image"><img src="./assets/img/tech.svg" alt="TECHNOLOGY"></div>
-                  <h3 class="sub-title">TECHNOLOGY</h3>
-                  <p class="passion__text">Technology has the power to change the lives of the world and individuals, as Arthur C. Clarke wrote,"Any sufficiently advanced technology is indistinguishable from magic." I want to be a person who can always catch up with the latest technology and respond to changes. I think it is the mission of designers as well as engineers to promote innovation.</p>
-                </li>
-                <li class="passion__item">
-                  <div class="passion__image"><img src="./assets/img/book-open.svg" alt="STORIES"></div>
-                  <h3 class="sub-title">STORIES</h3>
-                  <p class="passion__text">I love watching TV shows, movies, playing games and reading manga. Stories can get people's attention and make things easier to understand and remember. I believe that any type of designer should consume every type of media to expand their minds and find new angles on how to tell their story.</p>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="skill-set container">
-            <div class="text">
-              <p class="heading-num">03</p>
-              <div class="text__wrap content">
-                <h2 class="heading">SKILL SET</h2>
-              </div>
-            </div>
-            <div class="content content--mlarge skill-set__flex">
-              <ul class="skill-set__list">
-                <li class="skill-set__item">
-                  <div class="skill-set__icon"><img src="./assets/img/ps.png" alt="Photoshop"></div>
-                  <div class="skill-set__detail">
-                    <div class="skill-set__meta">
-                      <div class="skill-set__name">
-                        <h4 class="small-title small-title--skill">Photoshop</h4>
-                        <p class="skill-set__year">15 YEARS</p>
-                      </div>
-                      <p class="small-title small-title--skill skill-set__high">90<span class="skill-set__ratio">%</span></p>
-                    </div>
-                    <div class="skill-set__bar p90 js-scroll"></div>
-                  </div>
-                </li>
-                <li class="skill-set__item">
-                  <div class="skill-set__icon"><img src="./assets/img/figma.png" alt="Sketch"></div>
-                  <div class="skill-set__detail">
-                    <div class="skill-set__meta">
-                      <div class="skill-set__name">
-                        <h4 class="small-title small-title--skill">Figma</h4>
-                        <p class="skill-set__year">2 YEARS</p>
-                      </div>
-                      <p class="small-title small-title--skill">78<span class="skill-set__ratio">%</span></p>
-                    </div>
-                    <div class="skill-set__bar p80 js-scroll"></div>
-                  </div>
-                </li>
-                <li class="skill-set__item">
-                  <div class="skill-set__icon"><img src="./assets/img/id.png" alt="InDesign"></div>
-                  <div class="skill-set__detail">
-                    <div class="skill-set__meta">
-                      <div class="skill-set__name">
-                        <h4 class="small-title small-title--skill">InDesign</h4>
-                        <p class="skill-set__year">7 YEAR</p>
-                      </div>
-                      <p class="small-title small-title--skill">70<span class="skill-set__ratio">%</span></p>
-                    </div>
-                    <div class="skill-set__bar p70 js-scroll"></div>
-                  </div>
-                </li>
-                <li class="skill-set__item">
-                  <div class="skill-set__icon"><img src="./assets/img/pr.png" alt="Premiere Pro"></div>
-                  <div class="skill-set__detail">
-                    <div class="skill-set__meta">
-                      <div class="skill-set__name">
-                        <h4 class="small-title small-title--skill">Premiere Pro</h4>
-                        <p class="skill-set__year">9 YEARS</p>
-                      </div>
-                      <p class="small-title small-title--skill">70<span class="skill-set__ratio">%</span></p>
-                    </div>
-                    <div class="skill-set__bar p70 js-scroll"></div>
-                  </div>
-                </li>
-                <li class="skill-set__item">
-                  <div class="skill-set__icon"><img src="./assets/img/3dmax.png" alt="3ds Max"></div>
-                  <div class="skill-set__detail">
-                    <div class="skill-set__meta">
-                      <div class="skill-set__name">
-                        <h4 class="small-title small-title--skill">3ds Max</h4>
-                        <p class="skill-set__year">5 YEARS</p>
-                      </div>
-                      <p class="small-title small-title--skill">60<span class="skill-set__ratio">%</span></p>
-                    </div>
-                    <div class="skill-set__bar p60 js-scroll"></div>
-                  </div>
-                </li>
-              </ul>
-              <ul class="skill-set__list">
-                <li class="skill-set__item">
-                  <div class="skill-set__icon"><img src="./assets/img/html.svg" alt="HTML/CSS"></div>
-                  <div class="skill-set__detail">
-                    <div class="skill-set__meta">
-                      <div class="skill-set__name">
-                        <h4 class="small-title small-title--skill">HTML/CSS</h4>
-                        <p class="skill-set__year">7 YEARS</p>
-                      </div>
-                      <p class="small-title small-title--skill skill-set__high">90<span class="skill-set__ratio">%</span></p>
-                    </div>
-                    <div class="skill-set__bar p90 js-scroll"></div>
-                  </div>
-                </li>
-                <li class="skill-set__item">
-                  <div class="skill-set__icon"><img src="./assets/img/js.svg" alt="Javascript"></div>
-                  <div class="skill-set__detail">
-                    <div class="skill-set__meta">
-                      <div class="skill-set__name">
-                        <h4 class="small-title small-title--skill">Javascript</h4>
-                        <p class="skill-set__year">7 YEARS</p>
-                      </div>
-                      <p class="small-title small-title--skill">80<span class="skill-set__ratio">%</span></p>
-                    </div>
-                    <div class="skill-set__bar p80 js-scroll"></div>
-                  </div>
-                </li>
-                <li class="skill-set__item">
-                  <div class="skill-set__icon"><img src="./assets/img/unity.png" alt="Unity"></div>
-                  <div class="skill-set__detail">
-                    <div class="skill-set__meta">
-                      <div class="skill-set__name">
-                        <h4 class="small-title small-title--skill">Unity</h4>
-                        <p class="skill-set__year">11 YEARS</p>
-                      </div>
-                      <p class="small-title small-title--skill">80<span class="skill-set__ratio">%</span></p>
-                    </div>
-                    <div class="skill-set__bar p80 js-scroll"></div>
-                  </div>
-                </li>
-                <li class="skill-set__item">
-                  <div class="skill-set__icon"><img src="./assets/img/csharp.png" alt="C#"></div>
-                  <div class="skill-set__detail">
-                    <div class="skill-set__meta">
-                      <div class="skill-set__name">
-                        <h4 class="small-title small-title--skill">C#</h4>
-                        <p class="skill-set__year">11 YEARS</p>
-                      </div>
-                      <p class="small-title small-title--skill">70<span class="skill-set__ratio">%</span></p>
-                    </div>
-                    <div class="skill-set__bar p70 js-scroll"></div>
-                  </div>
-                </li>
-                <!--<li class="skill-set__item">
-                  <div class="skill-set__icon"><img src="./assets/img/godot.png" alt="Godot"></div>
-                  <div class="skill-set__detail">
-                    <div class="skill-set__meta">
-                      <div class="skill-set__name">
-                        <h4 class="small-title small-title--skill">Godot</h4>
-                        <p class="skill-set__year">6 MONTHS</p>
-                      </div>
-                      <p class="small-title small-title--skill">50<span class="skill-set__ratio">%</span></p>
-                    </div>
-                    <div class="skill-set__bar p50 js-scroll"></div>
-                  </div>
-                </li>-->
-                <li class="skill-set__item">
-                  <div class="skill-set__icon"><img src="./assets/img/ue.png" alt="Unreal Engine"></div>
-                  <div class="skill-set__detail">
-                    <div class="skill-set__meta">
-                      <div class="skill-set__name">
-                        <h4 class="small-title small-title--skill">Unreal Engine</h4>
-                        <p class="skill-set__year">3 YEAR</p>
-                      </div>
-                      <p class="small-title small-title--skill">50<span class="skill-set__ratio">%</span></p>
-                    </div>
-                    <div class="skill-set__bar p50 js-scroll"></div>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </section>
-        <footer class="footer"><a href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a><a href="https://drive.google.com/file/d/1EOAkdZJZY9RIsmmezjPp4CzNWVOfTTX2/view?usp=sharing" target="_balnk">My Resume</a></footer>
+        <div class="about-portrait reveal">
+          <img src="./assets/img/portrait.jpg" alt="Portrait of Aitor Morales">
+        </div>
       </div>
-    </main>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="./assets/js/jquery.fullPage.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js"></script>
-    <script src="./assets/js/parallax.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/barba.js/1.0.0/barba.min.js"></script>
-    <script src="./assets/js/common.min.js"></script>
-  </body>
+    </section>
+
+    <section class="section container" aria-label="How I work">
+      <h2 class="section-title reveal">How I work</h2>
+      <div class="value-grid">
+        <div class="value-card reveal">
+          <h3>Design that ships</h3>
+          <p>A mechanic isn't finished when it's clever — it's finished when it's specced, built,
+            tested and live. I own features end to end, from the first prototype to the A/B readout,
+            and I write documentation that engineering and art can build from without me in the room.</p>
+        </div>
+        <div class="value-card reveal">
+          <h3>Technology as a design tool</h3>
+          <p>I prototype my own ideas in-engine because the fastest way to evaluate a design is to
+            play it. Knowing how things are built keeps my designs honest — and lets me build the
+            tools and systems myself when that's the shortest path.</p>
+        </div>
+        <div class="value-card reveal">
+          <h3>Stories everywhere</h3>
+          <p>Games, films, manga, a good meal — stories make things easier to understand and impossible
+            to forget. I steal structure shamelessly from every medium I love, because a level is a
+            story the player tells themselves.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container" aria-label="Skills">
+      <h2 class="section-title reveal">Skill set</h2>
+      <div class="skills-cols reveal">
+        <div>
+          <h3>Design</h3>
+          <ul>
+            <li>Level design & progression</li>
+            <li>Systems & economy design</li>
+            <li>Adaptive difficulty</li>
+            <li>A/B testing & LiveOps</li>
+            <li>Game design documentation</li>
+            <li>UX/UI design</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Engines & code</h3>
+          <ul>
+            <li>Unity · C# (10+ years)</li>
+            <li>Godot</li>
+            <li>Babylon.js</li>
+            <li>Unreal Engine</li>
+            <li>HTML / CSS / JavaScript</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Tools</h3>
+          <ul>
+            <li>Figma</li>
+            <li>Photoshop · InDesign</li>
+            <li>Premiere Pro</li>
+            <li>3ds Max · Maya</li>
+            <li>Git</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Languages</h3>
+          <ul>
+            <li>Spanish — native</li>
+            <li>English — bilingual (Cambridge C1)</li>
+            <li>Basque — basic</li>
+          </ul>
+        </div>
+      </div>
+      <div class="hero-cta reveal" style="margin-top:2.5rem">
+        <a class="btn btn--primary" href="./resume.html">See the full resume</a>
+        <a class="btn" href="./#contact">Get in touch</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 Aitor Morales · <a href="./resume.html">Resume</a> · <a href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a></p>
+  </footer>
+
+  <script src="./assets/js/v2.js" defer></script>
+</body>
 </html>

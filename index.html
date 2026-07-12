@@ -1,161 +1,292 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta property="og:type" content="website">
-    <meta property="og:description" content="AITOR MORALES PORTFOLIO / Game Designer / UX/UI Designer">
-    <meta property="og:image" content="./assets/img/ogp.png">
-    <meta name="instagram:card" content="summary_large_image">
-    <meta name="instagram:site" content="@aitor_21m">
-    <meta property="og:site_name" content="AITOR MORALES PORTFOLIO">
-    <meta property="og:locale" content="sp_ES">
-    <link rel="stylesheet" href="./assets/css/jquery.fullPage.css">
-    <link rel="stylesheet" href="./assets/css/common.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface">
-    <link rel="shortcut icon" href="./favicon.png">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    <meta property="og:url" content="https://aitormorales.com">
-    <meta property="og:title" content="AITOR MORALES PORTFOLIO">
-    <title>AITOR MORALES PORTFOLIO</title><!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-115155070-1"></script>
-    <script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'UA-115155070-1');</script>
-  </head>
-  <body>
-    <header><a class="name" href="./index.html">Aitor Morales</a>
-      <div class="wrap">
-        <div class="icons"><a href="https://aitormorales.itch.io/" target="_blank"><i class="fab fa-itch-io"></i></a><a href="https://www.instagram.com/aitor_21m/" target="_blank"><i class="fab fa-instagram"></i></a><a href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank"><i class="fab fa-linkedin"></i></a><a href="https://itch.io/jam/spain-game-devs-jam-ii/rate/771265" target="_blank">Blaster Buds</a></div>
-        <div class="menuIcon js-menuBtn"></div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aitor Morales — Game & Level Designer</title>
+  <meta name="description" content="Aitor Morales is a game & level designer based in Madrid. Systems design, level design and technical design for mobile F2P and indie games — Unity, Godot, Babylon.js.">
+  <link rel="canonical" href="https://aitormorales.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://aitormorales.com/">
+  <meta property="og:site_name" content="Aitor Morales — Portfolio">
+  <meta property="og:title" content="Aitor Morales — Game & Level Designer">
+  <meta property="og:description" content="Systems design, level design and technical design for mobile F2P and indie games — Unity, Godot, Babylon.js.">
+  <meta property="og:image" content="https://aitormorales.com/assets/img/ogp.png">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="shortcut icon" href="./favicon.png">
+  <link rel="preload" href="./assets/font/Futura-Dem.woff" as="font" type="font/woff" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap">
+  <link rel="stylesheet" href="./assets/css/v2.css">
+  <!-- TODO: add GA4 tag once the property is created (old UA tag removed — it stopped collecting in 2023) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Aitor Morales",
+    "url": "https://aitormorales.com/",
+    "image": "https://aitormorales.com/assets/img/portrait.jpg",
+    "jobTitle": "Game & Level Designer",
+    "email": "mailto:aitormorales@honeybungames.com",
+    "address": { "@type": "PostalAddress", "addressLocality": "Madrid", "addressCountry": "ES" },
+    "alumniOf": [{ "@type": "CollegeOrUniversity", "name": "U-tad" }],
+    "worksFor": { "@type": "Organization", "name": "Gimica" },
+    "knowsAbout": ["Game Design", "Level Design", "Systems Design", "Game Economy", "A/B Testing", "Unity", "C#", "Godot", "Babylon.js", "UX Design"],
+    "knowsLanguage": ["es", "en", "eu"],
+    "sameAs": [
+      "https://www.linkedin.com/in/aitor-morales-7a5b93146/",
+      "https://aitormorales.itch.io/",
+      "https://www.instagram.com/aitor_21m/",
+      "https://github.com/Aitor21",
+      "https://honeybungames.com/"
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <a class="brand" href="./">Aitor <span>Morales</span></a>
+    <button class="nav-toggle" aria-expanded="false" aria-label="Menu"><span class="bar"></span></button>
+    <nav class="site-nav" aria-label="Main">
+      <a href="./#work">Work</a>
+      <a href="./about.html">About</a>
+      <a href="./resume.html">Resume</a>
+      <a href="./#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- ================= Hero: the Living World ================= -->
+    <section class="hero" aria-label="Introduction">
+      <div class="scene" aria-hidden="false">
+        <div class="layer" data-depth="0.08">
+          <div class="scene-stars" aria-hidden="true">
+            <span class="s" style="top:12%;left:8%"></span><span class="s" style="top:22%;left:28%"></span>
+            <span class="s" style="top:8%;left:52%"></span><span class="s" style="top:18%;left:72%"></span>
+            <span class="s" style="top:34%;left:88%"></span><span class="s" style="top:44%;left:14%"></span>
+            <span class="s" style="top:58%;left:6%"></span><span class="s" style="top:66%;left:32%"></span>
+            <span class="s" style="top:78%;left:18%"></span><span class="s" style="top:84%;left:58%"></span>
+            <span class="s" style="top:72%;left:80%"></span><span class="s" style="top:52%;left:60%"></span>
+            <span class="s" style="top:28%;left:44%"></span><span class="s" style="top:90%;left:38%"></span>
+          </div>
+        </div>
+        <div class="layer" data-depth="0.25">
+          <img class="scene-moon" src="./assets/img/moon.svg" alt="" aria-hidden="true">
+        </div>
+        <div class="layer" data-depth="0.45">
+          <a class="scene-el" style="top:20%;left:6%;width:clamp(90px,11vw,150px)" href="./projects/blaster-buds.html">
+            <img src="./assets/img/blasteroid_light.svg" alt="Asteroids from Blaster Buds">
+            <span class="tip">Blaster Buds</span>
+          </a>
+          <a class="scene-el" style="top:14%;right:10%" href="./projects/love-at-first-bite.html">
+            <img src="./assets/img/scene/vampire-heart.svg" alt="Vampire heart from Love at First Bite">
+            <span class="tip">Love at First Bite</span>
+          </a>
+          <a class="scene-el" style="bottom:22%;right:40%" href="./projects/r4d10head.html">
+            <img src="./assets/img/scene/r4d10-robot.svg" alt="R4D10 the robot from R4D10HEAD">
+            <span class="tip">R4D10HEAD</span>
+          </a>
+        </div>
+        <div class="layer" data-depth="0.65">
+          <a class="scene-el" style="top:30%;right:30%" href="./projects/gimica.html">
+            <img src="./assets/img/scene/justin-squirrel.svg" alt="Justin the squirrel, representing work at Gimica">
+            <span class="tip">Gimica · Level Design</span>
+          </a>
+          <a class="scene-el" style="top:58%;right:8%" href="./projects/birds-of-a-feather.html">
+            <img src="./assets/img/scene/bird-feather.svg" alt="Pigeon from Birds of a Feather">
+            <span class="tip">Birds of a Feather</span>
+          </a>
+          <a class="scene-el" style="bottom:12%;right:22%" href="./projects/luzia-rainbow-in-the-darkness.html">
+            <img src="./assets/img/scene/rainbow-luzia.svg" alt="Rainbow from Luzia: Rainbow in the Darkness">
+            <span class="tip">Luzia · Bliss Pictures</span>
+          </a>
+          <a class="scene-el" style="bottom:18%;left:14%" href="./projects/la-ruleta-del-infortunio.html">
+            <img src="./assets/img/scene/roulette-wheel.svg" alt="Wheel from La Ruleta del Infortunio">
+            <span class="tip">La Ruleta del Infortunio</span>
+          </a>
+        </div>
       </div>
-      <nav class="global-nav">
-        <ul class="global-nav__list">
-          <li><a href="./">HOME</a></li>
-          <li><a href="./blasterbuds.html">PROJECTS</a></li>
-          <li><a href="./about.html">ABOUT ME</a></li>
-          <li><a class="js-contact" href="./#contact">CONTACT</a></li>
-          <li class="global-nav__sns"><a href="https://aitormorales.itch.io/" target="_blank"><i class="fab fa-itch-io"></i></a><a href="https://www.instagram.com/aitor_21m/" target="_blank"><i class="fab fa-instagram"></i></a><a href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank"><i class="fab fa-linkedin"></i></a></li>
-        </ul>
-      </nav>
-      <div class="curtain"></div>
-      <div class="loader"></div>
-    </header>
-    <main id="barba-wrapper">
-      <div class="barba-container" data-namespace="top">
-        <div class="fullpage" id="js-fullpage">
-          <div class="section">
-            <div class="fullpage__slide">
-              <div class="title title--top">
-                <h1 class="title__text js-letter">AITOR<br>MORALES</h1>
-                <div class="border js-letter"><span></span><span class="js-letter"></span></div>
-                <p class="title__lead js-letter">Game Designer /<br>UX/UI Designer</p>
-              </div>
-              <div class="moon">
-                <div class="moon__img js-parallax-moon">
-                  <div class="moon__front layer" data-depth="0.2">
-                    <div class="moon__text-wrap">
-                      <p class="moon__text js-moon" data-depth="0.5">PORTFOLIO</p>
-                    </div>
-                  </div>
-                  <div class="moon__front layer" data-depth="0.8">
-                    <div class="cloud cloud--front1 js-moon"><img src="./assets/img/blasteroid_dark.svg" alt="asteroid"></div>
-                  </div>
-                  <div class="moon__back layer" data-depth="0.4">
-                    <div class="cloud cloud--back2 js-moon"><img src="./assets/img/blasteroid_light.svg" alt="asteroid"></div>
-                  </div>
-                  <!--<div class="moon__front layer" data-depth="0.6">
-                    <div class="cloud cloud--front2 js-moon"><img src="./assets/img/cloud2.svg" alt="cloud"></div>
-                  </div>-->
-                  <div class="moon__back layer" data-depth="0.5"><img class="js-moon" src="./assets/img/moon.svg" alt="moon"></div>
-                  <div class="moon__front layer" data-depth="0.7">
-                    <div class="cloud cloud--front3 js-moon"><img src="./assets/img/blasteroid_sdark.png" alt="asteroid"></div>
-                  </div>
-                  <div class="moon__back layer" data-depth="0.3">
-                    <div class="cloud cloud--back1 js-moon"><img src="./assets/img/blasteroid_slight.png" alt="asteroid"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="section">
-            <div class="fullpage__slide">
-              <div class="title">
-                <h2 class="title__text js-letter">Blaster<br>Buds</h2>
-                <div class="border js-letter"><span></span><span class="js-letter"></span></div>
-                <p class="title__lead js-letter">Video Game</p>
-                <div class="btn-wrap js-letter"><a class="btn" href="./blasterbuds.html">Show me more</a></div>
-              </div><a class="image image--works" href="/blasterbuds.html">
-                <div class="image__over">
-                  <div class="image__cover"></div>
-                  <div class="image__cover"></div>
-                </div>
-                <div class="page-num">
-                  <p>01</p>
-                </div></a>
-            </div>
-          </div>
-          <div class="section">
-            <div class="fullpage__slide">
-              <div class="title">
-                <h2 class="title__text js-letter">About Me</h2>
-                <div class="border js-letter"><span></span><span class="js-letter"></span></div>
-                <p class="title__lead js-letter">I love Design, Technology,<br>and Stories.</p>
-                <div class="btn-wrap js-letter"><a class="btn" href="./about.html">Show me more</a></div>
-              </div><a class="image image--about" href="./about.html">
-                <div class="image__over">
-                  <div class="image__cover"></div>
-                  <div class="image__cover"></div>
-                </div>
-                <div class="page-num">
-                  <p>02</p>
-                </div></a>
-            </div>
-          </div>
-          <div class="section">
-            <div class="fullpage__slide">
-              <div class="title">
-                <h2 class="title__text js-letter">Get In Touch</h2>
-                <div class="border js-letter"><span></span><span class="js-letter"></span></div>
-                <ul>
-                  <li class="js-letter"><a href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a></li>
-                  <li class="js-letter"><a href="https://itch.io/jam/spain-game-devs-jam-ii/rate/771265" target="_blank">Blaster Buds</a></li>
-                  <li class="js-letter"><a href="https://aitormorales.itch.io/" target="_blank"><i class="fab fa-itch-io"></i></a><a href="https://www.instagram.com/aitor_21m/" target="_blank"><i class="fab fa-instagram"></i></a><a href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank"><i class="fab fa-linkedin"></i></a></li>
-                </ul>
-              </div>
-              <div class="image image--contact">
-                <div class="image__over">
-                  <div class="image__cover"></div>
-                  <div class="image__cover"></div>
-                </div>
-                <div class="page-num">
-                  <p>03</p>
-                </div>
-              </div>
-            </div>
-          </div>
+
+      <div class="hero-inner container">
+        <h1>
+          <span class="line"><span>AITOR</span></span>
+          <span class="line"><span>MORALES</span></span>
+        </h1>
+        <p class="tagline">Game · Level · Technical Designer</p>
+        <p class="sub">I design systems and levels that ship — from a live mobile F2P portfolio to
+          award-winning jam games. Every game I release joins the world above.</p>
+        <div class="hero-cta">
+          <a class="btn btn--primary" href="./#work">Explore my work</a>
+          <a class="btn" href="./resume.html">View resume</a>
         </div>
-        <p class="scrollDown">SCROLLDOWN</p>
-        <div class="moon-background">
-          <div class="moonlight">
-            <div class="moonlight__wrap js-parallax-moonlight">
-              <div class="layer moonlight__img" data-depth="0.2"></div>
-            </div>
-          </div>
-        </div>
-        <div class="star js-parallax-star">
-          <div class="layer" data-depth="0.1">
-            <div class="star__img"><img src="./assets/img/star.svg"></div>
-          </div>
-        </div>
-        <div class="sky-color"></div>
       </div>
-    </main>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="./assets/js/jquery.fullPage.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js"></script>
-    <script src="./assets/js/parallax.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/barba.js/1.0.0/barba.min.js"></script>
-    <script src="./assets/js/common.min.js"></script>
-  </body>
+
+      <p class="scroll-hint" aria-hidden="true">Scroll</p>
+      <button class="motion-btn" type="button">Enable motion ✦</button>
+    </section>
+
+    <!-- ================= Selected work ================= -->
+    <section class="section" id="work" aria-label="Selected work">
+      <div class="container">
+        <h2 class="section-title reveal"><span class="num">01</span>Selected Work</h2>
+
+        <div class="work-grid">
+          <article class="card card-featured reveal">
+            <div class="card-media card-media--contain">
+              <img src="./assets/img/scene/justin-squirrel.svg" alt="Justin the squirrel — placeholder art for Gimica" loading="lazy">
+            </div>
+            <div class="card-body">
+              <p class="card-kicker">Professional · 2025 — Present</p>
+              <h3>Gimica — Mobile F2P Portfolio</h3>
+              <p class="card-desc">Sole game designer for a large free-to-play mobile portfolio (JustPlay).
+                Boosters, economy systems, adaptive difficulty, and hundreds of shipped levels —
+                designed, built and A/B-tested end to end.</p>
+              <div class="card-tags">
+                <span class="tag">Level Design</span><span class="tag">Systems</span><span class="tag">LiveOps</span>
+                <span class="tag">Unity</span><span class="tag">Godot</span><span class="tag">Babylon.js</span>
+              </div>
+            </div>
+            <a class="card-link" href="./projects/gimica.html" aria-label="Read the Gimica case study"></a>
+          </article>
+
+          <article class="card reveal">
+            <div class="card-media"><img src="./assets/img/projects/love-at-first-bite/cover.png" alt="Love at First Bite key art" loading="lazy"></div>
+            <div class="card-body">
+              <p class="card-kicker">Honey Bun Games · 2023 — Present</p>
+              <h3>Love at First Bite</h3>
+              <p class="card-desc">A vampire dating sim about swiping for dinner. From game jam to full production.</p>
+              <div class="card-tags"><span class="tag">Design</span><span class="tag">Narrative</span><span class="tag">Unity</span></div>
+            </div>
+            <a class="card-link" href="./projects/love-at-first-bite.html" aria-label="Read the Love at First Bite case study"></a>
+          </article>
+
+          <article class="card reveal">
+            <div class="card-media card-media--contain"><img src="./assets/img/scene/rainbow-luzia.svg" alt="Rainbow placeholder art for Luzia" loading="lazy"></div>
+            <div class="card-body">
+              <p class="card-kicker">Bliss Pictures · 2022 — 2023</p>
+              <h3>Luzia: Rainbow in the Darkness</h3>
+              <p class="card-desc">Game design, level design, cameras and cutscenes for the playable demo.</p>
+              <div class="card-tags"><span class="tag">Level Design</span><span class="tag">Cameras</span><span class="tag">Cutscenes</span></div>
+            </div>
+            <a class="card-link" href="./projects/luzia-rainbow-in-the-darkness.html" aria-label="Read the Luzia case study"></a>
+          </article>
+
+          <article class="card reveal">
+            <div class="card-media"><img src="./assets/img/projects/r4d10-head/cover.gif" alt="R4D10HEAD gameplay" loading="lazy"></div>
+            <div class="card-body">
+              <p class="card-kicker">Game Jam · 2022</p>
+              <h3>R4D10HEAD</h3>
+              <p class="card-desc">Stealth with prop-hunt DNA: a broken robot that moves at full volume.</p>
+              <div class="card-tags"><span class="tag">Game & Level Design</span><span class="tag">Stealth</span></div>
+            </div>
+            <a class="card-link" href="./projects/r4d10head.html" aria-label="Read the R4D10HEAD case study"></a>
+          </article>
+
+          <article class="card reveal">
+            <div class="card-media"><img src="./assets/img/projects/blaster-buds/cover.png" alt="Blaster Buds key art" loading="lazy"></div>
+            <div class="card-body">
+              <p class="card-kicker">SGD Jam II · 2020</p>
+              <h3>Blaster Buds</h3>
+              <p class="card-desc">Mirror-move puzzle duels in space. Winner — Mechanics category.</p>
+              <div class="card-tags"><span class="tag tag--award">★ Jam Winner</span><span class="tag">Puzzle Design</span></div>
+            </div>
+            <a class="card-link" href="./projects/blaster-buds.html" aria-label="Read the Blaster Buds case study"></a>
+          </article>
+
+          <article class="card reveal">
+            <div class="card-media"><img src="./assets/img/projects/birds-of-a-feather/cover.png" alt="Birds of a Feather key art" loading="lazy"></div>
+            <div class="card-body">
+              <p class="card-kicker">Level Up Game Jam · 2024</p>
+              <h3>Birds of a Feather</h3>
+              <p class="card-desc">A pigeon uniting its flock — designed, built and shipped solo.</p>
+              <div class="card-tags"><span class="tag">Solo Dev</span><span class="tag">3D</span></div>
+            </div>
+            <a class="card-link" href="./projects/birds-of-a-feather.html" aria-label="Read the Birds of a Feather case study"></a>
+          </article>
+
+          <article class="card reveal">
+            <div class="card-media"><img src="./assets/img/projects/la-ruleta-del-infortunio/cover.png" alt="La Ruleta del Infortunio key art" loading="lazy"></div>
+            <div class="card-body">
+              <p class="card-kicker">Game Jam · 2022</p>
+              <h3>La Ruleta del Infortunio</h3>
+              <p class="card-desc">A game-show of misfortune: pull the lever, enter the arena.</p>
+              <div class="card-tags"><span class="tag">Game Design</span><span class="tag">Arena</span></div>
+            </div>
+            <a class="card-link" href="./projects/la-ruleta-del-infortunio.html" aria-label="Read the La Ruleta del Infortunio case study"></a>
+          </article>
+        </div>
+
+        <div class="archive reveal">
+          <h3>Earlier work</h3>
+          <ul>
+            <li>
+              <span class="a-title">Finding The Colmers</span>
+              <span class="a-meta">2017 · U-tad team project</span>
+              <span class="a-press">Covered by IGN, HobbyConsolas, Alfa Beta Juega and Vandal</span>
+            </li>
+            <li>
+              <span class="a-title">Pizzarre</span>
+              <span class="a-meta">2018 · Game Designer</span>
+            </li>
+            <li>
+              <span class="a-title">Nyama</span>
+              <span class="a-meta">2015 — 2017 · U-tad team project</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= About teaser ================= -->
+    <section class="section" id="about" aria-label="About me">
+      <div class="container">
+        <h2 class="section-title reveal"><span class="num">02</span>About Me</h2>
+        <div class="about-grid">
+          <div class="reveal">
+            <p class="lead">I'm a game & level designer based in Madrid. I've been the sole designer on a
+              large live mobile portfolio, shipped a demo with a film studio, co-founded an indie team,
+              and won a jam with a puzzle game about a mirrored friend. I prototype my own ideas in-engine,
+              write specs other people can actually build from, and care about the details players never
+              consciously notice.</p>
+            <ul class="pill-list" aria-label="Core skills">
+              <li class="tag">Level Design</li><li class="tag">Systems Design</li><li class="tag">Game Economy</li>
+              <li class="tag">A/B Testing</li><li class="tag">Unity · C#</li><li class="tag">Godot</li>
+              <li class="tag">Babylon.js</li><li class="tag">Figma</li><li class="tag">UX/UI</li>
+            </ul>
+            <div class="hero-cta"><a class="btn" href="./about.html">More about me</a></div>
+          </div>
+          <div class="about-portrait reveal">
+            <img src="./assets/img/portrait.jpg" alt="Portrait of Aitor Morales" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Contact ================= -->
+    <section class="section contact" id="contact" aria-label="Contact">
+      <div class="container">
+        <h2 class="section-title reveal"><span class="num">03</span>Get In Touch</h2>
+        <p class="lead reveal" style="margin-inline:auto">Looking for a game, level or technical designer? Let's talk.</p>
+        <a class="email reveal" href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a>
+        <p class="alt reveal">or <a href="mailto:aitormorales94@gmail.com">aitormorales94@gmail.com</a></p>
+        <div class="socials reveal">
+          <a class="text" href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="text" href="https://aitormorales.itch.io/" target="_blank" rel="noopener">itch.io</a>
+          <a class="text" href="https://github.com/Aitor21" target="_blank" rel="noopener">GitHub</a>
+          <a class="text" href="https://www.instagram.com/aitor_21m/" target="_blank" rel="noopener">Instagram</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 Aitor Morales · Madrid · <a href="./resume.html">Resume</a> · <a href="https://honeybungames.com" target="_blank" rel="noopener">Honey Bun Games</a></p>
+  </footer>
+
+  <script src="./assets/js/v2.js" defer></script>
+</body>
 </html>

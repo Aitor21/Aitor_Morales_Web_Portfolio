@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 150">
+  <!-- PLACEHOLDER: Luzia — Rainbow in the Darkness (Bliss Pictures) -->
+  <g>
+    <!-- rainbow arcs, muted to sit in a night sky -->
+    <path fill="none" stroke="#E58BA0" stroke-width="12" stroke-linecap="round" d="M30 130a90 90 0 0 1 180 0"/>
+    <path fill="none" stroke="#FFE8A9" stroke-width="12" stroke-linecap="round" d="M46 130a74 74 0 0 1 148 0"/>
+    <path fill="none" stroke="#8FBF9F" stroke-width="12" stroke-linecap="round" d="M62 130a58 58 0 0 1 116 0"/>
+    <path fill="none" stroke="#7E9AD6" stroke-width="12" stroke-linecap="round" d="M78 130a42 42 0 0 1 84 0"/>
+    <!-- clouds of darkness at each end -->
+    <g fill="#284284">
+      <ellipse cx="34" cy="128" rx="30" ry="16"/>
+      <ellipse cx="14" cy="118" rx="16" ry="10"/>
+      <ellipse cx="52" cy="116" rx="14" ry="9"/>
+    </g>
+    <g fill="#162960">
+      <ellipse cx="206" cy="128" rx="30" ry="16"/>
+      <ellipse cx="226" cy="118" rx="16" ry="10"/>
+      <ellipse cx="188" cy="116" rx="14" ry="9"/>
+    </g>
+    <!-- small star sparkle -->
+    <path fill="#FFF6DC" d="M120 30l4 10 10 4-10 4-4 10-4-10-10-4 10-4z"/>
+  </g>
+</svg>

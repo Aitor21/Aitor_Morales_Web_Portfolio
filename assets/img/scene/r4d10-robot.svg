@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+  <!-- PLACEHOLDER: R4D10HEAD — noisy little robot with radio head -->
+  <g>
+    <!-- radio waves -->
+    <path fill="none" stroke="#E6C85E" stroke-width="6" stroke-linecap="round" d="M186 58c10 10 10 26 0 36"/>
+    <path fill="none" stroke="#E6C85E" stroke-width="6" stroke-linecap="round" d="M200 44c18 18 18 46 0 64"/>
+    <path fill="none" stroke="#E6C85E" stroke-width="6" stroke-linecap="round" d="M54 58c-10 10-10 26 0 36"/>
+    <path fill="none" stroke="#E6C85E" stroke-width="6" stroke-linecap="round" d="M40 44c-18 18-18 46 0 64"/>
+    <!-- antenna -->
+    <line stroke="#7E9AD6" stroke-width="8" stroke-linecap="round" x1="120" y1="44" x2="120" y2="20"/>
+    <circle fill="#E58BA0" cx="120" cy="16" r="9"/>
+    <!-- head: radio body -->
+    <rect fill="#7E9AD6" x="56" y="44" width="128" height="96" rx="18"/>
+    <rect fill="#4E6AA8" x="56" y="102" width="128" height="38" rx="14"/>
+    <!-- speaker grill -->
+    <circle fill="#162960" cx="90" cy="80" r="18"/>
+    <circle fill="#FFF6DC" cx="90" cy="80" r="8"/>
+    <!-- eye/dial -->
+    <circle fill="#162960" cx="150" cy="80" r="18"/>
+    <circle fill="#FFE8A9" cx="150" cy="80" r="10"/>
+    <circle fill="#162960" cx="153" cy="77" r="4"/>
+    <!-- mouth: equalizer bars -->
+    <g fill="#FFE8A9">
+      <rect x="92" y="112" width="8" height="18" rx="3"/>
+      <rect x="106" y="108" width="8" height="22" rx="3"/>
+      <rect x="120" y="114" width="8" height="16" rx="3"/>
+      <rect x="134" y="106" width="8" height="24" rx="3"/>
+    </g>
+    <!-- little treads -->
+    <rect fill="#284284" x="72" y="150" width="96" height="26" rx="13"/>
+    <circle fill="#162960" cx="92" cy="163" r="8"/>
+    <circle fill="#162960" cx="120" cy="163" r="8"/>
+    <circle fill="#162960" cx="148" cy="163" r="8"/>
+  </g>
+</svg>
