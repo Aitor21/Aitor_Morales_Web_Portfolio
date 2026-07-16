@@ -1,0 +1,55 @@
+# aitormorales.com — served by Netlify from this repo's root.
+# The v1 site lived here until the v3 rebuild; it is preserved on the
+# `archive/v1-site` branch and the `v1-site` tag.
+
+[build]
+  publish = "."
+
+# ---------------------------------------------------------------------------
+# Old v1 URLs. /about.html still exists in v3, but the projects page is gone,
+# so anything pointing at it (links, bookmarks, search results) is sent to the
+# case study that replaced it rather than dying on a 404.
+# ---------------------------------------------------------------------------
+[[redirects]]
+  from = "/blasterbuds"
+  to = "/projects/blaster-buds.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blasterbuds.html"
+  to = "/projects/blaster-buds.html"
+  status = 301
+  force = true
+
+# ---------------------------------------------------------------------------
+# Caching. Fingerprinted or never-changing assets can be cached hard; HTML must
+# always revalidate so a deploy is visible immediately.
+# ---------------------------------------------------------------------------
+[[headers]]
+  for = "/assets/font/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# css/js are busted with ?v= on every reference, so they are safe to pin too
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

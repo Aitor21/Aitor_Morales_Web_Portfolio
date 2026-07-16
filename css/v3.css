@@ -10,10 +10,10 @@
    reflowed ("everything pops"). `block` holds the text until the real face is ready.
    The faces are same-origin, ~60KB, preloaded in every <head> and shared across pages,
    so after the first paint they come straight from cache and the wait is imperceptible. */
-@font-face{font-family:"Futura";src:url(../../assets/font/Futura-Med.woff) format("woff");font-weight:500;font-display:block}
-@font-face{font-family:"Futura";src:url(../../assets/font/Futura-Boo.woff) format("woff");font-weight:400;font-display:block}
-@font-face{font-family:"Futura";src:url(../../assets/font/Futura-Bol.woff) format("woff");font-weight:700;font-display:block}
-@font-face{font-family:"Futura";src:url(../../assets/font/Futura-Dem.woff) format("woff");font-weight:600;font-display:block}
+@font-face{font-family:"Futura";src:url(../assets/font/Futura-Med.woff) format("woff");font-weight:500;font-display:block}
+@font-face{font-family:"Futura";src:url(../assets/font/Futura-Boo.woff) format("woff");font-weight:400;font-display:block}
+@font-face{font-family:"Futura";src:url(../assets/font/Futura-Bol.woff) format("woff");font-weight:700;font-display:block}
+@font-face{font-family:"Futura";src:url(../assets/font/Futura-Dem.woff) format("woff");font-weight:600;font-display:block}
 
 /* ---------- Tokens ---------- */
 :root{
