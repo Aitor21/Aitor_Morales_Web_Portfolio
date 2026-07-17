@@ -10,16 +10,18 @@
    reflowed ("everything pops"). `block` holds the text until the real face is ready.
    The faces are same-origin, ~60KB, preloaded in every <head> and shared across pages,
    so after the first paint they come straight from cache and the wait is imperceptible. */
-@font-face{font-family:"Futura";src:url(../assets/font/Futura-Med.woff) format("woff");font-weight:500;font-display:block}
-@font-face{font-family:"Futura";src:url(../assets/font/Futura-Boo.woff) format("woff");font-weight:400;font-display:block}
-@font-face{font-family:"Futura";src:url(../assets/font/Futura-Bol.woff) format("woff");font-weight:700;font-display:block}
-@font-face{font-family:"Futura";src:url(../assets/font/Futura-Dem.woff) format("woff");font-weight:600;font-display:block}
+@font-face{font-family:"Futura";src:url(../assets/font/Futura-Med.woff2) format("woff2"),url(../assets/font/Futura-Med.woff) format("woff");font-weight:500;font-display:block}
+@font-face{font-family:"Futura";src:url(../assets/font/Futura-Boo.woff2) format("woff2"),url(../assets/font/Futura-Boo.woff) format("woff");font-weight:400;font-display:block}
+@font-face{font-family:"Futura";src:url(../assets/font/Futura-Bol.woff2) format("woff2"),url(../assets/font/Futura-Bol.woff) format("woff");font-weight:700;font-display:block}
+@font-face{font-family:"Futura";src:url(../assets/font/Futura-Dem.woff2) format("woff2"),url(../assets/font/Futura-Dem.woff) format("woff");font-weight:600;font-display:block}
 
 /* ---------- Tokens ---------- */
 :root{
   --void:#020b16; --deep:#061220; --navy:#072142; --navy-2:#0a2a52;
   --violet:#5f6ce6; --violet-bright:#8b96ff; --magenta:#8c2b7a; --magenta-bright:#c2478f;
-  --white:#f4f7ff; --ink:#0a1a30; --muted:#9fb0d4; --faint:#63769e;
+  /* --faint clears WCAG AA (≥4.5:1) against every backdrop it sits on, including the
+     gradient's lightest stop (#08203f), while staying visibly quieter than --muted */
+  --white:#f4f7ff; --ink:#0a1a30; --muted:#9fb0d4; --faint:#7e90b8;
   --line:rgba(140,160,210,.14); --line-2:rgba(140,160,210,.28);
 
   --grad-nav:linear-gradient(135deg,#0a1f3d 0%,#3a2a6e 46%,#8c2b7a 100%);
@@ -34,7 +36,9 @@
   --shadow-img:0 50px 120px -30px rgba(0,0,0,.7);
   --font:"Futura","Century Gothic","Avenir Next","Segoe UI",system-ui,sans-serif;
   --mono:ui-monospace,"SF Mono","Cascadia Code","Consolas",monospace;
-  --num:"Abril Fatface",Georgia,serif;
+  /* numeral face: Georgia, deliberately. (An earlier "Abril Fatface" was never actually
+     loaded, so Georgia is what the site has always rendered — now it's the token.) */
+  --num:Georgia,"Times New Roman",serif;
 
   --pad:clamp(2.2rem,6vw,9rem);
   --header-h:9.5rem;
@@ -121,8 +125,11 @@ body.menu-open .drawer-backdrop{opacity:1;visibility:visible}
 .drawer{position:fixed;top:0;right:0;height:100dvh;width:min(86vw,370px);z-index:985;color:#fff;
   background:linear-gradient(210deg,#0a1f3d 0%,#161036 58%,#3a1442 100%);border-left:1px solid var(--line-2);
   padding:calc(var(--header-h) + 1.5rem) clamp(2.4rem,7vw,3.4rem) 3rem;display:flex;flex-direction:column;
-  transform:translateX(101%);transition:transform .55s var(--ease);box-shadow:-50px 0 90px -30px rgba(0,0,0,.7)}
-body.menu-open .drawer{transform:translateX(0)}
+  /* visibility keeps the off-canvas links out of the tab order and the a11y tree when
+     closed: it flips on instantly when opening (so focus can move in right away) and
+     only after the .55s slide-out when closing */
+  visibility:hidden;transform:translateX(101%);transition:transform .55s var(--ease),visibility 0s .55s;box-shadow:-50px 0 90px -30px rgba(0,0,0,.7)}
+body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:transform .55s var(--ease),visibility 0s}
 .drawer-nav{display:flex;flex-direction:column}
 .drawer-nav a{display:flex;align-items:baseline;gap:1.4rem;padding:1.5rem 0;font-size:2.6rem;font-weight:500;
   border-bottom:1px solid rgba(255,255,255,.1);transition:padding-left .35s var(--ease-out),color .3s}
@@ -335,8 +342,8 @@ body.menu-open .drawer{transform:translateX(0)}
   background:rgba(10,26,52,.34);transition:transform .5s var(--ease-out),border-color .4s,background .4s}
 .more-card:hover{transform:translateY(-6px);border-color:var(--line-2);background:rgba(20,40,80,.42)}
 .mc-shot{display:block;border-radius:6px;overflow:hidden;aspect-ratio:16/10;background:#0a1a30}
-.mc-shot img{width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease-out)}
-.more-card:hover .mc-shot img{transform:scale(1.06)}
+.mc-shot img,.mc-shot video{width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease-out)}
+.more-card:hover .mc-shot img,.more-card:hover .mc-shot video{transform:scale(1.06)}
 .mc-copy{display:flex;flex-direction:column;gap:.6rem;padding:0 .4rem .4rem}
 .mc-copy b{font-size:clamp(1.8rem,2vw,2.2rem);font-weight:600;letter-spacing:.02em}
 .mc-meta{font-family:var(--mono);font-size:1.1rem;letter-spacing:.1em;text-transform:uppercase;color:var(--violet-bright)}
@@ -480,7 +487,7 @@ html.vt-arrive .project-hero .reveal, html.vt-arrive .project-hero .reveal-media
 @media (max-width:900px){.project-hero{grid-template-columns:1fr;gap:2.6rem}}
 .project-copy{display:flex;flex-direction:column;gap:2rem}
 .project-shot{border-radius:8px;overflow:hidden;box-shadow:var(--shadow-img);aspect-ratio:4/3}
-.project-shot img{width:100%;height:100%;object-fit:cover}
+.project-shot img,.project-shot video{width:100%;height:100%;object-fit:cover}
 .project-body{max-width:900px;margin:0 auto;padding:1rem var(--pad) clamp(8rem,14vh,16rem)}
 .meta-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1.8rem 2.4rem;
   padding:2.6rem 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:4.4rem}
@@ -498,7 +505,7 @@ html.vt-arrive .project-hero .reveal, html.vt-arrive .project-hero .reveal-media
 .proj-sec li::before{content:"▸";position:absolute;left:0;color:var(--violet)}
 .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.6rem;margin:1rem 0 3rem}
 .gallery figure{margin:0;border-radius:8px;overflow:hidden;box-shadow:var(--shadow-img);background:#0a1a30}
-.gallery img{width:100%;display:block;aspect-ratio:4/3;object-fit:cover}
+.gallery img,.gallery video{width:100%;display:block;aspect-ratio:4/3;object-fit:cover}
 
 /* click-to-play trailer (facade: the YouTube iframe loads only on click) */
 .video-embed{position:relative;aspect-ratio:16/9;border-radius:10px;overflow:hidden;box-shadow:var(--shadow-img);

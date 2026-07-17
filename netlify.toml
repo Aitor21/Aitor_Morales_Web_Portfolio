@@ -53,3 +53,15 @@
     Cache-Control = "public, max-age=0, must-revalidate"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+
+# ---------------------------------------------------------------------------
+# Security. Everything is same-origin except the click-to-play YouTube facade
+# (youtube-nocookie iframe, injected on demand by v3.js). style 'unsafe-inline'
+# is required by the style="--i:n" stagger attributes; scripts stay 'self'-only.
+# The grain texture is a data: SVG, hence img-src data:.
+# ---------------------------------------------------------------------------
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; media-src 'self'; frame-src https://www.youtube-nocookie.com; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
+    X-Frame-Options = "SAMEORIGIN"

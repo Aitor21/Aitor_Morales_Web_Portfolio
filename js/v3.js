@@ -216,11 +216,18 @@
     }
     if (slide.count) slide.count.firstChild.textContent = pad2(slide.index + 1);
   }
-  function slideGo(i) {
+  /* alignBottom: when wheel/keys move UP into a panel taller than the viewport, land
+     with its bottom edge in view — you arrive at the content you were headed for and
+     scroll up through the panel, instead of skipping straight past its below-fold half.
+     Dots, hash links and Home/End keep landing on the panel top (no flag). */
+  function slideGo(i, alignBottom) {
     if (!slide.snap || !slide.panels.length) return;
     i = clamp(i, 0, slide.panels.length - 1);
     try { sessionStorage.setItem("amSlide", String(i)); } catch (_) {}
-    var end = slide.panels[i].offsetTop;
+    var p = slide.panels[i];
+    var end = alignBottom
+      ? Math.max(p.offsetTop, p.offsetTop + p.offsetHeight - slide.snap.clientHeight)
+      : p.offsetTop;
     // touch / reduced-motion: hand it to the browser (native snap keeps the settle honest)
     if (!slide.active) {
       slide.index = i; updateSlideNav();
@@ -240,23 +247,56 @@
     }
     requestAnimationFrame(step);
   }
+  /* The deck's contract: every panel fits the viewport, or the controller degrades.
+     A panel CAN run taller than the viewport (768px-tall laptops, 125% OS scaling,
+     200% browser zoom), so wheel/keys scroll natively INSIDE the active panel and the
+     deck only advances from the panel's edge. Room is measured per event — resize and
+     zoom are always honoured. Ctrl+wheel (browser zoom) is never intercepted. */
   function initSlideListeners() {
-    var lastWheel = 0;
+    var lastWheel = 0, lastInner = 0;
+    function panelRoom(dir) {   // px of hidden panel content in that direction
+      var p = slide.panels[slide.index];
+      if (!p) return 0;
+      return dir > 0
+        ? (p.offsetTop + p.offsetHeight) - (slide.snap.scrollTop + slide.snap.clientHeight)
+        : slide.snap.scrollTop - p.offsetTop;
+    }
     window.addEventListener("wheel", function (e) {
       if (!slide.active) return;
+      if (e.ctrlKey) return;                   // pinch / Ctrl+wheel zoom stays the browser's
+      var now = (window.performance && performance.now) ? performance.now() : Date.now();
+      var dir = e.deltaY > 0 ? 1 : -1;
+      if (!slide.animating && e.deltaY && panelRoom(dir) > 1) {
+        lastInner = now;                       // tall panel: hand the event to native scroll
+        return;
+      }
       e.preventDefault();
       if (slide.animating || Math.abs(e.deltaY) < 4) return;
-      var now = (window.performance && performance.now) ? performance.now() : Date.now();
+      if (now - lastInner < 160) return;       // settle on the tall panel's edge first
       if (now - lastWheel < 90) return;        // swallow the momentum/inertia tail only
       lastWheel = now;
-      slideGo(slide.index + (e.deltaY > 0 ? 1 : -1)); // fire on the FIRST real notch — no wait
+      slideGo(slide.index + dir, dir < 0);     // fire on the FIRST real notch — no wait
     }, { passive: false });
     window.addEventListener("keydown", function (e) {
-      if (!slide.active) return;
-      if (e.key === "ArrowDown" || e.key === "PageDown") { e.preventDefault(); slideGo(slide.index + 1); }
-      else if (e.key === "ArrowUp" || e.key === "PageUp") { e.preventDefault(); slideGo(slide.index - 1); }
-      else if (e.key === "Home") { e.preventDefault(); slideGo(0); }
-      else if (e.key === "End") { e.preventDefault(); slideGo(slide.panels.length - 1); }
+      if (!slide.active || e.altKey || e.ctrlKey || e.metaKey) return;
+      var t = e.target;
+      if (t && (/^(input|textarea|select)$/i.test(t.tagName) || t.isContentEditable)) return;
+      var k = e.key;
+      if (k === "Home") { e.preventDefault(); slideGo(0); return; }
+      if (k === "End") { e.preventDefault(); slideGo(slide.panels.length - 1); return; }
+      if (k === " " && t && t.closest && t.closest("a,button,summary")) return; // Space activates those
+      var down = k === "ArrowDown" || k === "PageDown" || (k === " " && !e.shiftKey);
+      var up = k === "ArrowUp" || k === "PageUp" || (k === " " && e.shiftKey);
+      if (!down && !up) return;
+      e.preventDefault();                      // Space no longer scrolls to un-snapped spots
+      if (slide.animating) return;
+      var dir = down ? 1 : -1, room = panelRoom(dir);
+      if (room > 1) {                          // tall panel: step through it, never past it
+        var step = Math.min(room, k === "ArrowDown" || k === "ArrowUp" ? 140 : slide.snap.clientHeight * 0.85);
+        slide.snap.scrollBy({ top: dir * step, behavior: "smooth" });
+      } else {
+        slideGo(slide.index + dir, dir < 0);
+      }
     });
   }
 
@@ -271,18 +311,43 @@
     t.forEach(function (x) { io.observe(x); });
   }
 
-  /* ===================== Menu (persistent chrome) ===================== */
+  /* ===================== Menu (persistent chrome) =====================
+     The drawer is a modal surface: opening it moves focus to its first link, Tab cycles
+     through the drawer links plus the toggle button (so it can be closed by keyboard),
+     and Escape / backdrop / closing return focus to the button. */
+  var closeMenu = function () { document.body.classList.remove("menu-open"); };
   function initMenu() {
     var btn = document.querySelector(".menu-btn");
     if (!btn) return;
     var backdrop = document.querySelector(".drawer-backdrop"), drawer = document.querySelector(".drawer");
-    var close = function () { document.body.classList.remove("menu-open"); btn.setAttribute("aria-expanded", "false"); };
+    var isOpen = function () { return document.body.classList.contains("menu-open"); };
+    var focusables = function () {
+      return drawer ? Array.prototype.slice.call(drawer.querySelectorAll("a[href],button:not([disabled])")) : [];
+    };
+    closeMenu = function (refocus) {
+      if (!isOpen()) return;
+      document.body.classList.remove("menu-open");
+      btn.setAttribute("aria-expanded", "false");
+      if (refocus) btn.focus();
+    };
     btn.addEventListener("click", function () {
-      var open = !document.body.classList.contains("menu-open");
+      var open = !isOpen();
       document.body.classList.toggle("menu-open", open); btn.setAttribute("aria-expanded", open ? "true" : "false");
+      if (open) { var f = focusables(); if (f.length) f[0].focus(); }
     });
-    if (backdrop) backdrop.addEventListener("click", close);
-    document.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
+    if (backdrop) backdrop.addEventListener("click", function () { closeMenu(true); });
+    document.addEventListener("keydown", function (e) {
+      if (!isOpen()) return;
+      if (e.key === "Escape") { closeMenu(true); return; }
+      if (e.key !== "Tab" || !drawer) return;
+      var f = focusables(); if (!f.length) return;
+      var a = document.activeElement;
+      if (a !== btn && !drawer.contains(a)) { e.preventDefault(); f[0].focus(); return; }
+      if (e.shiftKey && a === f[0]) { e.preventDefault(); btn.focus(); }
+      else if (e.shiftKey && a === btn) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && a === f[f.length - 1]) { e.preventDefault(); btn.focus(); }
+      else if (!e.shiftKey && a === btn) { e.preventDefault(); f[0].focus(); }
+    });
   }
 
   /* ===================== Custom cursor (persistent, purposeful) =====================
@@ -368,6 +433,34 @@
     });
   }
 
+  /* ===================== Ambient gameplay loops (per mount) =====================
+     Case-study shots and the R4D10HEAD card are short muted <video> loops — a fraction
+     of the animated-image weight they replaced. Reduced-motion visitors get the poster
+     frame instead, and any loop that isn't inside a link is click/keyboard-pausable. */
+  function initLoopVideos() {
+    document.querySelectorAll("video.loop-video").forEach(function (v) {
+      if (v._loop) return; v._loop = true;
+      if (reduce) {
+        v.removeAttribute("autoplay");
+        try { v.pause(); } catch (_) {}
+        return;
+      }
+      if (v.closest("a")) return;   // card loops: the whole card is a link, clicks navigate
+      v.setAttribute("tabindex", "0");
+      v.setAttribute("role", "button");
+      var base = v.getAttribute("aria-label") || "animation";
+      var sync = function () { v.setAttribute("aria-label", (v.paused ? "Play: " : "Pause: ") + base); };
+      sync();
+      v.addEventListener("play", sync);
+      v.addEventListener("pause", sync);
+      var toggle = function () { if (v.paused) v.play(); else v.pause(); };
+      v.addEventListener("click", toggle);
+      v.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); }
+      });
+    });
+  }
+
   /* ===================== Seamless page morph =====================
      A view-transition-name only morphs when the SAME name exists on both documents.
      So instead of a name per game (which could never pair two different case studies)
@@ -386,14 +479,14 @@
     try { return new URL(a, location.href).pathname === new URL(b, location.href).pathname; }
     catch (_) { return false; }
   }
-  /* The <img> inside the card on THIS page that links to `url` (null if there isn't one —
-     e.g. a text-only "Next" link, or when we're not on the home page). */
+  /* The <img> (or loop <video>) inside the card on THIS page that links to `url` (null
+     if there isn't one — e.g. a text-only "Next" link, or when we're not on the home page). */
   function cardImgFor(url) {
     if (!url) return null;
     var links = document.querySelectorAll('a[href*="projects/"]');
     for (var i = 0; i < links.length; i++) {
       if (!samePath(links[i].getAttribute("href"), url)) continue;
-      var img = links[i].querySelector("img");
+      var img = links[i].querySelector("img,video");
       if (img) return img;
     }
     return null;
@@ -484,7 +577,7 @@
       if (url.origin !== location.origin || url.pathname !== location.pathname || !url.hash) return;
       e.preventDefault();
       hashNav(url.hash);
-      document.body.classList.remove("menu-open");
+      closeMenu();
     });
   }
   function hashNav(hash) {
@@ -551,6 +644,7 @@
     initReveals();
     initMagnetic();
     initVideoEmbeds();
+    initLoopVideos();
     var hero = document.querySelector(".hero, .about-hero, .project-hero");
     if (hero) requestAnimationFrame(function () { hero.classList.add("is-in"); });
   }

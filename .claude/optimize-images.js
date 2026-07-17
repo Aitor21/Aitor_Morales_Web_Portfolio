@@ -2,6 +2,9 @@
    Image optimizer for the portfolio.  Generates a resized .webp next to every
    raster image under assets/img, and shrinks two oversized originals in place.
    Animated GIFs become animated WebP (no video tooling needed).
+   NOTE (2026-07): gameplay loops are now muted <video class="loop-video"> .mp4
+   files (ffmpeg, crf 24-27 + hqdn3d denoise) with a poster frame — ~5x smaller
+   than animated WebP. Don't reintroduce animated GIF/WebP for new loops.
 
    The site serves these via <picture><source type="image/webp"> ... </picture>,
    so modern browsers download only the small WebP and never fetch the fallback.
