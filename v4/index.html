@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="play">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Aitor Morales · Game &amp; Level Designer — V4: Greybox/Gold</title>
+  <meta name="description" content="Aitor Morales, game &amp; level designer in Madrid. The portfolio as an annotated level: blockout to gold.">
+  <!-- concept build: keep out of the index until promoted -->
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#f4f1ea">
+  <link rel="shortcut icon" href="../favicon.png">
+  <link rel="preload" as="font" type="font/woff2" href="assets/font/space-grotesk-var.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="assets/font/plex-mono-400.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="assets/font/plex-mono-600.woff2" crossorigin>
+  <link rel="stylesheet" href="./css/v4.css?v=2">
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="wipe" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a class="name" href="#whitebox">Aitor Morales</a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="#objective">Objective</a>
+      <a href="#chamber-01">Chambers</a>
+      <a href="#commentary">Commentary</a>
+      <a href="../resume.html">Resume</a>
+      <a href="#level-complete">Exit</a>
+    </nav>
+  </header>
+
+  <!-- critical path: skip-nav, progress and level-design artifact in one (EDIT) -->
+  <nav class="path edit-only" aria-label="Critical path">
+    <ol>
+      <li><a href="#whitebox">WHITEBOX</a></li>
+      <li><a href="#objective">OBJECTIVE</a></li>
+      <li><a href="#chamber-01">CH.01</a></li>
+      <li><a href="#chamber-02">CH.02</a></li>
+      <li><a href="#chamber-03">CH.03</a></li>
+      <li><a href="#commentary">COMMENTARY</a></li>
+      <li><a href="#level-complete">EXIT</a></li>
+    </ol>
+  </nav>
+
+  <button class="mode-switch" type="button" aria-pressed="false">
+    <span class="key">E</span><span class="mode-word">EDIT MODE</span>
+  </button>
+
+  <main id="top">
+
+    <!-- ============ 1 · WHITEBOX (hero) ============ -->
+    <section class="sec hero bake" id="whitebox" aria-label="Intro">
+      <div class="hero-grid">
+        <div class="hero-main">
+          <p class="tag bake-t" style="--i:0">LEVEL 01 — <b>WHITEBOX_v14</b> · PORTFOLIO · GAME &amp; LEVEL DESIGN</p>
+          <h1 class="display hero-title bake-t" style="--i:1">
+            <span class="line">Aitor</span>
+            <span class="line dim">Morales<span class="dim-note" aria-hidden="true">≈ 11.2 EM · CAP HEIGHT 0.70 · BRUSH ALIGNED TO 48PX GRID</span></span>
+            <button class="pigeon" type="button" data-pigeon="1" style="right:0;top:-1.2rem" aria-label="A stray pigeon — collect it"><img src="../assets/img/hero/pigeon.webp" alt=""></button>
+          </h1>
+          <p class="lead bake-t" style="--i:2">Game &amp; level designer who ships, and builds what he designs.</p>
+          <span class="ann edit-only"><button class="ann-btn" type="button" data-ann="n01" aria-expanded="false"><span class="mk">▲</span>n.01</button><span class="ann-note" hidden>First read under 5 seconds. That was the spec.</span></span>
+          <p class="cred bake-t" style="--i:3">NOW: <b>GIMICA · JUSTPLAY</b> — 50+ LIVE GAMES · 25M+ DOWNLOADS · 500K+ DAILY PLAYERS</p>
+          <span class="ann edit-only"><button class="ann-btn" type="button" data-ann="n02" aria-expanded="false"><span class="mk">▲</span>n.02</button><span class="ann-note" hidden>Strongest card plays first. A hero without a credential is a mood board.</span></span>
+          <div class="btn-row bake-t" style="--i:4">
+            <a class="btn" href="../resume.html">View resume →</a>
+            <a class="btn btn--ghost" href="#level-complete">Get in touch →</a>
+          </div>
+        </div>
+
+        <aside class="hero-aside edit-only" aria-label="Designer notes">
+          <div class="panel sightline">
+            <span class="tag">SIGHTLINE PLAN — THIS VIEWPORT</span>
+            <svg viewBox="0 0 300 215" role="img" aria-label="Wireframe of this hero showing the intended eye path: name, then tagline, then credential, then call to action">
+              <rect class="wire" x="10" y="26" width="210" height="52"/>
+              <text x="18" y="57">NAME — 13.5VW</text>
+              <rect class="wire" x="10" y="94" width="168" height="18"/>
+              <text x="16" y="106" font-size="8">TAGLINE</text>
+              <rect x="10" y="122" width="196" height="16" fill="none" stroke="#c23a00" stroke-width="1.5"/>
+              <text x="16" y="133" font-size="8" fill="#c23a00">CREDENTIAL — GOLDEN PATH</text>
+              <rect class="wire" x="10" y="152" width="74" height="24"/>
+              <rect class="wire" x="92" y="152" width="74" height="24"/>
+              <text x="20" y="167" font-size="8">CTA A</text>
+              <text x="102" y="167" font-size="8">CTA B</text>
+              <path class="flow" d="M236 52 L236 103 L186 103"/>
+              <path class="flow" d="M236 103 L236 130 L214 130"/>
+              <path class="flow" d="M236 130 L236 164 L174 164"/>
+              <circle class="node" cx="236" cy="52" r="3"/>
+              <circle class="node" cx="236" cy="103" r="3"/>
+              <circle class="node" cx="236" cy="130" r="3"/>
+              <circle class="node" cx="236" cy="164" r="3"/>
+              <text x="246" y="55" fill="#c23a00">S1</text>
+              <text x="246" y="106" fill="#c23a00">S2</text>
+              <text x="246" y="133" fill="#c23a00">S3</text>
+              <text x="246" y="167" fill="#c23a00">S4</text>
+              <text x="10" y="205">EYE PATH: S1→S4 · NOTHING COMPETES WITH S1</text>
+            </svg>
+          </div>
+          <span class="ann"><button class="ann-btn" type="button" data-ann="n03" aria-expanded="false"><span class="mk">▲</span>n.03</button><span class="ann-note" hidden>This page ships in two builds: what was designed and what was shipped. Press E to swap them.</span></span>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============ 2 · OBJECTIVE — THE CRITICAL PATH (Gimica) ============ -->
+    <section class="sec bake" id="objective" aria-label="Gimica">
+      <div class="sec-head">
+        <span class="tag bake-t" style="--i:0">OBJECTIVE — <b>THE CRITICAL PATH</b> · NOW · GIMICA × JUSTPLAY</span>
+        <h2 class="display h2 bake-t" style="--i:1">Gimica</h2>
+        <span class="ann edit-only"><button class="ann-btn" type="button" data-ann="n04" aria-expanded="false"><span class="mk">▲</span>n.04</button><span class="ann-note" hidden>The golden path of this level: credential → proof → playable demo → exit. You are on it.</span></span>
+      </div>
+      <div class="objective-grid">
+        <div>
+          <p class="lead bake-t" style="--i:2">Gimica is a casual game publisher in the JustPlay ecosystem, with 50+ live mobile games loved by millions. As a designer and developer there, I build gameplay features that teams across the studio integrate into game after game — and I run the A/B tests that prove they work.</p>
+          <div class="stats bake-t" style="--i:3">
+            <div class="st"><b>50+</b><span>live games</span></div>
+            <div class="st"><b>25M+</b><span>downloads</span></div>
+            <div class="st"><b>500K+</b><span>daily players</span></div>
+          </div>
+          <span class="ann edit-only"><button class="ann-btn" type="button" data-ann="n05" aria-expanded="false"><span class="mk">▲</span>n.05</button><span class="ann-note" hidden>Numbers close to claims. See: every site you have ever trusted.</span></span>
+          <div class="btn-row bake-t" style="--i:4"><a class="btn" href="../projects/gimica.html">See the work →</a></div>
+        </div>
+        <div>
+          <div class="shot play-only bake-t" style="--i:3">
+            <picture><source srcset="../assets/img/projects/gimica.webp" type="image/webp"><img class="bake-t" style="--i:3" src="../assets/img/projects/gimica.png" alt="JustPlay, the casual-gaming ecosystem Gimica is part of" loading="lazy"></picture>
+          </div>
+          <div class="diagram edit-only" style="position:relative">
+            <svg viewBox="0 0 900 250" role="img" aria-label="Map of how a feature ships at Gimica: brief, spec, prototype, build, QA, A/B test with three outcomes (ship variant A, iterate variant B, or kill), then portfolio-wide rollout">
+              <rect class="dg-box" x="20" y="40" width="80" height="36"/><text class="dg-txt" x="36" y="62">BRIEF</text>
+              <rect class="dg-box" x="130" y="40" width="80" height="36"/><text class="dg-txt" x="150" y="62">SPEC</text>
+              <rect class="dg-box" x="240" y="40" width="110" height="36"/><text class="dg-txt" x="253" y="62">PROTOTYPE</text>
+              <rect class="dg-box" x="380" y="40" width="80" height="36"/><text class="dg-txt" x="398" y="62">BUILD</text>
+              <rect class="dg-box" x="490" y="40" width="60" height="36"/><text class="dg-txt" x="507" y="62">QA</text>
+              <rect class="dg-box--gold" x="580" y="40" width="100" height="36"/><text class="dg-txt dg-txt--sig" x="596" y="62">A/B TEST</text>
+              <rect class="dg-box--gold" x="760" y="40" width="110" height="36"/><text class="dg-txt dg-txt--sig" x="777" y="62">ROLLOUT</text>
+              <path class="dg-arrow" d="M100 58 H126"/><path class="dg-head" d="M126 54 l8 4 -8 4z"/>
+              <path class="dg-arrow" d="M210 58 H236"/><path class="dg-head" d="M236 54 l8 4 -8 4z"/>
+              <path class="dg-arrow" d="M350 58 H376"/><path class="dg-head" d="M376 54 l8 4 -8 4z"/>
+              <path class="dg-arrow" d="M460 58 H486"/><path class="dg-head" d="M486 54 l8 4 -8 4z"/>
+              <path class="dg-arrow" d="M550 58 H576"/><path class="dg-head" d="M576 54 l8 4 -8 4z"/>
+              <path class="dg-arrow--gold" d="M680 58 H752"/><path class="dg-head--gold" d="M752 53 l9 5 -9 5z"/>
+              <text class="dg-txt--sub" x="686" y="50">players decide</text>
+              <path class="dg-arrow--gold" d="M630 76 V120"/>
+              <path class="dg-arrow--gold" d="M630 120 H565 V146"/><path class="dg-head--gold" d="M560 146 l5 9 5 -9z"/>
+              <path class="dg-arrow--gold" d="M630 120 H695 V146"/><path class="dg-head--gold" d="M690 146 l5 9 5 -9z"/>
+              <path class="dg-arrow--ghost" d="M630 120 H820 V146"/><path class="dg-head" d="M815 146 l5 9 5 -9z" fill="#5a5f6a"/>
+              <rect class="dg-box--gold" x="510" y="150" width="110" height="32"/><text class="dg-txt dg-txt--sig" x="522" y="170">VAR A · SHIP</text>
+              <rect class="dg-box" x="640" y="150" width="120" height="32"/><text class="dg-txt" x="649" y="170">VAR B · ITERATE</text>
+              <rect class="dg-box--ghost" x="780" y="150" width="100" height="32"/><text class="dg-txt dg-txt--sub" x="791" y="170">KILL · ARCHIVE</text>
+              <path class="dg-arrow--ghost" d="M700 182 V215 H170 V80"/><path class="dg-head" d="M165 84 l5 -9 5 9z" fill="#5a5f6a"/>
+              <text class="dg-txt--sub" x="330" y="210">variant B feeds the next spec — nothing tested is wasted</text>
+              <text class="dg-txt--sub" x="22" y="30">ONE FEATURE, END TO END. OWNED BY ONE DESIGNER-DEVELOPER.</text>
+            </svg>
+            <p class="dg-cap">FIG.01 — HOW A FEATURE SHIPS ACROSS 50+ LIVE GAMES (BOOSTERS · COMBOS · CHESTS · REWARDED MINIGAMES · ADAPTIVE DIFFICULTY)</p>
+            <span class="ann"><button class="ann-btn" type="button" data-ann="n06" aria-expanded="false"><span class="mk">▲</span>n.06</button><span class="ann-note" hidden>The shape of the work, not the confidential numbers. Annotations respect NDAs.</span></span>
+            <button class="pigeon" type="button" data-pigeon="2" style="right:.4rem;bottom:.4rem" aria-label="A stray pigeon — collect it"><img src="../assets/img/hero/pigeon.webp" alt=""></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 3 · CHAMBER 01 — BLASTER BUDS ============ -->
+    <p class="door" style="--key:var(--key-bb)" aria-hidden="true">// ENTERING CHAMBER 01 — <b>BLASTER BUDS</b> · KEY LIGHT: VACUUM BLUE</p>
+    <section class="sec chamber bake" id="chamber-01" style="--key:var(--key-bb)" aria-label="Blaster Buds">
+      <div class="chamber-grid">
+        <div>
+          <span class="tag bake-t" style="--i:0">CHAMBER 01 · 2020 · <b>JAM WINNER — MECHANICS</b></span>
+          <h2 class="display h2 bake-t" style="--i:1">Blaster<br>Buds</h2>
+          <div class="meta-line bake-t" style="--i:2"><span>Game designer</span><span>Grid puzzle</span><span>Spain Game Devs Jam II</span></div>
+          <p class="lead bake-t" style="--i:3">A grid-based puzzle duel in the vacuum of space: your opponent mirrors every move you make. Winner of the Mechanics category.</p>
+          <div class="btn-row bake-t" style="--i:4"><a class="btn btn--ghost" href="../projects/blaster-buds.html">Open case study →</a></div>
+        </div>
+        <div>
+          <div class="media play-only" style="position:relative">
+            <picture><source srcset="../assets/img/projects/blaster-buds/cover.webp" type="image/webp"><img class="bake-t" style="--i:2" src="../assets/img/projects/blaster-buds/cover.png" alt="Blaster Buds, a grid-based space puzzle game" loading="lazy"></picture>
+            <button class="pigeon" type="button" data-pigeon="3" style="left:.5rem;bottom:.5rem" aria-label="A stray pigeon — collect it"><img src="../assets/img/hero/pigeon.webp" alt=""></button>
+          </div>
+          <div class="edit-only">
+            <div class="diagram">
+              <svg viewBox="0 0 460 290" role="img" aria-label="Diagram of the mirrored-movement grid: your ship on the left half, the rival mirrored on the right, with asteroids breaking the symmetry">
+                <g stroke="#b8bcc4" stroke-width="1">
+                  <path d="M30 40 H430 M30 90 H430 M30 140 H430 M30 190 H430 M30 240 H430"/>
+                  <path d="M30 40 V240 M80 40 V240 M130 40 V240 M180 40 V240 M280 40 V240 M330 40 V240 M380 40 V240 M430 40 V240"/>
+                </g>
+                <path d="M230 30 V250" stroke="#c23a00" stroke-width="2" stroke-dasharray="6 4"/>
+                <text class="dg-txt--sub dg-txt--sig" x="196" y="266">MIRROR AXIS</text>
+                <rect x="80" y="140" width="50" height="50" fill="none" stroke="#c23a00" stroke-width="2.5"/>
+                <text class="dg-txt dg-txt--sig" x="90" y="170">YOU</text>
+                <rect x="330" y="140" width="50" height="50" fill="none" stroke="#1c1e22" stroke-width="2"/>
+                <text class="dg-txt" x="334" y="170">MIRROR</text>
+                <path class="dg-arrow--gold" d="M135 165 H175"/><path class="dg-head--gold" d="M175 160 l9 5 -9 5z"/>
+                <path class="dg-arrow" d="M325 165 H285"/><path class="dg-head" d="M285 170 l-9 -5 9 -5z"/>
+                <rect x="180" y="40" width="50" height="50" fill="#b8bcc4"/>
+                <rect x="280" y="190" width="50" height="50" fill="#b8bcc4"/>
+                <text class="dg-txt--sub" x="30" y="26">ASTEROIDS BREAK THE SYMMETRY — THE PUZZLE IS WHERE MIRRORING FAILS</text>
+              </svg>
+              <p class="dg-cap">FIG.02 — THE PILLAR AS A BOARD STATE</p>
+            </div>
+            <div class="spec" style="margin-top:1rem">
+              <p class="spec-h">PILLAR → MECHANICS · BLASTER BUDS</p>
+              <dl>
+                <div class="row"><dt>Pillar</dt><dd>Your enemy is your mirror — every input is also his.</dd></div>
+                <div class="row"><dt>Mechanic 1</dt><dd>The rival executes your moves mirrored. Planning = reading two boards at once.</dd></div>
+                <div class="row"><dt>Mechanic 2</dt><dd>Asteroids and walls break the symmetry. Every puzzle is a place where mirroring fails you — or saves you.</dd></div>
+                <div class="row"><dt>Win state</dt><dd>Line up the shot before your reflection lines up his.</dd></div>
+                <div class="row"><dt>Constraint</dt><dd>72-hour jam. One mechanic, proven or dead.</dd></div>
+              </dl>
+            </div>
+            <span class="ann"><button class="ann-btn" type="button" data-ann="n07" aria-expanded="false"><span class="mk">▲</span>n.07</button><span class="ann-note" hidden>Jam constraint: 72 hours. Winner, Mechanics category — the pillar held.</span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 4 · CHAMBER 02 — LOVE AT FIRST BITE (boss room) ============ -->
+    <p class="door" style="--key:var(--key-lafb)" aria-hidden="true">// ENTERING CHAMBER 02 — <b>LOVE AT FIRST BITE</b> · KEY LIGHT: BLOOD-ROSE · BOSS ROOM</p>
+    <section class="sec chamber bake" id="chamber-02" style="--key:var(--key-lafb)" aria-label="Love at First Bite">
+      <div class="chamber-grid flip">
+        <div>
+          <span class="tag bake-t" style="--i:0">CHAMBER 02 · HONEY BUN GAMES · <b>CO-FOUNDER</b> · 2023–2025</span>
+          <h2 class="display h2 bake-t" style="--i:1">Love at<br>First Bite</h2>
+          <div class="meta-line bake-t" style="--i:2"><span>Design + systems</span><span>Dating sim</span><span>Unity</span><span>Steam · coming soon</span></div>
+          <p class="lead bake-t" style="--i:3">Swipe, match, savor. Play a vampire working modern online dating: match with humans, spot fellow vampires, manage your thirst, and decide who becomes a partner, a friend, or dinner.</p>
+
+          <div class="edit-only">
+            <p class="dna">PAPERS, PLEASE <span class="op">×</span> REIGNS <span class="op">=</span> LOVE AT FIRST BITE</p>
+            <div class="diagram">
+              <svg viewBox="0 0 640 320" role="img" aria-label="The pressure economy of Love at First Bite: limited daily matches feed profile deduction and swiping; dates run on a tension bar; feeding or sparing feeds back into a thirst meter that rises every night, closing the loop">
+                <rect class="dg-box" x="30" y="36" width="170" height="34"/><text class="dg-txt" x="42" y="57">DAILY MATCHES · LIMITED</text>
+                <rect class="dg-box" x="240" y="36" width="180" height="34"/><text class="dg-txt" x="252" y="57">READ PROFILE · DEDUCE</text>
+                <rect class="dg-box" x="460" y="36" width="130" height="34"/><text class="dg-txt" x="478" y="57">SWIPE L / R</text>
+                <path class="dg-arrow" d="M200 53 H236"/><path class="dg-head" d="M236 49 l8 4 -8 4z"/>
+                <path class="dg-arrow" d="M420 53 H456"/><path class="dg-head" d="M456 49 l8 4 -8 4z"/>
+                <path class="dg-arrow" d="M525 70 V116"/><path class="dg-head" d="M521 116 l4 8 4 -8z"/>
+                <rect class="dg-box" x="430" y="120" width="180" height="40"/>
+                <text class="dg-txt" x="448" y="138">DATE · TENSION BAR</text>
+                <text class="dg-txt--sub" x="448" y="152">charm up · suspicion down</text>
+                <path class="dg-arrow" d="M520 160 V196"/><path class="dg-head" d="M516 196 l4 8 4 -8z"/>
+                <rect class="dg-box--gold" x="430" y="200" width="180" height="40"/>
+                <text class="dg-txt dg-txt--sig" x="448" y="218">DECIDE · FEED OR SPARE</text>
+                <text class="dg-txt--sub" x="448" y="232">some profiles bite back</text>
+                <path class="dg-arrow" d="M426 220 H250 V236"/><path class="dg-head" d="M245 236 l5 9 5 -9z"/>
+                <rect class="dg-box--ghost" x="180" y="240" width="200" height="32"/><text class="dg-txt dg-txt--sub" x="192" y="260">ENDINGS: PARTNER / FRIEND / DINNER</text>
+                <path class="dg-arrow--gold" d="M426 213 H115 V74"/><path class="dg-head--gold" d="M110 79 l5 -9 5 9z"/>
+                <rect class="dg-box--gold" x="30" y="120" width="170" height="40"/>
+                <text class="dg-txt dg-txt--sig" x="44" y="138">THIRST RISES NIGHTLY</text>
+                <text class="dg-txt--sub" x="44" y="152">the soft timer</text>
+                <text class="dg-txt--sub" x="30" y="26">PRESSURE WITHOUT FAIL STATES: SCARCITY IN, URGENCY BACK</text>
+                <text class="dg-txt--sub" x="30" y="300">LOOP: MATCHES ARE SCARCE → THIRST GROWS → EVERY SWIPE COSTS MORE NERVE THAN THE LAST</text>
+              </svg>
+              <p class="dg-cap">FIG.03 — THE PRESSURE ECONOMY (JAM CONCEPT → POWERUP+ PRE-INCUBATION → STEAM)</p>
+            </div>
+            <span class="ann"><button class="ann-btn" type="button" data-ann="n08" aria-expanded="false"><span class="mk">▲</span>n.08</button><span class="ann-note" hidden>Limited matches + growing thirst = a soft timer. Commitment without fail states.</span></span>
+          </div>
+
+          <div class="btn-row bake-t" style="--i:4">
+            <a class="btn" href="../projects/love-at-first-bite.html">Full case study →</a>
+            <a class="btn btn--ghost" href="https://store.steampowered.com/app/3206530/Love_at_first_Bite/" target="_blank" rel="noopener">Wishlist on Steam →</a>
+          </div>
+        </div>
+        <div>
+          <div class="play-only">
+            <div class="game-embed" data-upload="11929999" data-w="1280" data-h="740" data-page="https://honeybun-games.itch.io/love-at-first-bite" data-title="Love at First Bite — playable demo">
+              <picture><source srcset="../assets/img/projects/love-at-first-bite/cover.webp" type="image/webp"><img class="ve-poster bake-t" style="--i:2" src="../assets/img/projects/love-at-first-bite/cover.png" alt="Play the Love at First Bite demo" loading="lazy"></picture>
+              <span class="ve-label">Playable demo — the boss room</span>
+              <button class="ve-play" type="button" aria-label="Play the Love at First Bite demo in your browser"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button>
+            </div>
+            <p class="ve-alt">Best on desktop · <a href="https://honeybun-games.itch.io/love-at-first-bite" target="_blank" rel="noopener">Play on itch.io ↗</a></p>
+          </div>
+          <div class="edit-only spec">
+            <p class="spec-h">WHY THE DEMO SITS HERE</p>
+            <dl>
+              <div class="row"><dt>Claim</dt><dd>"Builds what he designs."</dd></div>
+              <div class="row"><dt>Artifact</dt><dd>The shipped build, playable inside its own design document. Flip to PLAY mode and press play.</dd></div>
+              <div class="row"><dt>Cost</dt><dd>Zero third-party requests until you choose to run it.</dd></div>
+            </dl>
+          </div>
+          <span class="ann edit-only"><button class="ann-btn" type="button" data-ann="n09" aria-expanded="false"><span class="mk">▲</span>n.09</button><span class="ann-note" hidden>The build loads only when you press play. Respecting your data plan is also game feel.</span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 5 · CHAMBER 03 — THE JAM SHELF ============ -->
+    <p class="door" style="--key:var(--key-r4d)" aria-hidden="true">// ENTERING CHAMBER 03 — <b>THE JAM SHELF</b> · THREE GAMES, THREE DEADLINES</p>
+    <section class="sec chamber bake" id="chamber-03" style="--key:var(--key-r4d)" aria-label="More work">
+      <div class="sec-head">
+        <span class="tag bake-t" style="--i:0">CHAMBER 03 · <b>ALSO SHIPPED</b> · JAMS &amp; SOLO BUILDS</span>
+        <h2 class="display h2 bake-t" style="--i:1">The jam shelf</h2>
+        <p class="lead bake-t" style="--i:2">Three games made to a deadline. Each one exists to prove a single design idea.</p>
+        <span class="ann edit-only"><button class="ann-btn" type="button" data-ann="n10" aria-expanded="false"><span class="mk">▲</span>n.10</button><span class="ann-note" hidden>Three games, three single ideas, three deadlines met.</span></span>
+      </div>
+      <div class="shelf">
+        <article class="shelf-card bake-t" style="--i:3">
+          <a class="cardlink" href="../projects/birds-of-a-feather.html">
+            <div class="cover play-only"><picture><source srcset="../assets/img/projects/birds-of-a-feather/cover.webp" type="image/webp"><img src="../assets/img/projects/birds-of-a-feather/cover.png" alt="Birds of a Feather" loading="lazy"></picture></div>
+            <div class="body">
+              <h3>Birds of a Feather</h3>
+              <p class="thesis">One pigeon, one developer, all of it.</p>
+              <p class="meta">Solo dev · 3D action · 2024</p>
+            </div>
+          </a>
+          <div class="body edit-only" style="padding-top:0">
+            <div class="spec">
+              <dl>
+                <div class="row"><dt>Pillar</dt><dd>One dev, every discipline.</dd></div>
+                <div class="row"><dt>Proof</dt><dd>Design, code, art, audio — a 3D action game shipped alone.</dd></div>
+              </dl>
+            </div>
+          </div>
+        </article>
+        <article class="shelf-card bake-t" style="--i:4">
+          <a class="cardlink" href="../projects/r4d10head.html">
+            <div class="cover play-only"><video src="../assets/img/projects/r4d10-head/cover.mp4" poster="../assets/img/projects/r4d10-head/poster.jpg" width="728" height="406" autoplay muted loop playsinline preload="metadata" aria-label="R4D10HEAD gameplay"></video></div>
+            <div class="body">
+              <h3>R4D10HEAD</h3>
+              <p class="thesis">Move and you are loud. Stop and you are blind.</p>
+              <p class="meta">Game &amp; level design · Stealth · 2022</p>
+            </div>
+          </a>
+          <div class="body edit-only" style="padding-top:0">
+            <div class="spec">
+              <dl>
+                <div class="row"><dt>Pillar</dt><dd>Perception is a resource you spend by existing.</dd></div>
+                <div class="row"><dt>Proof</dt><dd>Movement makes noise; stillness cuts vision. Every step is a trade.</dd></div>
+              </dl>
+            </div>
+          </div>
+          <button class="pigeon" type="button" data-pigeon="4" style="right:.4rem;top:.4rem" aria-label="A stray pigeon — collect it"><img src="../assets/img/hero/pigeon.webp" alt=""></button>
+        </article>
+        <article class="shelf-card bake-t" style="--i:5">
+          <a class="cardlink" href="../projects/viktors-mayhem.html">
+            <div class="cover play-only"><picture><source srcset="../assets/img/projects/la-ruleta-del-infortunio/cover.webp" type="image/webp"><img src="../assets/img/projects/la-ruleta-del-infortunio/cover.png" alt="Viktor's Mayhem" loading="lazy"></picture></div>
+            <div class="body">
+              <h3>Viktor's Mayhem</h3>
+              <p class="thesis">A slot machine picks your curse. Fight anyway.</p>
+              <p class="meta">Game design · Arena action · 2022</p>
+            </div>
+          </a>
+          <div class="body edit-only" style="padding-top:0">
+            <div class="spec">
+              <dl>
+                <div class="row"><dt>Pillar</dt><dd>The handicap is the strategy generator.</dd></div>
+                <div class="row"><dt>Proof</dt><dd>A random curse per round forces a new build order every run.</dd></div>
+              </dl>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ 6 · DEV COMMENTARY (about) ============ -->
+    <section class="sec bake" id="commentary" aria-label="About">
+      <div class="sec-head">
+        <span class="tag bake-t" style="--i:0">DEV COMMENTARY · <b>THE DESIGNER BEHIND IT</b></span>
+        <h2 class="display h2 bake-t" style="--i:1">Commentary</h2>
+      </div>
+      <div class="commentary-grid">
+        <div>
+          <div class="portrait bake-t" style="--i:2">
+            <picture><source srcset="../assets/img/portrait-sm.webp" type="image/webp"><img src="../assets/img/portrait-sm.jpg" alt="Portrait of Aitor Morales" loading="lazy"></picture>
+          </div>
+          <span class="ann edit-only"><button class="ann-btn" type="button" data-ann="n11" aria-expanded="false"><span class="mk">▲</span>n.11</button><span class="ann-note" hidden>The designer appears after the work. Order is information.</span></span>
+        </div>
+        <div>
+          <p class="lead bake-t" style="--i:2">Madrid-based game &amp; level designer. Designer and developer at Gimica (JustPlay), shipping features across a portfolio of live mobile games with art, engineering and product. Co-founder of Honey Bun Games, where we made Love at First Bite. I design systems, then build them.</p>
+          <div class="nodes edit-only">
+            <div class="node"><button type="button" aria-expanded="false" data-node>◈ 01 · U-TAD — WHY DESIGN AND CODE</button><div class="node-body" hidden>Software Engineering first, then Game &amp; Interactive Media Design at U-tad. I never fully picked a side between design and code — that refusal became the job description.</div></div>
+            <div class="node"><button type="button" aria-expanded="false" data-node>◈ 02 · GIMICA — FEATURES THAT TRAVEL</button><div class="node-body" hidden>Reusable gameplay systems — boosters, combos, chest and reward systems, rewarded-video minigames — built once, integrated into game after game. Plus adaptive difficulty, level progression, and A/B tests run end to end, from hypothesis to rollout.</div></div>
+            <div class="node"><button type="button" aria-expanded="false" data-node>◈ 03 · HONEY BUN GAMES — THE CO-FOUNDER YEARS</button><div class="node-body" hidden>Founded with two teammates after Indie Spain Jam 2023. Through the PowerUp+ pre-incubation program to a Steam page. Love at First Bite is the proof.</div></div>
+            <div class="node"><button type="button" aria-expanded="false" data-node>◈ 04 · BLISS PICTURES — GAMES MEET FILM</button><div class="node-body" hidden>Two years with a film studio, building the playable demo of "Luzia: Rainbow in the Darkness" — game feel in service of someone else's story.</div></div>
+            <div class="node"><button type="button" aria-expanded="false" data-node>◈ 05 · MADRID — BASE OF OPERATIONS</button><div class="node-body" hidden>Madrid, Spain. Remote-friendly, jam-hardened, ships in English and Spanish.</div></div>
+          </div>
+          <div class="btn-row bake-t" style="--i:3">
+            <a class="btn" href="../about.html">Full story →</a>
+            <a class="btn btn--ghost" href="../resume.html">View resume →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 7 · LEVEL COMPLETE (contact) ============ -->
+    <section class="sec complete bake" id="level-complete" aria-label="Contact">
+      <span class="tag bake-t" style="--i:0">EXIT — <b>LEVEL COMPLETE</b> · PLAYTESTER FEEDBACK WELCOME</span>
+      <h2 class="display h2 bake-t" style="--i:1">Let's build<br>something.</h2>
+      <div class="results bake-t" style="--i:2" aria-label="Your playtest results">
+        <div class="rrow"><span>PATH COVERAGE</span><b data-r="cov">—</b></div>
+        <div class="rrow"><span>TIME IN LEVEL</span><b data-r="time">—</b></div>
+        <div class="rrow"><span>DESIGNER NOTES READ</span><b data-r="notes">—</b></div>
+        <div class="rrow"><span>FLOCK RECOVERED</span><b data-r="flock">—</b></div>
+        <div class="rrow grade"><span>PLAYTESTER GRADE</span><b data-r="grade">—</b></div>
+      </div>
+      <button class="pigeon" type="button" data-pigeon="5" style="right:1.2rem;bottom:1.2rem" aria-label="A stray pigeon — collect it"><img src="../assets/img/hero/pigeon.webp" alt=""></button>
+      <span class="ann edit-only"><button class="ann-btn" type="button" data-ann="n12" aria-expanded="false"><span class="mk">▲</span>n.12</button><span class="ann-note" hidden>Every level ends at a door. This one opens with an email.</span></span>
+      <p><a class="big-mail bake-t" style="--i:3" href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a></p>
+      <p><button class="copy-mail" type="button" data-copy="aitormorales@honeybungames.com" aria-live="polite">Copy email</button></p>
+      <div class="social bake-t" style="--i:4">
+        <a href="https://aitormorales.itch.io/" target="_blank" rel="noopener">itch.io</a>
+        <a href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://www.instagram.com/aitor_21m/" target="_blank" rel="noopener">Instagram</a>
+      </div>
+      <div class="postmortem" id="postmortem" hidden>
+        <span class="tag">SECRET NOTE — FLOCK 5/5 · POSTMORTEM OF THIS WEBSITE</span>
+        v1 was a template. v2 was a redesign. v3 was a spaceship. v4 is a level.
+        The scope was cut three times and shipped once — that's the job. Thanks for
+        playtesting; the exit door is right above you.
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="foot">
+    <span>V4 · "GREYBOX / GOLD" — CONCEPT BUILD · JUL 2026</span>
+    <span>SPACE GROTESK + IBM PLEX MONO · NO FRAMEWORKS · NO TRACKERS · TELEMETRY IS SCROLL MATH</span>
+  </footer>
+
+  <script src="./js/v4.js?v=2"></script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Aitor Morales — The Long Shot (v5 prototype)</title>
+  <meta name="description" content="Prototype: a portfolio you traverse. A side-scrolling level for a game & level designer.">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#05070d">
+  <link rel="shortcut icon" href="../favicon.png">
+  <link rel="preload" as="font" type="font/woff2" href="assets/font/space-grotesk-var.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="assets/font/plex-mono-600.woff2" crossorigin>
+  <link rel="stylesheet" href="./css/v5.css?v=1">
+</head>
+<body data-fidelity="gold">
+
+  <!-- ============ THE STAGE (the traversable world) ============ -->
+  <div class="stage" id="stage" role="application" aria-label="Traversable portfolio level. Use arrow keys to move, R for read mode.">
+    <div class="sky" id="sky"></div>
+    <div class="sun" id="sun" aria-hidden="true"></div>
+    <canvas class="fx" id="fx" aria-hidden="true"></canvas>
+
+    <div class="world" id="world" aria-hidden="true">
+      <!-- far background (depth 0.15) -->
+      <div class="layer" data-depth="0.15">
+        <div class="hill" style="left:600px;width:900px;height:34vh;background:linear-gradient(180deg,#2b4a7a,#1a2f52)"></div>
+        <div class="hill" style="left:2400px;width:1100px;height:40vh;background:linear-gradient(180deg,#6a4a6e,#3a2a52)"></div>
+        <div class="hill" style="left:4200px;width:1000px;height:30vh;background:linear-gradient(180deg,#243a63,#111d38)"></div>
+      </div>
+      <!-- mid background (depth 0.4) -->
+      <div class="layer" data-depth="0.4">
+        <div class="hill" style="left:1200px;width:700px;height:26vh;background:linear-gradient(180deg,#2f5488,#1b3560)"></div>
+        <div class="slab" style="left:1550px;bottom:26vh;width:120px;height:22vh;background:#c98a3a;border-radius:4px"></div>
+        <div class="slab" style="left:1720px;bottom:26vh;width:90px;height:30vh;background:#e0a04e;border-radius:4px"></div>
+        <div class="hill" style="left:3300px;width:600px;height:22vh;background:linear-gradient(180deg,#7a3a52,#3a1d33)"></div>
+      </div>
+      <!-- ground (depth 1) -->
+      <div class="layer" data-depth="1">
+        <div class="ground" id="ground"></div>
+      </div>
+      <div class="world-grid" aria-hidden="true"></div>
+
+      <!-- CONTENT PLANE (depth 1) — the zones live here -->
+      <div class="layer" data-depth="1" id="content">
+
+        <!-- ZONE: DAWN / HERO  (world x = 0) -->
+        <section class="zone" data-x="0" id="zone-hero">
+          <div class="zone-inner">
+            <p class="kicker">THE LONG SHOT — ONE LEVEL, ONE TAKE · GAME &amp; LEVEL DESIGNER</p>
+            <h1 class="mega">Aitor<br>Morales</h1>
+            <p class="tagline">Game &amp; level designer who ships, and builds what he designs.</p>
+            <p class="prompt">▸ scroll / drag / press → to move through the level</p>
+            <span class="anno" style="top:12%;left:2%">SIGHTLINE: NAME → TAGLINE → HORIZON (GIMICA)</span>
+          </div>
+        </section>
+
+        <!-- ZONE: THE HUB / GIMICA (world x = 1700) -->
+        <section class="zone" data-x="1700" id="zone-gimica">
+          <div class="zone-inner">
+            <p class="zlabel">THE HUB · NOW — GIMICA × JUSTPLAY</p>
+            <h2 class="ztitle">Gimica</h2>
+            <p class="zbody">A casual publisher in the JustPlay ecosystem. I build reusable gameplay features that ship across the whole portfolio — and run the A/B tests that prove they work.</p>
+            <div class="pipe" aria-hidden="true">
+              <span class="step">BRIEF</span><span class="arw">→</span>
+              <span class="step">SPEC</span><span class="arw">→</span>
+              <span class="step">PROTO</span><span class="arw">→</span>
+              <span class="step">BUILD</span><span class="arw">→</span>
+              <span class="step">QA</span><span class="arw">→</span>
+              <span class="step gate">A/B ⑃</span><span class="arw">→</span>
+              <span class="step gate">ROLLOUT</span>
+            </div>
+            <div class="zbtns"><a class="zbtn" href="../projects/gimica.html">Case study →</a></div>
+            <span class="anno" style="top:6%;left:2%">OBJECTIVE ZONE — CREDENTIAL ON THE CRITICAL PATH</span>
+          </div>
+        </section>
+        <!-- stat pickups, placed just before the hub so you collect them walking in -->
+        <div class="pickup" data-pickup="50+ GAMES" style="left:1300px;top:34%"><b>50+</b><span>Live games</span></div>
+        <div class="pickup" data-pickup="25M+ DL" style="left:1480px;top:60%"><b>25M+</b><span>Downloads</span></div>
+        <div class="pickup" data-pickup="500K+ DAU" style="left:1620px;top:30%"><b>500K+</b><span>Daily players</span></div>
+
+        <!-- ZONE: CHAMBER 01 / BLASTER BUDS (world x = 3300) -->
+        <section class="zone" data-x="3300" id="zone-blaster">
+          <div class="zone-inner">
+            <p class="zlabel">CHAMBER 01 · JAM WINNER — MECHANICS · 2020</p>
+            <h2 class="ztitle">Blaster Buds</h2>
+            <p class="zbody">A grid puzzle in the vacuum of space: your rival mirrors every move you make. <b>Try it —</b> tap a square. The orange token mirrors you across the axis.</p>
+            <div class="board" id="board" role="group" aria-label="Mirror-move demo">
+              <button class="cell" data-i="0"></button><button class="cell" data-i="1"></button><button class="cell" data-i="2"></button>
+              <button class="cell" data-i="3"></button><button class="cell" data-i="4"></button><button class="cell" data-i="5"></button>
+              <button class="cell" data-i="6"></button><button class="cell" data-i="7"></button><button class="cell" data-i="8"></button>
+            </div>
+            <p class="board-cap" id="boardcap">The pillar in two clicks: plan for two boards at once.</p>
+            <div class="zbtns"><a class="zbtn" href="../projects/blaster-buds.html">Case study →</a></div>
+            <span class="anno" style="top:6%;left:2%">PLAYABLE PILLAR — MIRROR AXIS = THE PUZZLE</span>
+          </div>
+        </section>
+
+        <!-- ZONE: NIGHT / EXIT (world x = 4800) -->
+        <section class="zone" data-x="4800" id="zone-exit">
+          <div class="zone-inner">
+            <p class="zlabel">EXIT · LEVEL COMPLETE — PLAYTESTER FEEDBACK WELCOME</p>
+            <h2 class="ztitle">Let's build<br>something.</h2>
+            <p class="zbody" id="telemetry">Traversal: <b data-t="cov">0%</b> · time <b data-t="time">0:00</b> · pickups <b data-t="pick">0/3</b></p>
+            <p style="margin-top:1.4rem"><a class="big-mail" href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a></p>
+            <div class="zbtns">
+              <a class="zbtn zbtn--solid" href="../resume.html">Résumé →</a>
+              <a class="zbtn" href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank" rel="noopener">LinkedIn →</a>
+              <a class="zbtn" href="https://aitormorales.itch.io/" target="_blank" rel="noopener">itch.io →</a>
+            </div>
+            <span class="anno" style="top:6%;left:2%">EVERY LEVEL ENDS AT A DOOR — THIS ONE OPENS WITH AN EMAIL</span>
+          </div>
+        </section>
+
+      </div><!-- /content -->
+    </div><!-- /world -->
+
+    <div class="pigeon idle" id="pigeon"><img src="../assets/img/hero/pigeon.webp" alt=""></div>
+  </div><!-- /stage -->
+
+  <p class="map-hint">FULL LEVEL — CLICK A ZONE TO DIVE IN · PRESS M TO RETURN</p>
+
+  <!-- ============ HUD ============ -->
+  <div class="hud">
+    <a class="brand" href="#zone-hero">AITOR MORALES <span>· THE LONG SHOT</span></a>
+    <div class="collected" aria-label="Credentials collected">
+      <span class="chip" data-chip="50+ GAMES">50+</span>
+      <span class="chip" data-chip="25M+ DL">25M+</span>
+      <span class="chip" data-chip="500K+ DAU">500K+</span>
+    </div>
+  </div>
+
+  <!-- ============ Controls ============ -->
+  <div class="controls">
+    <button class="ctl ctl--fid" id="btnFid" type="button"><span class="k">G</span><span id="fidWord">Blockout view</span></button>
+    <button class="ctl" id="btnMap" type="button"><span class="k">M</span>Level map</button>
+    <button class="ctl" id="btnRead" type="button"><span class="k">R</span>Read mode</button>
+  </div>
+
+  <!-- ============ Pacing-curve nav ============ -->
+  <nav class="pacing" id="pacing" aria-label="Level pacing — scrub to navigate">
+    <span class="pacing-hint">PACING CURVE — DRAG TO TRAVERSE</span>
+    <svg id="pcSvg" viewBox="0 0 1000 88" preserveAspectRatio="none" role="slider" aria-label="Level position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0"></svg>
+  </nav>
+
+  <!-- ============ Read Mode (the recruiter / a11y / no-JS document) ============ -->
+  <div class="readmode" id="readmode" hidden>
+    <div class="rm-wrap">
+      <button class="rm-close" id="rmClose" type="button">✕ Back to the level</button>
+      <p class="rm-kicker">Read mode · the fast version</p>
+      <h1>Aitor Morales</h1>
+      <p><strong>Game &amp; level designer who ships, and builds what he designs.</strong> Madrid-based. This is the plain-document version of the level — same content, no traversal required.</p>
+
+      <h2>Now — Gimica × JustPlay</h2>
+      <div class="rm-stats"><span><b>50+</b>live games</span><span><b>25M+</b>downloads</span><span><b>500K+</b>daily players</span></div>
+      <p>Designer &amp; developer at Gimica, a casual publisher in the JustPlay ecosystem. I build reusable gameplay features (boosters, combos, chest &amp; reward systems, rewarded-video minigames), design adaptive difficulty and progression, and run A/B tests end to end. <a href="../projects/gimica.html">Full case study →</a></p>
+
+      <h2>Blaster Buds — jam winner, Mechanics</h2>
+      <p>A grid puzzle in the vacuum of space; your opponent mirrors every move you make. The puzzle is where the mirror symmetry breaks. <a href="../projects/blaster-buds.html">Case study →</a></p>
+
+      <h2>Love at First Bite — Honey Bun Games</h2>
+      <p>A vampire dating sim: swipe, match, and decide who becomes a partner, a friend, or dinner. Deduction as the core verb; a growing-thirst pressure economy; dates as tension-bar minigames. <a href="../projects/love-at-first-bite.html">Case study →</a> · <a href="https://store.steampowered.com/app/3206530/Love_at_first_Bite/" target="_blank" rel="noopener">Steam →</a></p>
+
+      <h2>Also shipped</h2>
+      <p>Birds of a Feather (solo dev, 3D action). R4D10HEAD (stealth — move and you're loud, stop and you're blind). Viktor's Mayhem (a slot machine picks your curse).</p>
+
+      <h2>Get in touch</h2>
+      <p><a href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a> · <a href="../resume.html">Résumé</a> · <a href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://aitormorales.itch.io/" target="_blank" rel="noopener">itch.io</a></p>
+    </div>
+  </div>
+
+  <div class="flip-wipe" id="flipWipe" aria-hidden="true"></div>
+
+  <script src="./js/v5.js?v=1"></script>
+</body>
+</html>
