@@ -46,11 +46,11 @@
 
 /* ---------- Reset ---------- */
 *,*::before,*::after{box-sizing:border-box}
-html{font-size:62.5%;-webkit-text-size-adjust:100%;scroll-behavior:smooth;overflow-x:clip}
+html{font-size:62.5%;-webkit-text-size-adjust:100%;scroll-behavior:smooth;overflow-x:hidden;overflow-x:clip}
 @media (max-width:420px){html{font-size:56.25%}}   /* 9px base — stops runaway vw sizing */
 body{
   margin:0;font-family:var(--font);font-weight:400;font-size:1.7rem;line-height:1.6;
-  color:var(--white);background:var(--void);overflow-x:clip;-webkit-font-smoothing:antialiased;
+  color:var(--white);background:var(--void);overflow-x:hidden;overflow-x:clip;-webkit-font-smoothing:antialiased;
 }
 img{max-width:100%;height:auto;display:block}
 /* <picture> wraps our images for WebP; contents keeps it invisible to layout,
@@ -62,6 +62,10 @@ h1,h2,h3,h4{margin:0;line-height:1.02;font-weight:500}
 p{margin:0}
 button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
 :focus-visible{outline:2px solid var(--violet-bright);outline-offset:5px;border-radius:3px}
+::selection{background:rgba(95,108,230,.55);color:#fff}
+/* progressive niceties — ignored by browsers that don't know them */
+h1,h2,h3{text-wrap:balance}
+.lead,.prose{text-wrap:pretty}
 
 /* ---------- Fixed background ---------- */
 .bg{position:fixed;inset:0;z-index:-4;background:var(--grad-sky)}
@@ -119,10 +123,10 @@ body.menu-open .menu-btn i:nth-child(2){top:16px;width:20px;transform:rotate(-45
 @media (max-width:900px){ .nav{display:none} .menu-btn{display:block} }
 
 /* mobile drawer — compact, page stays visible &amp; dimmed behind */
-.drawer-backdrop{position:fixed;inset:0;z-index:980;background:rgba(2,8,20,.55);backdrop-filter:blur(3px);
+.drawer-backdrop{position:fixed;inset:0;z-index:980;background:rgba(2,8,20,.55);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
   opacity:0;visibility:hidden;transition:opacity .45s var(--ease-out),visibility .45s}
 body.menu-open .drawer-backdrop{opacity:1;visibility:visible}
-.drawer{position:fixed;top:0;right:0;height:100dvh;width:min(86vw,370px);z-index:985;color:#fff;
+.drawer{position:fixed;top:0;right:0;height:100vh;height:100dvh;width:min(86vw,370px);z-index:985;color:#fff;
   background:linear-gradient(210deg,#0a1f3d 0%,#161036 58%,#3a1442 100%);border-left:1px solid var(--line-2);
   padding:calc(var(--header-h) + 1.5rem) clamp(2.4rem,7vw,3.4rem) 3rem;display:flex;flex-direction:column;
   /* visibility keeps the off-canvas links out of the tab order and the a11y tree when
@@ -147,9 +151,9 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
 /* NOTE: no scroll-behavior:smooth here. The JS controller writes scrollTop every frame;
    a CSS smooth-scroll would re-animate each write (that was the chugging + the "back button
    scrolls down from the top" bug). Smooth scrolling is requested explicitly, per call. */
-.snap{height:100dvh;overflow-y:auto;overflow-x:clip;scroll-snap-type:y mandatory;scroll-behavior:auto}
+.snap{height:100vh;height:100dvh;overflow-y:auto;overflow-x:hidden;overflow-x:clip;scroll-snap-type:y mandatory;scroll-behavior:auto}
 .slides-js .snap{scroll-snap-type:none}   /* desktop: JS slide controller drives the snap */
-.panel{min-height:100dvh;scroll-snap-align:start;position:relative;display:flex;align-items:center;
+.panel{min-height:100vh;min-height:100dvh;scroll-snap-align:start;position:relative;display:flex;align-items:center;
   padding:calc(var(--header-h) + 2rem) var(--pad) 6rem}
 .panel[data-theme="light"]{background:#eef1f6;color:var(--ink)}
 .panel[data-theme="light"] .lead{color:#43526b}
@@ -268,7 +272,7 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
 /* mobile: right-hand rail — dots elongate into a pill, plus a live "02/06" counter */
 @media (max-width:900px){
   .slide-nav{left:auto;right:1.2rem;gap:.7rem;padding:1rem .7rem;border-radius:50px;
-    background:rgba(4,12,26,.42);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.1)}
+    background:rgba(4,12,26,.42);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.1)}
   .slide-dot{width:6px;height:6px;border-radius:6px;border-color:rgba(255,255,255,.4)}
   .slide-dot:hover{transform:none}
   .slide-dot.active{height:20px;transform:none;box-shadow:0 0 10px rgba(139,150,255,.75)}
@@ -312,7 +316,7 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
 .work-media::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 55%,rgba(95,108,230,.18));opacity:0;transition:opacity .5s}
 .work-media:hover::after{opacity:1}
 .work-media .plate{position:absolute;left:1.4rem;bottom:1.4rem;font-family:var(--mono);font-size:1.1rem;letter-spacing:.16em;text-transform:uppercase;
-  color:#fff;background:rgba(6,12,26,.5);backdrop-filter:blur(6px);padding:.6rem 1.1rem;border-radius:30px;
+  color:#fff;background:rgba(6,12,26,.5);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:.6rem 1.1rem;border-radius:30px;
   opacity:0;transform:translateY(8px);transition:opacity .4s var(--ease-out),transform .4s var(--ease-out)}
 .work-media:hover .plate{opacity:1;transform:translateY(0)}
 .work-media .page-num{position:absolute;right:-1rem;top:-3.4rem;font-family:var(--num);font-size:clamp(5rem,9vw,9rem);color:var(--white);
@@ -372,7 +376,7 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
 .about-portrait img{width:100%;height:100%;object-fit:cover;object-position:center 22%;transition:transform .9s var(--ease-out)}
 .about-portrait:hover img{transform:scale(1.05)}
 .about-portrait .plate{position:absolute;left:1.4rem;bottom:1.4rem;font-family:var(--mono);font-size:1.1rem;letter-spacing:.16em;text-transform:uppercase;
-  color:#fff;background:rgba(6,12,26,.5);backdrop-filter:blur(6px);padding:.6rem 1.1rem;border-radius:30px;
+  color:#fff;background:rgba(6,12,26,.5);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:.6rem 1.1rem;border-radius:30px;
   opacity:0;transform:translateY(8px);transition:opacity .4s var(--ease-out),transform .4s var(--ease-out)}
 .about-portrait:hover .plate{opacity:1;transform:translateY(0)}
 @media (max-width:900px){.about-portrait{max-width:none;aspect-ratio:16/11;margin:0}}
@@ -520,11 +524,16 @@ html.vt-arrive .project-hero .reveal, html.vt-arrive .project-hero .reveal-media
 .video-embed:hover .ve-play{transform:translate(-50%,-50%) scale(1.1);background:var(--violet-bright)}
 .ve-play svg{width:2.8rem;height:2.8rem;margin-left:.4rem;fill:currentColor}
 .ve-label{position:absolute;left:1.4rem;top:1.4rem;z-index:2;font-family:var(--mono);font-size:1.1rem;letter-spacing:.16em;
-  text-transform:uppercase;color:#fff;background:rgba(6,12,26,.5);backdrop-filter:blur(6px);padding:.5rem 1rem;border-radius:30px}
+  text-transform:uppercase;color:#fff;background:rgba(6,12,26,.5);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:.5rem 1rem;border-radius:30px}
 .video-embed iframe{width:100%;height:100%;border:0;display:block}
 .video-embed.is-playing{cursor:default}
 .video-embed.is-playing::after{opacity:0}
 .video-embed.is-playing .ve-label{display:none}
+/* escape hatch for embed-blocking browsers (DuckDuckGo's Duck Player, strict
+   tracker blockers, corporate proxies): the trailer is always reachable */
+.ve-alt{margin:-2.6rem 0 3.6rem;text-align:right;font-family:var(--mono);font-size:1.15rem;letter-spacing:.1em;text-transform:uppercase}
+.ve-alt a{color:var(--faint);transition:color .3s}
+.ve-alt a:hover{color:var(--violet-bright)}
 
 .proj-foot-nav{display:flex;justify-content:space-between;gap:2rem;border-top:1px solid var(--line);padding-top:2.6rem;margin-top:2rem;
   font-family:var(--mono);font-size:1.3rem;letter-spacing:.08em;text-transform:uppercase}
@@ -549,6 +558,29 @@ html.vt-arrive .project-hero .reveal, html.vt-arrive .project-hero .reveal-media
    object-fit:cover stops the image squashing while the box morphs. */
 ::view-transition-old(vt-hero),::view-transition-new(vt-hero){
   animation-duration:.66s;height:100%;width:100%;object-fit:cover;mix-blend-mode:normal}
+
+/* =====================================================================
+   Copy email — mailto: links dead-end in browsers without a mail handler,
+   so the address is always one click from the clipboard as well
+   ===================================================================== */
+.copy-mail{display:inline-flex;align-items:center;gap:.8rem;align-self:flex-start;font-family:var(--mono);font-size:1.2rem;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line-2);border-radius:40px;
+  padding:.8rem 1.6rem;transition:color .3s,border-color .3s,background .3s}
+.copy-mail:hover{color:#fff;border-color:var(--violet-bright);background:rgba(95,108,230,.12)}
+.copy-mail.copied{color:#4fd1a1;border-color:rgba(79,209,161,.6)}
+.foot-links .copy-mail{color:#fff;border-color:rgba(255,255,255,.3);align-self:auto;padding:1rem 1.8rem;font-size:1.25rem;letter-spacing:.12em}
+.foot-links .copy-mail:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.65)}
+.foot-links .copy-mail.copied{color:#8effd4;border-color:rgba(142,255,212,.7)}
+
+/* =====================================================================
+   Reading progress — long-scroll pages only, scroll-driven, no JS rAF.
+   Behind @supports: browsers without scroll timelines simply never see it.
+   ===================================================================== */
+@supports (animation-timeline: scroll()){
+  @keyframes readProgress{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  .read-progress{position:fixed;top:0;left:0;width:100%;height:2px;z-index:1100;transform-origin:0 50%;
+    background:var(--grad-accent);animation:readProgress linear both;animation-timeline:scroll(root)}
+}
 
 /* =====================================================================
    Reduced motion
@@ -666,7 +698,7 @@ a.proj-line:hover b{color:var(--violet-bright)}
 @media print{
   @page{size:A4;margin:10mm}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .site-header,.drawer,.drawer-backdrop,.bg,.bg-glow,.bg-stars,.grain,.resume-actions,.cursor-dot,.cursor-ring,.slide-nav,.scroll-hint,.back-link,.no-print,.rsec-hint{display:none!important}
+  .site-header,.drawer,.drawer-backdrop,.bg,.bg-glow,.bg-stars,.grain,.resume-actions,.cursor-dot,.cursor-ring,.slide-nav,.scroll-hint,.back-link,.no-print,.rsec-hint,.read-progress,.copy-mail{display:none!important}
   .rsec[aria-label="Core strengths"]{display:none!important}   /* meters are web-only flair; Skills covers it in print */
   html,body{background:#fff!important;color:#1a1a2e!important}
   body{font-size:9.5pt;line-height:1.34}

@@ -10,6 +10,13 @@
   var fine = matchMedia("(hover:hover) and (pointer:fine)").matches;
   var coarse = matchMedia("(hover:none) and (pointer:coarse)").matches;
   var clamp = function (v, a, b) { return v < a ? a : v > b ? b : v; };
+  // Older WebKit ignores scroll options objects entirely (silent no-op) — detect once
+  // and fall back to instant scrollTop writes so navigation always actually happens.
+  var smoothOK = "scrollBehavior" in document.documentElement.style;
+  function scrollElTo(el, top, smooth) {
+    if (smoothOK) el.scrollTo({ top: top, behavior: smooth && !reduce ? "smooth" : "auto" });
+    else el.scrollTop = top;
+  }
 
   /* ---- Run heavy rAF work only AFTER the page-morph finishes ----
      A cross-document View Transition composites snapshots of both pages. Booting the
@@ -231,7 +238,7 @@
     // touch / reduced-motion: hand it to the browser (native snap keeps the settle honest)
     if (!slide.active) {
       slide.index = i; updateSlideNav();
-      slide.snap.scrollTo({ top: end, behavior: reduce ? "auto" : "smooth" });
+      scrollElTo(slide.snap, end, true);
       return;
     }
     if (slide.animating || Math.abs(slide.snap.scrollTop - end) < 2) { slide.index = i; updateSlideNav(); return; }
@@ -293,7 +300,7 @@
       var dir = down ? 1 : -1, room = panelRoom(dir);
       if (room > 1) {                          // tall panel: step through it, never past it
         var step = Math.min(room, k === "ArrowDown" || k === "ArrowUp" ? 140 : slide.snap.clientHeight * 0.85);
-        slide.snap.scrollBy({ top: dir * step, behavior: "smooth" });
+        scrollElTo(slide.snap, slide.snap.scrollTop + dir * step, true);
       } else {
         slideGo(slide.index + dir, dir < 0);
       }
@@ -304,11 +311,17 @@
   function initReveals() {
     var t = document.querySelectorAll(".panel, .section-block, .reveal-solo");
     if (!t.length) return;
-    if (reduce || !("IntersectionObserver" in window)) { t.forEach(function (x) { x.classList.add("is-in"); }); return; }
+    var showAll = function () { t.forEach(function (x) { x.classList.add("is-in"); }); };
+    if (reduce || !("IntersectionObserver" in window)) { showAll(); return; }
+    var fired = false;
     var io = new IntersectionObserver(function (en) {
+      fired = true;
       en.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); } });
     }, { threshold: 0.16, rootMargin: "0px 0px -6% 0px" });
     t.forEach(function (x) { io.observe(x); });
+    // watchdog: a healthy observer ALWAYS delivers an initial record. If a privacy
+    // browser stubs it out, content must never stay invisible — reveal everything.
+    setTimeout(function () { if (!fired) showAll(); }, 3000);
   }
 
   /* ===================== Menu (persistent chrome) =====================
@@ -459,6 +472,45 @@
         if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); }
       });
     });
+  }
+
+  /* ===================== Copy email (per mount) =====================
+     mailto: buttons silently dead-end on machines without a mail handler, so the
+     address is also one click from the clipboard. Clipboard API first, execCommand
+     for older engines. */
+  function initCopyMail() {
+    document.querySelectorAll(".copy-mail").forEach(function (b) {
+      if (b._cm) return; b._cm = true;
+      var base = b.textContent;
+      b.addEventListener("click", function () {
+        var text = b.getAttribute("data-copy") || "";
+        var done = function () {
+          b.classList.add("copied"); b.textContent = "Copied ✓";
+          setTimeout(function () { b.classList.remove("copied"); b.textContent = base; }, 2000);
+        };
+        var legacy = function () {
+          var ta = document.createElement("textarea");
+          ta.value = text; ta.setAttribute("readonly", ""); ta.style.cssText = "position:fixed;opacity:0";
+          document.body.appendChild(ta); ta.select();
+          try { if (document.execCommand("copy")) done(); } catch (_) {}
+          ta.remove();
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(done, legacy);
+        } else legacy();
+      });
+    });
+  }
+
+  /* ===================== Reading progress (long-scroll pages) =====================
+     Pure CSS scroll timeline (see .read-progress); this only mounts the element on
+     pages that scroll the document — the deck has its own rail. */
+  function initReadProgress() {
+    if (document.querySelector(".snap") || document.querySelector(".read-progress")) return;
+    if (!(window.CSS && CSS.supports && CSS.supports("animation-timeline: scroll()"))) return;
+    var bar = document.createElement("div");
+    bar.className = "read-progress"; bar.setAttribute("aria-hidden", "true");
+    document.body.appendChild(bar);
   }
 
   /* ===================== Seamless page morph =====================
@@ -645,6 +697,8 @@
     initMagnetic();
     initVideoEmbeds();
     initLoopVideos();
+    initCopyMail();
+    initReadProgress();
     var hero = document.querySelector(".hero, .about-hero, .project-hero");
     if (hero) requestAnimationFrame(function () { hero.classList.add("is-in"); });
   }
@@ -670,8 +724,20 @@
       document.querySelectorAll("[data-parallax]").forEach(function (s) { parallaxes.push(new Parallax(s)); });
     });
   }
+  /* Failsafe: if ANYTHING in boot throws (an exotic engine, an aggressive privacy
+     extension), the site must degrade to a fully readable static page — never a page
+     of invisible content and dead buttons. Dropping .js restores all reveals;
+     dropping slides-js restores native CSS scroll-snap. */
+  function bootSafe() {
+    try { boot(); }
+    catch (err) {
+      document.documentElement.classList.remove("js");
+      if (document.body) document.body.classList.remove("slides-js");
+      throw err;
+    }
+  }
   // Registered immediately (not in boot): pagereveal fires at the first render
   // opportunity, and the listener must exist before then.
   initMorph();
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", bootSafe); else bootSafe();
 })();
