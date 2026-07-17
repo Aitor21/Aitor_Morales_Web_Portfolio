@@ -511,24 +511,26 @@ html.vt-arrive .project-hero .reveal, html.vt-arrive .project-hero .reveal-media
 .gallery figure{margin:0;border-radius:8px;overflow:hidden;box-shadow:var(--shadow-img);background:#0a1a30}
 .gallery img,.gallery video{width:100%;display:block;aspect-ratio:4/3;object-fit:cover}
 
-/* click-to-play trailer (facade: the YouTube iframe loads only on click) */
-.video-embed{position:relative;aspect-ratio:16/9;border-radius:10px;overflow:hidden;box-shadow:var(--shadow-img);
+/* click-to-play facades: the YouTube trailer iframe and the itch.io playable-game
+   iframe both load only on click — no third-party request until the visitor chooses */
+.video-embed,.game-embed{position:relative;aspect-ratio:16/9;border-radius:10px;overflow:hidden;box-shadow:var(--shadow-img);
   background:#0a1a30;cursor:pointer;margin:0 0 3.6rem}
-.video-embed .ve-poster{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease-out),filter .4s}
-.video-embed:hover .ve-poster{transform:scale(1.04);filter:brightness(.86)}
-.video-embed::after{content:"";position:absolute;inset:0;pointer-events:none;
+.game-embed{aspect-ratio:1280/740}   /* itch embed = 720p game + its 20px footer bar */
+.video-embed .ve-poster,.game-embed .ve-poster{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease-out),filter .4s}
+.video-embed:hover .ve-poster,.game-embed:hover .ve-poster{transform:scale(1.04);filter:brightness(.86)}
+.video-embed::after,.game-embed::after{content:"";position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(180deg,rgba(4,10,22,.15),rgba(4,10,22,.5));transition:opacity .4s}
 .ve-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:7.6rem;height:7.6rem;border-radius:50%;
   border:none;background:var(--violet);color:#fff;display:grid;place-items:center;cursor:pointer;z-index:2;
   box-shadow:0 16px 40px -10px rgba(95,108,230,.85);transition:transform .35s var(--ease-spring),background .3s}
-.video-embed:hover .ve-play{transform:translate(-50%,-50%) scale(1.1);background:var(--violet-bright)}
+.video-embed:hover .ve-play,.game-embed:hover .ve-play{transform:translate(-50%,-50%) scale(1.1);background:var(--violet-bright)}
 .ve-play svg{width:2.8rem;height:2.8rem;margin-left:.4rem;fill:currentColor}
 .ve-label{position:absolute;left:1.4rem;top:1.4rem;z-index:2;font-family:var(--mono);font-size:1.1rem;letter-spacing:.16em;
   text-transform:uppercase;color:#fff;background:rgba(6,12,26,.5);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:.5rem 1rem;border-radius:30px}
-.video-embed iframe{width:100%;height:100%;border:0;display:block}
-.video-embed.is-playing{cursor:default}
-.video-embed.is-playing::after{opacity:0}
-.video-embed.is-playing .ve-label{display:none}
+.video-embed iframe,.game-embed iframe{width:100%;height:100%;border:0;display:block}
+.video-embed.is-playing,.game-embed.is-playing{cursor:default}
+.video-embed.is-playing::after,.game-embed.is-playing::after{opacity:0}
+.video-embed.is-playing .ve-label,.game-embed.is-playing .ve-label{display:none}
 /* escape hatch for embed-blocking browsers (DuckDuckGo's Duck Player, strict
    tracker blockers, corporate proxies): the trailer is always reachable */
 .ve-alt{margin:-2.6rem 0 3.6rem;text-align:right;font-family:var(--mono);font-size:1.15rem;letter-spacing:.1em;text-transform:uppercase}

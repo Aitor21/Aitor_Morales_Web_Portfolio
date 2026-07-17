@@ -474,6 +474,30 @@
     });
   }
 
+  /* ===================== Playable game facade (per mount) =====================
+     Same contract as the trailer facade: the itch.io embed (the actual playable
+     browser build) is injected only when the visitor chooses to play, so the page
+     stays fast and makes no third-party request until then. data-upload is the
+     itch upload id — adding a new playable game is one markup block. */
+  function initGameEmbeds() {
+    document.querySelectorAll(".game-embed").forEach(function (el) {
+      if (el._g) return; el._g = true;
+      var play = function () {
+        var id = el.getAttribute("data-upload"); if (!id || el.classList.contains("is-playing")) return;
+        var f = document.createElement("iframe");
+        f.src = "https://itch.io/embed-upload/" + id + "?color=020b16";
+        f.title = el.getAttribute("data-title") || "Playable game";
+        f.allow = "autoplay; fullscreen; gamepad";
+        f.setAttribute("allowfullscreen", "");
+        el.classList.add("is-playing");
+        el.innerHTML = ""; el.appendChild(f);
+      };
+      el.addEventListener("click", play);
+      var btn = el.querySelector(".ve-play");
+      if (btn) btn.addEventListener("click", function (e) { e.stopPropagation(); play(); });
+    });
+  }
+
   /* ===================== Copy email (per mount) =====================
      mailto: buttons silently dead-end on machines without a mail handler, so the
      address is also one click from the clipboard. Clipboard API first, execCommand
@@ -696,6 +720,7 @@
     initReveals();
     initMagnetic();
     initVideoEmbeds();
+    initGameEmbeds();
     initLoopVideos();
     initCopyMail();
     initReadProgress();
