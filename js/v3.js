@@ -484,13 +484,32 @@
       if (el._g) return; el._g = true;
       var play = function () {
         var id = el.getAttribute("data-upload"); if (!id || el.classList.contains("is-playing")) return;
+        // phones: a 720p build scaled into a phone column is unplayably small — hand
+        // off to the game's itch.io page, which handles mobile properly
+        var page = el.getAttribute("data-page");
+        if (page && matchMedia("(max-width: 699px)").matches) {
+          var a = document.createElement("a");
+          a.href = page; a.target = "_blank"; a.rel = "noopener";
+          document.body.appendChild(a); a.click(); a.remove();
+          return;
+        }
+        // itch's embed page renders the build at its fixed pixel size and does NOT
+        // scale itself — a smaller iframe just crops it. So: render at native size
+        // (data-w/h = build viewport + itch's 20px bar) and scale to the container.
+        // Pointer coordinates map through CSS transforms, so the game stays playable.
+        var w = parseInt(el.getAttribute("data-w"), 10) || 1280;
+        var h = parseInt(el.getAttribute("data-h"), 10) || 740;
         var f = document.createElement("iframe");
         f.src = "https://itch.io/embed-upload/" + id + "?color=020b16";
         f.title = el.getAttribute("data-title") || "Playable game";
         f.allow = "autoplay; fullscreen; gamepad";
         f.setAttribute("allowfullscreen", "");
+        f.style.cssText = "position:absolute;top:0;left:0;border:0;width:" + w + "px;height:" + h + "px;transform-origin:0 0";
+        var fit = function () { f.style.transform = "scale(" + (el.clientWidth / w).toFixed(5) + ")"; };
         el.classList.add("is-playing");
         el.innerHTML = ""; el.appendChild(f);
+        fit();
+        addEventListener("resize", fit);
       };
       el.addEventListener("click", play);
       var btn = el.querySelector(".ve-play");
