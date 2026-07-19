@@ -101,6 +101,14 @@ body.cursor-media .cursor-dot{opacity:0}
   height:var(--header-h);padding:0 var(--pad);color:var(--white);transition:color .55s var(--ease-out)}
 .site-header[data-theme="light"]{color:var(--ink)}
 .site-header[data-theme="light"] .menu-btn i{background:var(--ink)}
+/* scrolled-state scrim: long pages slide content under the transparent fixed header,
+   so once scrolled a soft fade from the page background keeps the name/nav legible.
+   Follows the header's section theme; opacity-only, so it costs nothing to animate. */
+.site-header::before{content:"";position:absolute;left:0;right:0;top:0;height:calc(var(--header-h) + 2.5rem);z-index:-1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(2,11,22,.92),rgba(2,11,22,.55) 58%,transparent);
+  opacity:0;transition:opacity .45s var(--ease-out)}
+body.scrolled .site-header::before{opacity:1}
+.site-header[data-theme="light"]::before{background:linear-gradient(180deg,rgba(238,241,246,.94),rgba(238,241,246,.6) 58%,transparent)}
 .site-header .name{font-size:2rem;letter-spacing:.14em;font-weight:600;text-transform:uppercase;z-index:1001}
 .site-header .name b{color:inherit;font-weight:600}
 /* desktop inline nav */
@@ -183,6 +191,9 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
 .btn:hover .arrow{transform:translateX(5px)}
 .btn--ghost{background:transparent;color:currentColor;border:1px solid var(--line-2);box-shadow:none}
 .btn--ghost:hover{background:rgba(139,150,255,.1)}
+/* press feedback via filter — the magnetic effect owns the inline transform */
+.btn:active{filter:brightness(1.15)}
+.copy-mail:active{transform:scale(.96)}
 .btn-row{display:flex;gap:1.4rem;flex-wrap:wrap;margin-top:1rem}
 
 /* =====================================================================
@@ -204,6 +215,7 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
 .ticker-track span{display:inline-flex;align-items:center;gap:3.4rem}
 .ticker-track span::after{content:"✦";color:var(--violet)}
 @keyframes ticker{to{transform:translateX(-50%)}}
+.ticker:hover .ticker-track{animation-play-state:paused}
 @media (max-width:760px){.ticker{bottom:2rem}}
 
 /* moon scene */
@@ -410,6 +422,10 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
 .is-in .reveal-line>span{transform:translateY(0)}
 .js .reveal-media{clip-path:inset(0 0 100% 0);transition:clip-path 1.1s var(--ease)}
 .is-in .reveal-media{clip-path:inset(0 0 0 0)}
+/* lazy images fade in on decode instead of popping into layout (initImgFade marks them;
+   the failsafe in bootSafe drops .js if anything throws, so nothing can stay invisible) */
+.js img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease-out)}
+.js img[loading="lazy"].is-loaded{opacity:1}
 
 /* Arriving through a page morph (see pagereveal in v3.js): the hero is settled
    synchronously so it is already composed in the snapshot. Killing the transition for
@@ -582,6 +598,55 @@ html.vt-arrive .project-hero .reveal, html.vt-arrive .project-hero .reveal-media
   @keyframes readProgress{from{transform:scaleX(0)}to{transform:scaleX(1)}}
   .read-progress{position:fixed;top:0;left:0;width:100%;height:2px;z-index:1100;transform-origin:0 50%;
     background:var(--grad-accent);animation:readProgress linear both;animation-timeline:scroll(root)}
+}
+
+/* =====================================================================
+   Responsive polish — touch targets, phone type floor, tablet band,
+   short landscape viewports (2026-07 audit)
+   ===================================================================== */
+/* touch (or any small screen): honest tap targets + a snap that honors tall panels */
+@media (pointer:coarse),(max-width:760px){
+  .snap{scroll-snap-type:y proximity}
+  .contact .social a,.drawer-social a{padding:.9rem .2rem}
+  .copy-mail,.foot-links a,.foot-links .copy-mail{min-height:4.2rem}
+  .ve-alt a{display:inline-block;padding:.8rem 0}
+}
+/* phones (9px root): keep reading text at or above ~16px real pixels */
+@media (max-width:420px){
+  .lead{font-size:1.8rem}
+  .about-slide .lead{font-size:1.6rem}
+  .prose{font-size:1.9rem}
+  .proj-sec .prose{font-size:1.85rem}
+  .proj-sec li{font-size:1.75rem}
+  .job li{font-size:1.7rem}
+  .earlier li p{font-size:1.65rem}
+  .meta-row dd{font-size:1.65rem}
+  .meta-row dt{font-size:1.2rem}
+  .mc-line{font-size:1.5rem}
+  .mc-meta{font-size:1.15rem}
+  .work-meta span{font-size:1.25rem}
+  .pc-note{font-size:1.45rem}
+}
+/* 761-900px: the desktop hero on a portrait tablet — keep the moon clear of the copy */
+@media (min-width:761px) and (max-width:900px){
+  .moon-scene{left:56%;right:-12%}
+  .hero-copy{max-width:44rem}
+}
+/* portrait tablets: three More-work cards don't fit ~200px columns — go two-up.
+   Portrait-only: in landscape (phones on their side) taller panels help nobody. */
+@media (min-width:761px) and (max-width:1000px) and (orientation:portrait){
+  .more-grid{grid-template-columns:repeat(2,1fr)}
+}
+/* short landscape viewports (phones on their side): compact the deck */
+@media (max-height:520px){
+  :root{--header-h:7rem}
+  .panel{padding-top:calc(var(--header-h) + 1rem);padding-bottom:3.4rem}
+  .ticker,.scroll-hint{display:none}
+  .hero{gap:1.4rem}
+  .hero-copy{gap:1.4rem}
+  .display{font-size:clamp(3.6rem,8vw,7rem)}
+  .work-copy .display{font-size:clamp(3rem,5.5vw,5.2rem)}
+  .work-stats .st b{font-size:2.2rem}
 }
 
 /* =====================================================================

@@ -474,6 +474,17 @@
     });
   }
 
+  /* ===================== Lazy image fade (per mount) =====================
+     Lazy-loaded images fade in on decode instead of popping into the layout. */
+  function initImgFade() {
+    document.querySelectorAll('img[loading="lazy"]').forEach(function (im) {
+      if (im._f) return; im._f = true;
+      var done = function () { im.classList.add("is-loaded"); };
+      if (im.complete) done();
+      else { im.addEventListener("load", done); im.addEventListener("error", done); }
+    });
+  }
+
   /* ===================== Playable game facade (per mount) =====================
      Same contract as the trailer facade: the itch.io embed (the actual playable
      browser build) is injected only when the visitor chooses to play, so the page
@@ -743,6 +754,7 @@
     initLoopVideos();
     initCopyMail();
     initReadProgress();
+    initImgFade();
     var hero = document.querySelector(".hero, .about-hero, .project-hero");
     if (hero) requestAnimationFrame(function () { hero.classList.add("is-in"); });
   }
