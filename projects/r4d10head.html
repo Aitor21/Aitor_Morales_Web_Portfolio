@@ -6,121 +6,319 @@
   <title>R4D10HEAD · Aitor Morales</title>
   <meta name="description" content="R4D10HEAD, an inverted-stealth game where moving makes you deafeningly loud and standing still makes you blind. Game and level design by Aitor Morales.">
   <link rel="canonical" href="https://aitormorales.com/projects/r4d10head.html">
-  <meta name="theme-color" content="#020b16">
+  <meta name="theme-color" content="#0C0A0D">
   <meta property="og:type" content="article">
+  <meta property="og:url" content="https://aitormorales.com/projects/r4d10head.html">
   <meta property="og:title" content="R4D10HEAD · Aitor Morales">
-  <meta property="og:description" content="Stealth, except you are the loudest thing in the room.">
+  <meta property="og:description" content="Stealth, except you are the loudest thing in the room. Move and you are loud. Stop and you are blind.">
   <meta property="og:image" content="https://aitormorales.com/assets/img/projects/r4d10-head/poster.jpg">
+  <meta property="og:site_name" content="Aitor Morales · Portfolio">
   <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="shortcut icon" href="../favicon.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
-  <link rel="preload" as="font" type="font/woff2" href="../assets/font/Futura-Dem.woff2" crossorigin>
-  <link rel="preload" as="font" type="font/woff2" href="../assets/font/Futura-Med.woff2" crossorigin>
-  <link rel="preload" as="font" type="font/woff2" href="../assets/font/Futura-Boo.woff2" crossorigin>
-  <link rel="stylesheet" href="../css/v3.css?v=30">
+  <link rel="preload" as="font" type="font/woff2" href="../assets/font/fraunces-var.woff2" crossorigin>
+  <link rel="stylesheet" href="../css/v6.css?v=1">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"VideoGame","name":"R4D10HEAD","genre":"Stealth","gamePlatform":["PC","Windows","macOS"],"author":{"@type":"Person","name":"Aitor Morales"},"url":"https://aitormorales.itch.io/r4d10-head"}
   </script>
+  <script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
-  <div class="bg" aria-hidden="true"></div>
-  <div class="bg-glow" aria-hidden="true"></div>
-  <canvas class="bg-stars" aria-hidden="true"></canvas>
+  <a class="skip" href="#main">Skip to content</a>
   <div class="grain" aria-hidden="true"></div>
 
-  <header class="site-header" data-theme="dark">
-    <a class="name" href="../index.html">Aitor Morales</a>
-    <nav class="nav" aria-label="Primary">
+  <header class="masthead">
+    <a class="mh-mark" href="../index.html">
+      <svg class="mh-seal" viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1"/>
+        <circle cx="16" cy="16" r="6.4" fill="none" stroke="currentColor" stroke-width="1"/>
+        <circle cx="16" cy="16" r="1.8" fill="currentColor"/>
+        <path d="M16 1v6M16 25v6M1 16h6M25 16h6" stroke="currentColor" stroke-width="1"/>
+      </svg>
+      Aitor&nbsp;Morales
+    </a>
+    <nav class="mh-nav" aria-label="Primary">
       <a href="../index.html#work">Work</a>
       <a href="../about.html">About</a>
       <a href="../resume.html">Resume</a>
-      <a class="nav-cta" href="mailto:aitormorales@honeybungames.com">Contact</a>
+      <a href="mailto:aitormorales@honeybungames.com">Contact</a>
     </nav>
-    <button class="menu-btn" aria-label="Open menu" aria-expanded="false"><i></i><i></i></button>
+    <span class="mh-tools">
+      <button class="icon-btn" data-theme-toggle type="button"><span data-theme-label>Catalogue</span></button>
+      <button class="icon-btn menu-btn" type="button" aria-expanded="false">Menu</button>
+    </span>
   </header>
 
-  <div class="drawer-backdrop" aria-hidden="true"></div>
-  <aside class="drawer" aria-label="Menu">
-    <nav class="drawer-nav">
-      <a href="../index.html"><span class="idx">01</span> Home</a>
-      <a href="../index.html#work"><span class="idx">02</span> Work</a>
-      <a href="../about.html"><span class="idx">03</span> About</a>
-      <a href="../resume.html"><span class="idx">04</span> Resume</a>
-      <a href="mailto:aitormorales@honeybungames.com"><span class="idx">05</span> Contact</a>
-    </nav>
-    <div class="drawer-foot">
-      <div class="drawer-social">
-        <a href="https://aitormorales.itch.io/" target="_blank" rel="noopener">itch.io</a>
-        <a href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://www.instagram.com/aitor_21m/" target="_blank" rel="noopener">Instagram</a>
-      </div>
-      <a class="drawer-email" href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a>
-    </div>
-  </aside>
+  <!-- the recruiter fast-lane: role, headline credential, resume — always visible -->
+  <p class="credential">
+    <b>Game &amp; Level Designer</b> <span class="sep">·</span> Madrid
+    <span class="sep">·</span> Designer &amp; developer at <b>Gimica (JustPlay)</b>
+    <span class="sep">·</span> 50+ live games, 25M+ downloads
+    <span class="sep">·</span> <a class="ilink" href="../resume.html">Resume</a>
+  </p>
 
-  <a class="back-link" href="../index.html#more" aria-label="Back">
-    <svg viewBox="0 0 67 34" fill="none" aria-hidden="true"><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 17h63"/><polyline points="17.5 1 2 17 17.5 33"/></g></svg>
-    Back
-  </a>
+  <main id="main">
 
-  <main>
-    <section class="project-hero" data-theme="dark">
-      <div class="project-copy">
-        <span class="eyebrow">Game Jam · 2022</span>
-        <h1 class="display">R4D10HEAD</h1>
-        <div class="work-meta"><span>Game &amp; Level Designer</span><span>Stealth</span><span>Team of 7</span></div>
-        <p class="lead">Stealth, except you are the loudest thing in the room. Move and the whole floor hears you; stand still and you go blind. Every route is a bet.</p>
-        <div class="btn-row"><a class="btn" href="https://aitormorales.itch.io/r4d10-head" target="_blank" rel="noopener">Play on itch.io <span class="arrow">→</span></a></div>
+    <a class="back-link" href="../index.html#work">
+      <svg viewBox="0 0 67 34" fill="none" aria-hidden="true"><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 17h63"/><polyline points="17.5 1 2 17 17.5 33"/></g></svg>
+      All work
+    </a>
+
+    <!-- ===================== A. HOOK ===================== -->
+    <section class="section section--plain">
+      <p class="eyebrow rise">Nº 04 <span class="dot">·</span> Case study <span class="dot">·</span> 2022</p>
+      <!-- .hero-title is sized for the homepage display; a case study wants one step down.
+           See report: v6.css has no dedicated case-study title component. -->
+      <h1 class="hero-title rise" style="font-size:var(--step-3);max-width:none;margin:.18em 0 .3em">R4D10HEAD</h1>
+      <p class="lead rise" style="--i:1;max-width:44ch">Stealth, except you are the loudest thing in the room. Move and the whole floor hears you; stand still and you go blind. Every route is a bet.</p>
+
+      <div class="rise" style="--i:2;margin-top:clamp(1.8rem,4vh,2.8rem)">
+        <!-- the hook asset: the only full-colour image on the page above the fold -->
+        <span class="entry-media" style="display:block;aspect-ratio:16/9">
+          <video src="../assets/img/projects/r4d10-head/cover.mp4"
+                 poster="../assets/img/projects/r4d10-head/poster.jpg"
+                 width="728" height="406"
+                 autoplay muted loop playsinline preload="auto"
+                 style="filter:none"
+                 aria-label="R4D10HEAD gameplay: a robot moving through a corporate facility"></video>
+        </span>
       </div>
-      <div class="project-shot">
-        <video class="loop-video" src="../assets/img/projects/r4d10-head/cover.mp4" poster="../assets/img/projects/r4d10-head/poster.jpg" width="728" height="406" autoplay muted loop playsinline preload="auto" style="view-transition-name:vt-hero" aria-label="R4D10HEAD, an inverted-stealth game"></video>
+
+      <div class="btn-row rise" style="--i:3;margin-top:1.6rem">
+        <a class="btn" href="https://aitormorales.itch.io/r4d10-head" target="_blank" rel="noopener">Play on itch.io <span class="arrow">→</span></a>
+        <a class="btn btn--ghost" href="#structure">The level structure <span class="arrow">→</span></a>
       </div>
     </section>
 
-    <div class="project-body">
-      <dl class="meta-row">
-        <div><dt>Role</dt><dd>Game Designer &amp; Level Designer</dd></div>
-        <div><dt>Team</dt><dd>7, a U-tad alumni collective</dd></div>
+    <!-- ===================== B. FACTS + C. WHAT I BUILT ===================== -->
+    <section class="section" id="label">
+      <div class="section-head rise">
+        <span class="section-no">01 — Wall label</span>
+        <h2 class="section-title">The <em>facts</em></h2>
+      </div>
+
+      <!-- TODO(aitor): the engine/toolchain for R4D10HEAD is not recorded anywhere on the
+           site. Add an <div><dt>Engine</dt><dd>…</dd></div> fact here once you confirm it.
+           Deliberately omitted rather than guessed. -->
+      <dl class="facts rise">
         <div><dt>Year</dt><dd>2022</dd></div>
-        <div><dt>Platform</dt><dd>PC · Windows &amp; Mac</dd></div>
-        <div><dt>Links</dt><dd><a href="https://aitormorales.itch.io/r4d10-head" target="_blank" rel="noopener">itch.io</a></dd></div>
+        <div><dt>Context</dt><dd>Game jam</dd></div>
+        <div><dt>Role</dt><dd>Game &amp; Level Designer</dd></div>
+        <div><dt>Genre</dt><dd>Stealth, with prop-hunt interactions</dd></div>
+        <div><dt>Team</dt><dd>7 — a U-tad alumni collective</dd></div>
+        <div><dt>Platform</dt><dd>PC — Windows &amp; macOS</dd></div>
+        <div><dt>Status</dt><dd><span class="status status--shipped">✓ Released on itch.io</span></dd></div>
+        <div><dt>Link</dt><dd><a class="ilink" href="https://aitormorales.itch.io/r4d10-head" target="_blank" rel="noopener">itch.io</a></dd></div>
       </dl>
 
-      <section class="proj-sec">
-        <span class="num">01</span>
-        <div>
-          <h2>The game</h2>
-          <p class="prose">R4D10HEAD is a stealth game with prop-hunt style interactions. Our little robot cannot help being a nuisance: movement is all or nothing, full speed at full volume, and standing still means going blind while it recharges. Slip past the CORPORATION's guards and cameras, and find the way out.</p>
-        </div>
-      </section>
+      <div class="role-note rise" style="--i:1;margin-top:clamp(1.8rem,4vh,2.6rem)">
+        <h3>What I built</h3>
+        <p class="prose">I held game design and level design on the project. The level work came down to three decisions, all of them downstream of one rule: the player cannot move and see at the same time.</p>
+        <!-- TODO(aitor): make this granular. Name the specific rooms/levels you laid out
+             yourself, which ones you only reviewed, and the tools you used (greybox in-engine?
+             paper plans?). Hiring leads read this block first — "what I personally did" beats
+             "what the team did". Kept at the sourced level of detail for now. -->
+        <ul class="ticklist" style="margin-top:1rem">
+          <li><b>Guard and camera placement</b> built around readable patrol rhythms a player can learn while blind.</li>
+          <li><b>Prop-interaction spots</b> that reward planning a route before committing to the noise.</li>
+          <li><b>Escalating spaces:</b> teaching rooms first, then layered patrols where routes have to be chained.</li>
+        </ul>
+      </div>
+    </section>
 
-      <section class="proj-sec">
-        <span class="num">02</span>
-        <div>
-          <h2>Inverted stealth</h2>
-          <p class="prose">Classic stealth hands you tools to be quiet. R4D10HEAD takes them away. The core loop trades information for mobility: while you move you are deafeningly loud but you can see; while you stop you are safe but blind. That single inversion drives every other decision. Guards react to noise you cannot avoid making, so the skill is <strong>when to be loud, not how to stay silent</strong>.</p>
-        </div>
-      </section>
+    <!-- ===================== D. THE DESIGN PROBLEM ===================== -->
+    <section class="section" id="problem">
+      <div class="section-head rise">
+        <span class="section-no">02 — The problem</span>
+        <h2 class="section-title">Take the <em>quiet</em> away</h2>
+      </div>
 
-      <section class="proj-sec">
-        <span class="num">03</span>
-        <div>
-          <h2>Level design</h2>
-          <ul>
-            <li>Guard and camera placement built around readable patrol rhythms a player can learn while blind.</li>
-            <li>Prop-interaction spots that reward planning a route before committing to the noise.</li>
-            <li>Escalating spaces: teaching rooms first, then layered patrols where routes have to be chained.</li>
-          </ul>
+      <div class="cols cols--2">
+        <div class="col rise">
+          <p class="col-lab">The inversion</p>
+          <p class="prose">Classic stealth hands you tools to be quiet. R4D10HEAD takes them away. Our little robot cannot help being a nuisance: movement is all or nothing, full speed at full volume, and standing still means going blind while it recharges.</p>
+          <p class="prose">The core loop therefore trades <strong>information for mobility</strong>. While you move you are deafeningly loud but you can see; while you stop you are safe but blind. Guards react to noise you cannot avoid making, so the skill on offer is <strong>when to be loud, not how to stay silent</strong>.</p>
         </div>
-      </section>
+        <div class="col rise" style="--i:1">
+          <p class="col-lab">What that forces on the level</p>
+          <p class="prose">A player who is blind while safe cannot read a room in the moment — they have to have read it already. Every space has to be legible in the short, loud windows when the lights are on, and survivable in the long, dark ones when they are not.</p>
+          <p class="prose">Slip past the CORPORATION's guards and cameras, and find the way out.</p>
+        </div>
+      </div>
+    </section>
 
-      <nav class="proj-foot-nav" aria-label="More">
-        <a href="../index.html#more"><span class="dir">← Back</span>All work</a>
-        <a href="../projects/viktors-mayhem.html" style="text-align:right"><span class="dir">Next →</span>Viktor's Mayhem</a>
-      </nav>
-    </div>
+    <!-- ===================== E. PROCESS EVIDENCE ===================== -->
+    <section class="section" id="structure">
+      <div class="section-head rise">
+        <span class="section-no">03 — Substructure</span>
+        <h2 class="section-title">The blockout <em>beneath</em></h2>
+      </div>
+      <p class="prose rise" style="margin-bottom:2rem">The rule above dictates the plan. Rooms are chained so a route can be rehearsed before it is committed to, and the teaching space sits between the spawn and everything that can kill you.</p>
+
+      <div class="gb rise" style="--i:1">
+        <svg viewBox="0 0 160 110" preserveAspectRatio="xMidYMid slice" role="img"
+             aria-label="Top-down schematic of the level structure: a spawn room connected through a teaching room and a prop room to layered patrol spaces, ending at an egress room.">
+
+          <!-- measure grid -->
+          <path class="grid-l" d="M20 0V110M40 0V110M60 0V110M80 0V110M100 0V110M120 0V110M140 0V110M0 20H160M0 40H160M0 60H160M0 80H160M0 100H160"/>
+
+          <!-- rooms -->
+          <rect class="room" x="10"  y="66" width="36" height="32" rx="1"/>
+          <rect class="room" x="12"  y="16" width="34" height="34" rx="1"/>
+          <rect class="room" x="60"  y="12" width="40" height="32" rx="1"/>
+          <rect class="room" x="54"  y="58" width="52" height="40" rx="1"/>
+          <rect class="room" x="112" y="44" width="38" height="54" rx="1"/>
+
+          <!-- corridors / connections -->
+          <path class="corr" d="M46 84H54"/>
+          <path class="corr" d="M80 58V44"/>
+          <path class="corr" d="M106 80H112"/>
+          <path class="corr" d="M46 30H60"/>
+          <path class="corr" d="M28 50V66"/>
+          <path class="corr" d="M100 28H128V44"/>
+
+          <!-- critical path -->
+          <path class="path" d="M22 88L40 86L50 84L62 82L74 74L80 58L80 40L88 28L128 28L128 50L131 66L131 80"/>
+
+          <!-- nodes: spawn, stop/prop points, exit -->
+          <circle class="node" cx="22"  cy="88" r="2.6"/>
+          <circle class="node" cx="50"  cy="84" r="1.8"/>
+          <circle class="node" cx="80"  cy="50" r="1.8"/>
+          <circle class="node" cx="128" cy="36" r="1.8"/>
+          <circle class="node" cx="131" cy="80" r="2.6"/>
+
+          <!-- labels, revealed with the gold -->
+          <text class="lbl" x="14"  y="76">TEACH</text>
+          <text class="lbl" x="16"  y="26">PROPS</text>
+          <text class="lbl" x="64"  y="22">PATROL</text>
+          <text class="lbl" x="58"  y="68">LAYERED</text>
+          <text class="lbl" x="116" y="54">EGRESS</text>
+          <text class="lbl" x="14"  y="95">SPAWN</text>
+          <text class="lbl" x="121" y="90">EXIT</text>
+        </svg>
+        <button class="mini-btn gb-toggle" data-gb-toggle type="button" aria-pressed="false">Reveal the gold</button>
+      </div>
+
+      <p class="mono rise" style="--i:2;margin-top:.9rem;text-transform:none;letter-spacing:.04em;max-width:64ch;line-height:1.7">
+        Illustrative schematic of how the level is structured — spawn, teaching room, prop cover, layered patrols, egress — <b>not a capture of the shipped level</b>. The dotted line is the critical path; nodes mark the spawn, the exit, and the points where a player has to stop, go blind, and re-plan.
+      </p>
+
+      <!-- TODO(aitor): this schematic is a stand-in. Replace it — or better, sit it alongside —
+           a real annotated top-down of an actual R4D10HEAD level: sightlines, guard cones,
+           camera arcs, cover, and the noise radius. That single asset is the strongest thing
+           this page could gain. -->
+
+      <h3 class="section-no rise" style="--i:3;margin:clamp(2.4rem,6vh,3.6rem) 0 1.2rem">Layout → blockout → final</h3>
+      <div class="process rise" style="--i:4">
+
+        <div class="stage">
+          <!-- TODO(aitor): supply the layout sketch (paper plan / whiteboard / Figma) here as
+               <picture><source srcset="../assets/img/projects/r4d10-head/sketch.webp" type="image/webp">
+               <img src="…/sketch.jpg" alt="…" loading="lazy" width="800" height="600"></picture> -->
+          <div class="stage-shot" style="display:grid;place-items:center">
+            <span class="mono" style="text-align:center;padding:0 1rem;color:rgba(239,230,216,.45)">Image to come</span>
+          </div>
+          <div class="stage-cap">
+            <b>01 · Layout</b>
+            <span>The plan on paper: where the player learns the rule, and where the rule is first used against them.</span>
+          </div>
+        </div>
+
+        <div class="stage">
+          <!-- TODO(aitor): supply the in-engine greybox/blockout screenshot here (same <picture>
+               pattern). If no capture survives, a fresh blockout rebuilt from the final level is
+               still legitimate — just caption it as such. -->
+          <div class="stage-shot" style="display:grid;place-items:center">
+            <span class="mono" style="text-align:center;padding:0 1rem;color:rgba(239,230,216,.45)">Image to come</span>
+          </div>
+          <div class="stage-cap">
+            <b>02 · Blockout</b>
+            <span>Grey volumes only, walked at player height, to check whether a room reads in the short window the player can actually see it.</span>
+          </div>
+        </div>
+
+        <div class="stage">
+          <!-- TODO(aitor): supply the matching final-art screenshot from the same camera angle
+               as the blockout above. Same-angle pairs are what make this strip persuasive. -->
+          <div class="stage-shot" style="display:grid;place-items:center">
+            <span class="mono" style="text-align:center;padding:0 1rem;color:rgba(239,230,216,.45)">Image to come</span>
+          </div>
+          <div class="stage-cap">
+            <b>03 · Final</b>
+            <span>The dressed space, shot from the blockout's camera so the structural decisions stay visible under the art.</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TODO(aitor): there is no playtest record on the site for this project. If you kept any
+           — session counts, what players got stuck on, what you changed — add a "04 — Playtest"
+           section here. Left out entirely rather than fabricated. -->
+    </section>
+
+    <!-- ===================== F. OUTCOME + REFLECTION ===================== -->
+    <section class="section" id="outcome">
+      <div class="section-head rise">
+        <span class="section-no">04 — Outcome</span>
+        <h2 class="section-title">What <em>shipped</em></h2>
+      </div>
+
+      <div class="cols cols--2">
+        <div class="col rise">
+          <p class="col-lab">Result</p>
+          <p class="prose">A playable build made to a jam deadline by a team of seven, released publicly on itch.io for Windows and macOS. It is still up and still playable.</p>
+          <div class="btn-row" style="margin-top:1rem">
+            <a class="btn btn--ghost" href="https://aitormorales.itch.io/r4d10-head" target="_blank" rel="noopener">Play it <span class="arrow">→</span></a>
+          </div>
+        </div>
+        <div class="col rise" style="--i:1">
+          <p class="col-lab">What I'd do next</p>
+          <!-- TODO(aitor): write this in your own words — one candid paragraph on what you'd
+               change if you rebuilt R4D10HEAD today. Design leads look for exactly this and it
+               is the one thing nobody else can write for you. Nothing invented here on purpose. -->
+          <p class="prose"><em>To be written.</em> A candid retrospective belongs here — the honest read on what the inversion cost the level design, and what would change on a second pass.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== G. ATTRIBUTION ===================== -->
+    <section class="section" id="credits">
+      <div class="section-head rise">
+        <span class="section-no">05 — Credits</span>
+        <h2 class="section-title">Made by <em>seven</em></h2>
+      </div>
+      <p class="prose rise">R4D10HEAD was built by a team of seven, a collective of U-tad alumni. I was responsible for game design and level design.</p>
+      <!-- TODO(aitor): name your six collaborators and link them (and list any third-party
+           assets / audio libraries used). Attribution is both courtesy and credibility, and the
+           old page named nobody, so nothing could be carried across. -->
+    </section>
+
+    <!-- ===================== NEXT ===================== -->
+    <section class="section" id="next">
+      <div class="section-head rise">
+        <span class="section-no">06 — Next</span>
+        <h2 class="section-title">Keep <em>looking</em></h2>
+      </div>
+      <div class="btn-row rise">
+        <a class="btn btn--ghost" href="../index.html#work">All work <span class="arrow">→</span></a>
+        <a class="btn btn--ghost" href="../projects/viktors-mayhem.html">Viktor's Mayhem <span class="arrow">→</span></a>
+        <a class="btn" href="mailto:aitormorales@honeybungames.com">Get in touch <span class="arrow">→</span></a>
+      </div>
+    </section>
+
   </main>
 
-  <script src="../js/v3.js?v=30"></script>
+  <footer class="site-footer">
+    <div class="foot-inner">
+      <p class="foot-line">Nothing here is only its surface.</p>
+      <p class="foot-meta">
+        Aitor Morales · Game &amp; Level Designer · Madrid<br>
+        <a class="ilink" href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../js/v6.js?v=1" defer></script>
 </body>
 </html>

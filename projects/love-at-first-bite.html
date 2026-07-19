@@ -4,148 +4,420 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Love at First Bite · Aitor Morales</title>
-  <meta name="description" content="Love at First Bite, a vampire dating sim by Honey Bun Games. Design by Aitor Morales: swipe, match, savor. Play the demo on itch.io or wishlist on Steam.">
+  <meta name="description" content="Love at First Bite, a vampire dating sim by Honey Bun Games. Design by Aitor Morales: swipe, match, savor. Play the demo in the browser or wishlist on Steam.">
   <link rel="canonical" href="https://aitormorales.com/projects/love-at-first-bite.html">
-  <meta name="theme-color" content="#020b16">
+  <meta name="theme-color" content="#0C0A0D">
   <meta property="og:type" content="article">
+  <meta property="og:url" content="https://aitormorales.com/projects/love-at-first-bite.html">
   <meta property="og:title" content="Love at First Bite · Aitor Morales">
-  <meta property="og:description" content="A vampire dating sim: swipe, match, savor. Play the demo on itch.io or wishlist on Steam.">
+  <meta property="og:description" content="A vampire dating sim: swipe, match, savor. Play the demo in the browser or wishlist on Steam.">
   <meta property="og:image" content="https://aitormorales.com/assets/img/projects/love-at-first-bite/cover.png">
+  <meta property="og:site_name" content="Aitor Morales · Portfolio">
   <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="shortcut icon" href="../favicon.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
-  <link rel="preload" as="font" type="font/woff2" href="../assets/font/Futura-Dem.woff2" crossorigin>
-  <link rel="preload" as="font" type="font/woff2" href="../assets/font/Futura-Med.woff2" crossorigin>
-  <link rel="preload" as="font" type="font/woff2" href="../assets/font/Futura-Boo.woff2" crossorigin>
-  <link rel="stylesheet" href="../css/v3.css?v=30">
+  <link rel="preload" as="font" type="font/woff2" href="../assets/font/fraunces-var.woff2" crossorigin>
+  <link rel="stylesheet" href="../css/v6.css?v=1">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"VideoGame","name":"Love at First Bite","genre":["Dating Sim","Visual Novel","Indie"],"gamePlatform":["PC","Windows","macOS","Android","iOS"],"author":{"@type":"Person","name":"Aitor Morales"},"publisher":{"@type":"Organization","name":"Honey Bun Games","url":"https://honeybungames.com/"},"url":"https://store.steampowered.com/app/3206530/Love_at_first_Bite/"}
   </script>
+
+  <!-- ------------------------------------------------------------------ ---
+       PAGE-SCOPED: click-to-play embed facades.
+       v6.css has no component for the itch.io playable build or the YouTube
+       trailer, and v6.css is the lead's contract — so the facade lives here,
+       written entirely in v6 tokens. Promote to v6.css as `.embed` when the
+       lead is ready; this block then deletes cleanly.
+       --------------------------------------------------------------------- -->
+  <style>
+    .embed{
+      position:relative;overflow:hidden;border-radius:3px;cursor:pointer;
+      background:var(--panel-2);box-shadow:inset 0 0 0 1px var(--line-strong);
+      aspect-ratio:16/9;
+    }
+    .embed--game{aspect-ratio:1280/740}   /* itch embed = the build + its 20px bar */
+    .embed .ve-poster{
+      width:100%;height:100%;object-fit:cover;filter:var(--duotone);
+      transition:filter .7s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1);
+    }
+    .embed:hover .ve-poster{filter:none;transform:scale(1.02)}
+    .embed::after{
+      content:"";position:absolute;inset:0;pointer-events:none;transition:opacity .4s;
+      background:linear-gradient(180deg,rgba(12,10,13,.12),rgba(12,10,13,.58));
+    }
+    .ve-play{
+      position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;
+      width:76px;height:76px;border-radius:50%;display:grid;place-items:center;cursor:pointer;
+      background:color-mix(in srgb,var(--void) 55%,transparent);
+      border:1px solid var(--line-strong);color:var(--bone);
+      -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+      transition:border-color .3s,color .3s,transform .35s;
+    }
+    .embed:hover .ve-play{border-color:var(--gold);color:var(--gold);transform:translate(-50%,-50%) scale(1.06)}
+    .ve-play svg{width:26px;height:26px;margin-left:3px;fill:currentColor}
+    .ve-label{
+      position:absolute;left:1rem;top:1rem;z-index:2;
+      font-family:var(--mono);font-size:var(--step--1);letter-spacing:.16em;text-transform:uppercase;
+      color:var(--bone);background:color-mix(in srgb,var(--void) 55%,transparent);
+      border:1px solid var(--line-strong);border-radius:999px;padding:.35em .8em;
+      -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+    }
+    .embed iframe{width:100%;height:100%;border:0;display:block}
+    .embed.is-playing{cursor:default}
+    .embed.is-playing::after{opacity:0}
+    .embed.is-playing .ve-label{display:none}
+    /* escape hatch for embed-blocking browsers (strict tracker blockers,
+       corporate proxies): the demo and the trailer stay reachable */
+    .ve-alt{
+      font-family:var(--mono);font-size:var(--step--1);letter-spacing:.12em;text-transform:uppercase;
+      color:var(--faint);margin:.9rem 0 0;
+    }
+    .ve-alt a{color:var(--muted);text-decoration:none;transition:color .3s}
+    .ve-alt a:hover{color:var(--accent)}
+  </style>
+  <script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
-  <div class="bg" aria-hidden="true"></div>
-  <div class="bg-glow" aria-hidden="true"></div>
-  <canvas class="bg-stars" aria-hidden="true"></canvas>
+  <a class="skip" href="#main">Skip to content</a>
   <div class="grain" aria-hidden="true"></div>
 
-  <header class="site-header" data-theme="dark">
-    <a class="name" href="../index.html">Aitor Morales</a>
-    <nav class="nav" aria-label="Primary">
-      <a href="../index.html#work">Work</a>
+  <header class="masthead">
+    <a class="mh-mark" href="../index.html">
+      <svg class="mh-seal" viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1"/>
+        <circle cx="16" cy="16" r="6.4" fill="none" stroke="currentColor" stroke-width="1"/>
+        <circle cx="16" cy="16" r="1.8" fill="currentColor"/>
+        <path d="M16 1v6M16 25v6M1 16h6M25 16h6" stroke="currentColor" stroke-width="1"/>
+      </svg>
+      Aitor&nbsp;Morales
+    </a>
+    <nav class="mh-nav" aria-label="Primary">
+      <a href="../index.html#work" aria-current="page">Work</a>
       <a href="../about.html">About</a>
       <a href="../resume.html">Resume</a>
-      <a class="nav-cta" href="mailto:aitormorales@honeybungames.com">Contact</a>
+      <a href="mailto:aitormorales@honeybungames.com">Contact</a>
     </nav>
-    <button class="menu-btn" aria-label="Open menu" aria-expanded="false"><i></i><i></i></button>
+    <span class="mh-tools">
+      <button class="icon-btn" data-theme-toggle type="button"><span data-theme-label>Catalogue</span></button>
+      <button class="icon-btn menu-btn" type="button" aria-expanded="false">Menu</button>
+    </span>
   </header>
 
-  <div class="drawer-backdrop" aria-hidden="true"></div>
-  <aside class="drawer" aria-label="Menu">
-    <nav class="drawer-nav">
-      <a href="../index.html"><span class="idx">01</span> Home</a>
-      <a href="../index.html#work"><span class="idx">02</span> Work</a>
-      <a href="../about.html"><span class="idx">03</span> About</a>
-      <a href="../resume.html"><span class="idx">04</span> Resume</a>
-      <a href="mailto:aitormorales@honeybungames.com"><span class="idx">05</span> Contact</a>
-    </nav>
-    <div class="drawer-foot">
-      <div class="drawer-social">
-        <a href="https://aitormorales.itch.io/" target="_blank" rel="noopener">itch.io</a>
-        <a href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://www.instagram.com/aitor_21m/" target="_blank" rel="noopener">Instagram</a>
-      </div>
-      <a class="drawer-email" href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a>
-    </div>
-  </aside>
+  <p class="credential">
+    <b>Game &amp; Level Designer</b> <span class="sep">·</span> Madrid
+    <span class="sep">·</span> Designer &amp; developer at <b>Gimica (JustPlay)</b>
+    <span class="sep">·</span> 50+ live games, 25M+ downloads
+    <span class="sep">·</span> <a class="ilink" href="../resume.html">Resume</a>
+  </p>
 
-  <a class="back-link" href="../index.html#work" aria-label="Back">
+  <a class="back-link" href="../index.html#work">
     <svg viewBox="0 0 67 34" fill="none" aria-hidden="true"><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 17h63"/><polyline points="17.5 1 2 17 17.5 33"/></g></svg>
-    Back
+    Back to the catalogue
   </a>
 
-  <main>
-    <section class="project-hero" data-theme="dark">
-      <div class="project-copy">
-        <span class="eyebrow">Honey Bun Games · 2023 to 2025</span>
-        <h1 class="display">Love at<br>First Bite</h1>
-        <div class="work-meta"><span>Game Designer &amp; Developer</span><span>Dating sim</span><span>Co-founder</span></div>
-        <p class="lead">Swipe, match, savor. A vampire dating sim where matching with humans is how you find dinner, and some profiles are hiding more than they let on.</p>
+  <main id="main">
+
+    <!-- ============================ HOOK ============================ -->
+    <section class="section section--plain">
+      <p class="eyebrow rise">Nº 02 <span class="dot">·</span> Honey Bun Games <span class="dot">·</span> 2023—2025</p>
+      <h1 class="hero-title rise" style="--i:1">Love at <em>First Bite</em></h1>
+      <p class="hero-sub rise" style="--i:2">A vampire dating sim where the swipe <b>is</b> the mechanic: match with humans, spot the vampires hiding among them, and decide who becomes a partner, a friend, or dinner.</p>
+
+      <span class="entry-media rise" style="--i:3;display:block;aspect-ratio:63/50;max-width:760px;margin-top:clamp(1.8rem,4vh,2.8rem)">
+        <picture>
+          <source srcset="../assets/img/projects/love-at-first-bite/cover.webp" type="image/webp">
+          <img src="../assets/img/projects/love-at-first-bite/cover.png" alt="Love at First Bite key art" width="630" height="500" fetchpriority="high" decoding="sync" style="filter:none">
+        </picture>
+      </span>
+
+      <div class="rise" style="--i:4;display:flex;flex-wrap:wrap;gap:1rem 1.4rem;align-items:center;margin-top:1.6rem">
+        <span class="status status--soon">◇ Steam · coming soon</span>
         <div class="btn-row">
           <a class="btn" href="https://store.steampowered.com/app/3206530/Love_at_first_Bite/" target="_blank" rel="noopener">Wishlist on Steam <span class="arrow">→</span></a>
-          <a class="btn btn--ghost" href="https://honeybun-games.itch.io/love-at-first-bite" target="_blank" rel="noopener">Play the demo <span class="arrow">→</span></a>
+          <a class="btn btn--ghost" href="#play">Play the demo <span class="arrow">→</span></a>
         </div>
-      </div>
-      <div class="project-shot">
-        <picture><source srcset="../assets/img/projects/love-at-first-bite/cover.webp" type="image/webp"><img src="../assets/img/projects/love-at-first-bite/cover.png" alt="Love at First Bite key art" style="view-transition-name:vt-hero" fetchpriority="high" decoding="sync"></picture>
       </div>
     </section>
 
-    <div class="project-body">
-      <div class="video-embed" data-yt="NPgyNP00LGE" data-title="Love at First Bite trailer">
-        <picture><source srcset="../assets/img/projects/love-at-first-bite/trailer.webp" type="image/webp"><img class="ve-poster" src="../assets/img/projects/love-at-first-bite/trailer.jpg" alt="Love at First Bite trailer" width="1280" height="720" loading="lazy"></picture>
-        <span class="ve-label">Trailer</span>
-        <button class="ve-play" type="button" aria-label="Play the Love at First Bite trailer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button>
+    <!-- ========================= WALL LABEL ========================= -->
+    <section class="section">
+      <div class="section-head rise">
+        <span class="section-no">01 — The wall label</span>
+        <h2 class="section-title">What it is, and <em>what I did</em></h2>
       </div>
-      <p class="ve-alt"><a href="https://www.youtube.com/watch?v=NPgyNP00LGE" target="_blank" rel="noopener">Watch on YouTube ↗</a></p>
-      <dl class="meta-row">
-        <div><dt>Role</dt><dd>Game Designer &amp; Developer · Co-founder</dd></div>
-        <div><dt>Team</dt><dd>Honey Bun Games, with Teresa Costas &amp; Carlos Fernández</dd></div>
+
+      <dl class="facts rise">
+        <div><dt>Year</dt><dd>Sep 2023 — Feb 2025</dd></div>
+        <div><dt>Role</dt><dd>Game designer &amp; developer · co-founder</dd></div>
+        <div><dt>Genre</dt><dd>Dating sim · narrative</dd></div>
         <div><dt>Engine</dt><dd>Unity</dd></div>
-        <div><dt>When</dt><dd>Sep 2023 to Feb 2025</dd></div>
-        <div><dt>Platform</dt><dd>PC (Windows &amp; Mac) · Android · iOS</dd></div>
-        <div><dt>Play</dt><dd><a href="https://honeybun-games.itch.io/love-at-first-bite" target="_blank" rel="noopener">itch.io demo</a> · <a href="https://store.steampowered.com/app/3206530/Love_at_first_Bite/" target="_blank" rel="noopener">Steam wishlist</a></dd></div>
+        <div><dt>Studio</dt><dd>Honey Bun Games</dd></div>
+        <div><dt>Platforms</dt><dd>PC (Windows &amp; Mac) · Android · iOS</dd></div>
+        <div><dt>Team</dt><dd>With Teresa Costas &amp; Carlos Fernández</dd></div>
+        <div><dt>Status</dt><dd>Steam · coming soon</dd></div>
       </dl>
 
-      <!-- The demo itself, playable in place: the strongest artifact a case study can
-           show. Loads the itch.io web build only when the visitor presses play. -->
-      <div class="game-embed" data-upload="11929999" data-w="1280" data-h="740" data-page="https://honeybun-games.itch.io/love-at-first-bite" data-title="Love at First Bite — playable demo">
-        <picture><source srcset="../assets/img/projects/love-at-first-bite/cover.webp" type="image/webp"><img class="ve-poster" src="../assets/img/projects/love-at-first-bite/cover.png" alt="Play the Love at First Bite demo" width="1280" height="740" loading="lazy"></picture>
+      <div class="role-note rise" style="--i:1;margin-top:clamp(2rem,5vh,3rem)">
+        <h3>What I built</h3>
+        <p class="prose">I co-founded the studio and led design on the game. That meant the core verb — reading a profile and committing to a swipe — and the systems that give it weight: the daily match limit, the thirst meter that keeps rising while you deliberate, and the tension bar that runs a date.</p>
+        <p class="prose">I built what I designed, in Unity, and worked alongside my co-founders across art, narrative and engineering rather than handing specs over a wall.</p>
+      </div>
+    </section>
+
+    <!-- ========================= THE COLLISION ========================= -->
+    <section class="section">
+      <div class="section-head rise">
+        <span class="section-no">02 — The collision</span>
+        <h2 class="section-title">Two games, <em>one swipe</em></h2>
+      </div>
+      <div class="cols cols--2">
+        <div class="col rise">
+          <p class="col-lab">Design DNA</p>
+          <h3 style="font-family:var(--serif);font-size:var(--step-2);font-weight:340;line-height:1.05;letter-spacing:-.015em">Papers,&nbsp;Please <span style="font-family:var(--mono);font-size:.42em;color:var(--faint);vertical-align:.35em">×</span> Reigns <span style="font-family:var(--mono);font-size:.42em;color:var(--accent);vertical-align:.35em">=</span> <em style="font-style:italic;color:var(--gold)">Love at First Bite</em></h3>
+          <p class="prose">Take the suspicious reading of documents from <em>Papers, Please</em>, the swipe-or-die tension of <em>Reigns</em>, wrap it in a dating app — and you get a vampire deciding whether tonight's match is a partner, a friend, or dinner.</p>
+        </div>
+        <div class="col rise" style="--i:1">
+          <p class="col-lab">Why it holds</p>
+          <p class="prose">A dating app already trains the player in the input. Nobody needs a tutorial for a swipe. So the whole design budget goes into making that one gesture carry consequence: what you read in a bio, what you chose to believe, and what it costs you when you were wrong.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================== THE GAME =========================== -->
+    <section class="section">
+      <div class="section-head rise">
+        <span class="section-no">03 — The game</span>
+        <h2 class="section-title">Profiles are <em>puzzles</em></h2>
+      </div>
+      <p class="prose rise">Love at First Bite is a dating sim built around narrative and investigation. You live the life of a vampire surviving through a dating app: swipe right on tasty humans, swipe left when a profile feels off, because some vampires are better at hiding than others. Matches are limited each day, and your thirst only grows while you decide on tonight's dinner.</p>
+      <p class="prose rise">The game started as our entry to the Indie Spain Jam 2023. The concept held up, so we took it through the <a class="ilink" href="https://powerupplus.es/en/" target="_blank" rel="noopener">PowerUp+</a> pre-incubation program and founded <strong>Honey Bun Games</strong> to build the full version, now heading to Steam.</p>
+
+      <div class="cols cols--2" style="margin-top:clamp(2rem,5vh,3rem)">
+        <div class="col rise">
+          <p class="col-lab">Design highlights</p>
+          <ul class="ticklist">
+            <li><b>Deduction as the core verb.</b> Profiles are puzzles. Reading bios, photos and chat behaviour to unmask hidden vampires turns a swipe into a risk/reward decision.</li>
+            <li><b>A pressure economy.</b> Limited daily matches and a growing thirst meter create a soft timer that forces commitment without hard fail states.</li>
+            <li><b>Dates as minigames.</b> Conversations run on a tension bar: keep the date charmed, don't let suspicion peak.</li>
+          </ul>
+        </div>
+        <div class="col rise" style="--i:1">
+          <p class="col-lab">The substructure</p>
+          <p class="prose">Every one of those is the same shape underneath: a resource the player spends without a visible number, and a read they make under time pressure. Thirst, matches and suspicion are three faces of one economy — which is why tuning one of them moves the whole game.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ PLAY IT ============================ -->
+    <section class="section" id="play">
+      <div class="section-head rise">
+        <span class="section-no">04 — Play it</span>
+        <h2 class="section-title">The demo, <em>in this page</em></h2>
+      </div>
+      <p class="prose rise" style="margin-bottom:clamp(1.6rem,4vh,2.4rem)">The strongest artifact a case study can show is the thing itself. Press play and the browser build loads right here — nothing is requested from itch.io until you choose to.</p>
+
+      <!-- The demo itself, playable in place. Loads the itch.io web build only
+           when the visitor presses play; phones are handed off to the itch page,
+           which handles small screens properly. -->
+      <div class="embed embed--game rise" data-upload="11929999" data-w="1280" data-h="740" data-page="https://honeybun-games.itch.io/love-at-first-bite" data-title="Love at First Bite — playable demo">
+        <picture>
+          <source srcset="../assets/img/projects/love-at-first-bite/cover.webp" type="image/webp">
+          <img class="ve-poster" src="../assets/img/projects/love-at-first-bite/cover.png" alt="Play the Love at First Bite demo" width="1280" height="740" loading="lazy">
+        </picture>
         <span class="ve-label">Playable demo</span>
         <button class="ve-play" type="button" aria-label="Play the Love at First Bite demo in your browser"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button>
       </div>
-      <p class="ve-alt">Best on desktop · <a href="https://honeybun-games.itch.io/love-at-first-bite" target="_blank" rel="noopener">Play on itch.io ↗</a></p>
+      <p class="ve-alt rise">Best on desktop <span class="dot">·</span> <a href="https://honeybun-games.itch.io/love-at-first-bite" target="_blank" rel="noopener">Play on itch.io ↗</a></p>
 
-      <section class="proj-sec">
-        <span class="num">01</span>
-        <div>
-          <h2>The game</h2>
-          <p class="prose">Love at First Bite is a dating sim built around narrative and investigation. You live the life of a vampire surviving through a dating app: swipe right on tasty humans, swipe left when a profile feels off, because some vampires are better at hiding than others. Matches are limited each day, and your thirst only grows while you decide on tonight's dinner.</p>
+      <div class="embed rise" data-yt="NPgyNP00LGE" data-title="Love at First Bite trailer" style="margin-top:clamp(2.4rem,6vh,4rem)">
+        <picture>
+          <source srcset="../assets/img/projects/love-at-first-bite/trailer.webp" type="image/webp">
+          <img class="ve-poster" src="../assets/img/projects/love-at-first-bite/trailer.jpg" alt="Love at First Bite trailer" width="1280" height="720" loading="lazy">
+        </picture>
+        <span class="ve-label">Trailer</span>
+        <button class="ve-play" type="button" aria-label="Play the Love at First Bite trailer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button>
+      </div>
+      <p class="ve-alt rise"><a href="https://www.youtube.com/watch?v=NPgyNP00LGE" target="_blank" rel="noopener">Watch on YouTube ↗</a></p>
+
+      <div class="cols cols--3" style="margin-top:clamp(2.4rem,6vh,4rem)">
+        <div class="col rise">
+          <span class="entry-media" style="display:block;aspect-ratio:16/9">
+            <picture>
+              <source srcset="../assets/img/projects/love-at-first-bite/shot-1.webp" type="image/webp">
+              <img src="../assets/img/projects/love-at-first-bite/shot-1.png" alt="Love at First Bite gameplay" width="2560" height="1440" loading="lazy" style="filter:none">
+            </picture>
+          </span>
+          <p class="mono">The night's roster</p>
         </div>
-      </section>
-
-      <section class="proj-sec">
-        <span class="num">02</span>
-        <div>
-          <h2>Jam to production</h2>
-          <p class="prose">The game started as our entry to the Indie Spain Jam 2023. The concept held up, so we took it through the PowerUp+ pre-incubation program and founded <strong>Honey Bun Games</strong> to build the full version, now heading to Steam.</p>
+        <div class="col rise" style="--i:1">
+          <span class="entry-media" style="display:block;aspect-ratio:16/9">
+            <picture>
+              <source srcset="../assets/img/projects/love-at-first-bite/shot-2.webp" type="image/webp">
+              <img src="../assets/img/projects/love-at-first-bite/shot-2.png" alt="Swiping through profiles in Love at First Bite" width="2560" height="1440" loading="lazy" style="filter:none">
+            </picture>
+          </span>
+          <p class="mono">The swipe</p>
         </div>
-      </section>
-
-      <section class="proj-sec">
-        <span class="num">03</span>
-        <div>
-          <h2>Design highlights</h2>
-          <ul>
-            <li><strong>Deduction as the core verb</strong> · profiles are puzzles. Reading bios, photos and chat behaviour to unmask hidden vampires turns a swipe into a risk/reward decision.</li>
-            <li><strong>A pressure economy</strong> · limited daily matches and a growing thirst meter create a soft timer that forces commitment without hard fail states.</li>
-            <li><strong>Dates as minigames</strong> · conversations run on a tension bar: keep the date charmed, don't let suspicion peak.</li>
-          </ul>
+        <div class="col rise" style="--i:2">
+          <span class="entry-media" style="display:block;aspect-ratio:16/9">
+            <picture>
+              <source srcset="../assets/img/projects/love-at-first-bite/shot-3.webp" type="image/webp">
+              <img src="../assets/img/projects/love-at-first-bite/shot-3.png" alt="A date in Love at First Bite" width="2560" height="1440" loading="lazy" style="filter:none">
+            </picture>
+          </span>
+          <p class="mono">The date</p>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <div class="gallery">
-        <figure><picture><source srcset="../assets/img/projects/love-at-first-bite/shot-1.webp" type="image/webp"><img src="../assets/img/projects/love-at-first-bite/shot-1.png" alt="Love at First Bite gameplay" loading="lazy"></picture></figure>
-        <figure><picture><source srcset="../assets/img/projects/love-at-first-bite/shot-2.webp" type="image/webp"><img src="../assets/img/projects/love-at-first-bite/shot-2.png" alt="Swiping through profiles in Love at First Bite" loading="lazy"></picture></figure>
-        <figure><picture><source srcset="../assets/img/projects/love-at-first-bite/shot-3.webp" type="image/webp"><img src="../assets/img/projects/love-at-first-bite/shot-3.png" alt="A date in Love at First Bite" loading="lazy"></picture></figure>
+    <!-- TODO(aitor): the one gap in this case study is process evidence —
+         greybox/whitebox shots, an economy spreadsheet, a tuning pass, a
+         rejected prototype. If any of that survives from production, it
+         belongs here as section 05 and would be the strongest section on
+         the page for a design hire. -->
+
+    <!-- =========================== PRESS =========================== -->
+    <section class="section">
+      <div class="section-head rise">
+        <span class="section-no">05 — Recognition</span>
+        <h2 class="section-title">Where it was <em>seen</em></h2>
+      </div>
+      <div class="press rise">
+        <a href="https://www.pocketgamer.com/love-at-first-bite/preview/" target="_blank" rel="noopener">
+          <span class="src">Pocket Gamer</span>
+          <b>“I really enjoyed the concept and the vertical slice I saw there.”</b>
+          <span class="m">Jupiter Hadley · preview ↗</span>
+        </a>
+        <a href="https://www.gamereactor.eu/video/708243/Even+Vampires+Struggle+with+Online+Dating+-+Talking+Love+at+First+Bite+at+IndieDevDay/" target="_blank" rel="noopener">
+          <span class="src">Gamereactor</span>
+          <b>“Even Vampires Struggle with Online Dating”</b>
+          <span class="m">Interview at IndieDevDay ↗</span>
+        </a>
+        <a href="https://store.steampowered.com/app/3206530/Love_at_first_Bite/" target="_blank" rel="noopener">
+          <span class="src">Steam</span>
+          <b>Love at First Bite</b>
+          <span class="m">Heading to release · wishlist ↗</span>
+        </a>
+        <a href="https://honeybun-games.itch.io/love-at-first-bite" target="_blank" rel="noopener">
+          <span class="src">itch.io</span>
+          <b>Playable demo</b>
+          <span class="m">Browser build · Honey Bun Games ↗</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- =========================== STATUS =========================== -->
+    <section class="section">
+      <div class="section-head rise">
+        <span class="section-no">06 — Status</span>
+        <h2 class="section-title">Jam entry to a <em>Steam page</em></h2>
+      </div>
+      <p class="prose rise">A game jam weekend became a pre-incubation program, then a studio, then a store page. The demo above is the version you can play today; the full game is coming to Steam.</p>
+      <div class="rise" style="--i:1;display:flex;flex-wrap:wrap;gap:1rem 1.4rem;align-items:center;margin-top:1.6rem">
+        <span class="status status--soon">◇ Steam · coming soon</span>
+        <div class="btn-row">
+          <a class="btn" href="https://store.steampowered.com/app/3206530/Love_at_first_Bite/" target="_blank" rel="noopener">Wishlist on Steam <span class="arrow">→</span></a>
+          <a class="btn btn--ghost" href="https://honeybungames.com/" target="_blank" rel="noopener">Honey Bun Games <span class="arrow">→</span></a>
+        </div>
       </div>
 
-      <nav class="proj-foot-nav" aria-label="More">
-        <a href="../index.html#work"><span class="dir">← Back</span>All work</a>
-        <a href="../projects/birds-of-a-feather.html" style="text-align:right"><span class="dir">Next →</span>Birds of a Feather</a>
-      </nav>
-    </div>
+      <div class="btn-row rise" style="--i:2;margin-top:clamp(2.4rem,6vh,3.5rem);justify-content:space-between;width:100%">
+        <a class="btn btn--ghost" href="../index.html#work">← All work</a>
+        <a class="btn btn--ghost" href="./birds-of-a-feather.html">Next · Birds of a Feather <span class="arrow">→</span></a>
+      </div>
+    </section>
+
   </main>
 
-  <script src="../js/v3.js?v=30"></script>
+  <footer class="site-footer">
+    <div class="foot-inner">
+      <p class="foot-line">Nothing here is only its surface.</p>
+      <p class="foot-meta">
+        Aitor Morales · Game &amp; Level Designer · Madrid<br>
+        <a class="ilink" href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../js/v6.js?v=1" defer></script>
+
+  <!-- ------------------------------------------------------------------ ---
+       PAGE-SCOPED: the embed facades' behaviour, ported verbatim from v3 so
+       the playable demo keeps working identically. No third-party request is
+       made until the visitor presses play. Belongs in v6.js once the lead
+       adopts the `.embed` contract.
+       --------------------------------------------------------------------- -->
+  <script defer>
+    (function () {
+      "use strict";
+
+      /* Trailer facade: the YouTube iframe is injected only on click, via
+         youtube-nocookie, so the page makes no third-party request until the
+         visitor chooses to watch. */
+      function initVideo(el) {
+        var play = function () {
+          var id = el.getAttribute("data-yt");
+          if (!id || el.classList.contains("is-playing")) return;
+          var f = document.createElement("iframe");
+          f.src = "https://www.youtube-nocookie.com/embed/" + id + "?autoplay=1&rel=0";
+          f.title = el.getAttribute("data-title") || "Trailer";
+          f.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+          f.setAttribute("allowfullscreen", "");
+          el.classList.add("is-playing");
+          el.innerHTML = "";
+          el.appendChild(f);
+        };
+        el.addEventListener("click", play);
+        var btn = el.querySelector(".ve-play");
+        if (btn) btn.addEventListener("click", function (e) { e.stopPropagation(); play(); });
+      }
+
+      /* Playable game facade: same contract, for the itch.io browser build. */
+      function initGame(el) {
+        var play = function () {
+          var id = el.getAttribute("data-upload");
+          if (!id || el.classList.contains("is-playing")) return;
+          // phones: a 720p build scaled into a phone column is unplayably small —
+          // hand off to the game's itch.io page, which handles mobile properly
+          var page = el.getAttribute("data-page");
+          if (page && matchMedia("(max-width: 699px)").matches) {
+            var a = document.createElement("a");
+            a.href = page; a.target = "_blank"; a.rel = "noopener";
+            document.body.appendChild(a); a.click(); a.remove();
+            return;
+          }
+          // itch's embed page renders the build at its fixed pixel size and does NOT
+          // scale itself — a smaller iframe just crops it. So: render at native size
+          // (data-w/h = build viewport + itch's 20px bar) and scale to the container.
+          // Pointer coordinates map through CSS transforms, so the game stays playable.
+          var w = parseInt(el.getAttribute("data-w"), 10) || 1280;
+          var h = parseInt(el.getAttribute("data-h"), 10) || 740;
+          var f = document.createElement("iframe");
+          f.src = "https://itch.io/embed-upload/" + id + "?color=0C0A0D";
+          f.title = el.getAttribute("data-title") || "Playable game";
+          f.allow = "autoplay; fullscreen; gamepad";
+          f.setAttribute("allowfullscreen", "");
+          f.style.cssText = "position:absolute;top:0;left:0;border:0;width:" + w + "px;height:" + h + "px;transform-origin:0 0";
+          var fit = function () { f.style.transform = "scale(" + (el.clientWidth / w).toFixed(5) + ")"; };
+          el.classList.add("is-playing");
+          el.innerHTML = "";
+          el.appendChild(f);
+          fit();
+          addEventListener("resize", fit);
+        };
+        el.addEventListener("click", play);
+        var btn = el.querySelector(".ve-play");
+        if (btn) btn.addEventListener("click", function (e) { e.stopPropagation(); play(); });
+      }
+
+      [].forEach.call(document.querySelectorAll(".embed"), function (el) {
+        if (el._e) return;
+        el._e = true;
+        if (el.hasAttribute("data-upload")) initGame(el);
+        else if (el.hasAttribute("data-yt")) initVideo(el);
+      });
+    })();
+  </script>
 </body>
 </html>
