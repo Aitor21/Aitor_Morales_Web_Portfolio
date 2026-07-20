@@ -70,7 +70,15 @@ h1,h2,h3{text-wrap:balance}
 /* ---------- Fixed background ---------- */
 .bg{position:fixed;inset:0;z-index:-4;background:var(--grad-sky)}
 .bg-glow{position:fixed;z-index:-3;top:46%;left:64%;width:min(140vmin,1200px);aspect-ratio:1;transform:translate(-50%,-50%);
-  background:radial-gradient(circle at 50% 50%,rgba(95,108,230,.20),rgba(140,43,122,.08) 40%,transparent 62%);pointer-events:none}
+  background:radial-gradient(circle at 50% 50%,rgba(95,108,230,.20),rgba(140,43,122,.08) 40%,transparent 62%);pointer-events:none;
+  animation:glowDrift 90s ease-in-out infinite}
+/* the nebula breathes — minutes-long, transform-only, imperceptible on purpose
+   (the global reduced-motion block flattens it to a static frame) */
+@keyframes glowDrift{
+  0%,100%{transform:translate(-50%,-50%) scale(1)}
+  33%{transform:translate(calc(-50% + 3vmin),calc(-50% - 2vmin)) scale(1.06)}
+  66%{transform:translate(calc(-50% - 2.5vmin),calc(-50% + 2vmin)) scale(.96)}
+}
 /* starfield boots after the page morph finishes (see afterTransition in v3.js) — fade it in */
 .bg-stars{position:fixed;inset:0;z-index:-3;width:100%;height:100%;pointer-events:none;opacity:0;transition:opacity .9s var(--ease-out)}
 .stars-on .bg-stars{opacity:1}
@@ -338,7 +346,7 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
 /* Gimica typographic card */
 .gimica-card{position:relative;aspect-ratio:4/3;border-radius:8px;overflow:hidden;box-shadow:var(--shadow-img);
   background:#e9ecfb;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .9s var(--ease-out)}
-.gimica-card img{width:100%;height:100%;object-fit:cover;object-position:center}
+.gimica-card img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .9s var(--ease-out)}
 .gimica-card::after{content:"";position:absolute;inset:0;border:1px solid rgba(255,255,255,.14);border-radius:8px;pointer-events:none}
 .work:hover .gimica-card{transform:scale(1.015)}
 /* stats row (in the work copy column) */

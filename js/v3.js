@@ -242,14 +242,25 @@
       return;
     }
     if (slide.animating || Math.abs(slide.snap.scrollTop - end) < 2) { slide.index = i; updateSlideNav(); return; }
+    var fromP = slide.panels[nearestPanel()], toP = p;
     slide.index = i; slide.animating = true; updateSlideNav();
     var start = slide.snap.scrollTop, dist = end - start, t0 = null, dur = 320;
     var ease = function (t) { return 1 - Math.pow(1 - t, 4); }; // easeOutQuart — snappy, smooth settle
+    /* depth: both panels' content trails the jump by up to ~7% of the distance,
+       bell-eased so the offset is zero at BOTH ends — layered mid-flight, no end pop. */
+    var depthK = (reduce || fromP === toP) ? 0 : 0.07;
+    function setDepth(off) {
+      if (!depthK) return;
+      var tf = off ? "translate3d(0," + off + "px,0)" : "";
+      fromP.style.transform = tf; toP.style.transform = tf;
+    }
     function step(ts) {
       if (t0 == null) t0 = ts;
-      var p = Math.min(1, (ts - t0) / dur);
-      slide.snap.scrollTop = start + dist * ease(p);
-      if (p < 1) requestAnimationFrame(step);
+      var pr = Math.min(1, (ts - t0) / dur);
+      var e = ease(pr);
+      slide.snap.scrollTop = start + dist * e;
+      setDepth(pr < 1 ? +(dist * depthK * e * (1 - e) * 4).toFixed(1) : 0);
+      if (pr < 1) requestAnimationFrame(step);
       else { slide.snap.scrollTop = end; slide.animating = false; }
     }
     requestAnimationFrame(step);
@@ -407,6 +418,27 @@
         document.body.classList.remove("cursor-media"); label.textContent = "";
       }
       if (inside(e.target, "a,button") && !inside(to, "a,button")) document.body.classList.remove("cursor-hover");
+    });
+  }
+
+  /* ===================== Card hover parallax (per mount) =====================
+     The big work cards answer the cursor the way the hero scene does: the image
+     drifts a few px against the pointer. The CSS transform transition (.9s ease-out)
+     damps every write, so it reads as weight, not jitter. Fine pointers only. */
+  function initCardParallax() {
+    if (!fine || reduce) return;
+    document.querySelectorAll(".work-media,.gimica-card,.about-portrait").forEach(function (card) {
+      if (card._cp) return; card._cp = true;
+      var img = card.querySelector("img,video");
+      if (!img) return;
+      card.addEventListener("mousemove", function (e) {
+        var b = card.getBoundingClientRect();
+        var dx = ((e.clientX - b.left) / b.width - 0.5) * -10;
+        var dy = ((e.clientY - b.top) / b.height - 0.5) * -10;
+        // scale slightly past the CSS hover zoom so the drift can never expose an edge
+        img.style.transform = "scale(1.06) translate(" + dx.toFixed(1) + "px," + dy.toFixed(1) + "px)";
+      });
+      card.addEventListener("mouseleave", function () { img.style.transform = ""; });
     });
   }
 
@@ -647,6 +679,31 @@
   function initStars() {
     var c = document.querySelector(".bg-stars"); if (!c) return;
     var ctx = c.getContext("2d"), w, h, dpr, stars = [];
+    /* A rare shooting star: one quiet streak, first ~12-30s in, then every 20-40s.
+       Never drawn under prefers-reduced-motion (that loop renders a single static frame). */
+    var shoot = null, nextShoot = 0;
+    function drawShoot(t) {
+      if (!nextShoot) { nextShoot = t + 12000 + Math.random() * 18000; return; }
+      if (!shoot) {
+        if (t < nextShoot) return;
+        var ang = (25 + Math.random() * 20) * Math.PI / 180;   // shallow dive
+        var dir = Math.random() < 0.5 ? 1 : -1;                // either heading
+        var speed = 650 + Math.random() * 250;                 // px/s
+        shoot = { x: w * (0.1 + Math.random() * 0.8), y: h * (0.05 + Math.random() * 0.35),
+                  vx: Math.cos(ang) * speed * dir, vy: Math.sin(ang) * speed, t0: t, life: 900 };
+      }
+      var pr = (t - shoot.t0) / shoot.life;
+      if (pr >= 1) { shoot = null; nextShoot = t + 20000 + Math.random() * 20000; return; }
+      var el = (t - shoot.t0) / 1000;
+      var x = shoot.x + shoot.vx * el, y = shoot.y + shoot.vy * el;
+      var m = Math.hypot(shoot.vx, shoot.vy), tail = 90;
+      var a = pr < 0.15 ? pr / 0.15 : 1 - (pr - 0.15) / 0.85;  // quick in, long fade
+      var g = ctx.createLinearGradient(x, y, x - shoot.vx / m * tail, y - shoot.vy / m * tail);
+      g.addColorStop(0, "rgba(220,230,255," + (0.85 * a).toFixed(3) + ")");
+      g.addColorStop(1, "rgba(220,230,255,0)");
+      ctx.strokeStyle = g; ctx.lineWidth = 1.6; ctx.lineCap = "round";
+      ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - shoot.vx / m * tail, y - shoot.vy / m * tail); ctx.stroke();
+    }
     function size() {
       dpr = Math.min(devicePixelRatio || 1, 2); w = c.clientWidth; h = c.clientHeight;
       c.width = w * dpr; c.height = h * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -657,7 +714,7 @@
       ctx.clearRect(0, 0, w, h);
       for (var i = 0; i < stars.length; i++) { var s = stars[i]; var a = reduce ? s.a : s.a * (0.55 + 0.45 * Math.sin(t * 0.001 * s.tw + s.ph));
         ctx.beginPath(); ctx.fillStyle = "rgba(210,220,255," + a.toFixed(3) + ")"; ctx.arc(s.x, s.y, s.r, 0, 6.283); ctx.fill(); }
-      if (!reduce) requestAnimationFrame(draw);
+      if (!reduce) { drawShoot(t); requestAnimationFrame(draw); }
     }
     size(); requestAnimationFrame(draw);
     document.body.classList.add("stars-on");
@@ -749,6 +806,7 @@
     setupSlides();
     initReveals();
     initMagnetic();
+    initCardParallax();
     initVideoEmbeds();
     initGameEmbeds();
     initLoopVideos();
