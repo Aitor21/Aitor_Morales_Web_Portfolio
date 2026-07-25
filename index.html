@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Aitor Morales · Game Designer</title>
-  <meta name="description" content="Aitor Morales, game designer in Madrid. Game designer &amp; technical designer at Gimica (JustPlay); features shipped across a portfolio of live mobile games. Unity, Godot, Babylon.js.">
+  <meta name="description" content="Game designer in Madrid. I design systems for live mobile games at Gimica (JustPlay), build them in Unity, and A/B test what ships.">
   <link rel="canonical" href="https://aitormorales.com/">
   <meta name="theme-color" content="#020b16">
   <meta property="og:type" content="website">
@@ -20,9 +20,9 @@
   <link rel="preload" as="font" type="font/woff2" href="assets/font/Futura-Dem.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="assets/font/Futura-Med.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="assets/font/Futura-Boo.woff2" crossorigin>
-  <link rel="stylesheet" href="./css/v3.css?v=35">
+  <link rel="stylesheet" href="./css/v3.css?v=36">
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"Person","name":"Aitor Morales","url":"https://aitormorales.com/","jobTitle":"Game Designer","worksFor":{"@type":"Organization","name":"Gimica","parentOrganization":{"@type":"Organization","name":"JustPlay"}},"address":{"@type":"PostalAddress","addressLocality":"Madrid","addressCountry":"ES"},"knowsAbout":["Level Design","Game Design","Systems Design","Game Economy","A/B Testing","Unity","C#","Godot","Babylon.js"],"sameAs":["https://www.linkedin.com/in/aitor-morales-7a5b93146/","https://aitormorales.itch.io/","https://www.instagram.com/aitor_21m/"]}
+  {"@context":"https://schema.org","@type":"Person","@id":"https://aitormorales.com/#person","name":"Aitor Morales","url":"https://aitormorales.com/","jobTitle":"Game Designer","hasOccupation":{"@type":"Occupation","name":"Game Designer","occupationLocation":{"@type":"City","name":"Madrid"},"skills":"Systems design, level design, game economy, LiveOps, A/B testing, Unity, C#, Godot"},"worksFor":{"@type":"Organization","name":"Gimica","parentOrganization":{"@type":"Organization","name":"JustPlay"}},"address":{"@type":"PostalAddress","addressLocality":"Madrid","addressCountry":"ES"},"knowsAbout":["Level Design","Game Design","Systems Design","Game Economy","A/B Testing","Unity","C#","Godot","Babylon.js"],"sameAs":["https://www.linkedin.com/in/aitor-morales-7a5b93146/","https://aitormorales.itch.io/","https://www.instagram.com/aitor_21m/"]}
   </script>
 </head>
 <body>
@@ -68,10 +68,10 @@
     <!-- HERO -->
     <section class="panel hero" data-theme="dark" data-label="Top">
       <div class="moon-scene" data-parallax data-scalar="4.4" aria-hidden="true">
-        <div class="ms-layer" data-depth="0.12"><img class="ms-glow2" src="assets/img/moonlight.svg" alt=""></div>
+        <div class="ms-layer" data-depth="0.12"><img class="ms-glow2" src="assets/img/moonlight.svg" alt="" fetchpriority="high"></div>
         <!-- robot drifts in the background, behind the moon (Wall-E on an extinguisher) -->
         <div class="ms-layer" data-depth="0.16"><img class="ms-robot" src="assets/img/hero/robot.webp" alt=""></div>
-        <div class="ms-layer" data-depth="0.32"><img class="ms-moon" src="assets/img/moon.svg" alt=""></div>
+        <div class="ms-layer" data-depth="0.32"><img class="ms-moon" src="assets/img/moon.svg" alt="" fetchpriority="high"></div>
         <div class="ms-layer" data-depth="0.85"><img class="ms-ast1" src="assets/img/blasteroid_dark.svg" alt=""></div>
         <div class="ms-layer" data-depth="0.62"><img class="ms-ast2" src="assets/img/blasteroid_light.svg" alt=""></div>
         <div class="ms-layer" data-depth="0.95"><img class="ms-ast3" src="assets/img/blasteroid_slight.webp" alt=""></div>
@@ -180,7 +180,7 @@
             </span>
           </a>
           <a class="more-card reveal" style="--i:4" href="./projects/r4d10head.html">
-            <span class="mc-shot"><video class="loop-video" src="assets/img/projects/r4d10-head/cover.mp4" poster="assets/img/projects/r4d10-head/poster.jpg" width="728" height="406" autoplay muted loop playsinline preload="metadata" aria-label="R4D10HEAD gameplay"></video></span>
+            <span class="mc-shot"><video class="loop-video" src="assets/img/projects/r4d10-head/cover.mp4" poster="assets/img/projects/r4d10-head/poster.jpg" width="728" height="406" muted loop playsinline preload="none" aria-label="R4D10HEAD gameplay"></video></span>
             <span class="mc-copy">
               <b>R4D10HEAD</b>
               <span class="mc-meta">Game &amp; level design · Stealth · 2022</span>
@@ -236,6 +236,6 @@
 
   </main>
 
-  <script src="./js/v3.js?v=35"></script>
+  <script src="./js/v3.js?v=36"></script>
 </body>
 </html>

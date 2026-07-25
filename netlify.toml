@@ -22,6 +22,68 @@
   status = 301
   force = true
 
+# The v1 tree shipped a résumé PDF here. It is gone, and it was a stale copy of
+# an already-public document, so send anyone holding the old URL to the current one.
+[[redirects]]
+  from = "/assets/img/Aitor_Morales_Resume.pdf"
+  to = "/Aitor_Morales_Resume.pdf"
+  status = 301
+  force = true
+
+# ---------------------------------------------------------------------------
+# One URL per page. Netlify serves both /about and /about.html with a 200, so
+# Google was indexing them independently — and holding a stale pre-rebuild copy
+# on the extensionless one. rel=canonical is only a hint; these 301s enforce it.
+# `force` is required, otherwise static file resolution wins and the rule never runs.
+# ---------------------------------------------------------------------------
+[[redirects]]
+  from = "/about"
+  to = "/about.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/resume"
+  to = "/resume.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/projects/gimica"
+  to = "/projects/gimica.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/projects/blaster-buds"
+  to = "/projects/blaster-buds.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/projects/love-at-first-bite"
+  to = "/projects/love-at-first-bite.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/projects/birds-of-a-feather"
+  to = "/projects/birds-of-a-feather.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/projects/r4d10head"
+  to = "/projects/r4d10head.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/projects/viktors-mayhem"
+  to = "/projects/viktors-mayhem.html"
+  status = 301
+  force = true
+
 # ---------------------------------------------------------------------------
 # Caching. Fingerprinted or never-changing assets can be cached hard; HTML must
 # always revalidate so a deploy is visible immediately.

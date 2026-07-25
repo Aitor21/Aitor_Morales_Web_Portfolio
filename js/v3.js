@@ -490,6 +490,22 @@
         try { v.pause(); } catch (_) {}
         return;
       }
+      /* Deferred loops (preload="none", no autoplay) fetch nothing until they scroll
+         into view — the home grid's card sits five panels down, so eagerly loading it
+         spent ~166KB before the visitor saw panel 1. Pause on exit too, so an
+         off-screen loop never burns battery. */
+      if (!v.hasAttribute("autoplay")) {
+        if ("IntersectionObserver" in window) {
+          new IntersectionObserver(function (en) {
+            en.forEach(function (e) {
+              if (e.isIntersecting) v.play().catch(function () {});
+              else { try { v.pause(); } catch (_) {} }
+            });
+          }, { threshold: 0.2 }).observe(v);
+        } else {
+          v.play().catch(function () {});
+        }
+      }
       if (v.closest("a")) return;   // card loops: the whole card is a link, clicks navigate
       v.setAttribute("tabindex", "0");
       v.setAttribute("role", "button");
