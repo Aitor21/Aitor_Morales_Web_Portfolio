@@ -313,6 +313,43 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
 }
 .escaped .ms-pigeon{animation:pigeonEscape 1.6s cubic-bezier(0.3,0,0.2,1) forwards;pointer-events:none}
 .escaped .ms-bats{animation:batsOvershoot 2.1s var(--ease-out) forwards}
+
+/* =====================================================================
+   The pigeon hunt — the same bird hides on every other page, hops perch
+   to perch, and flushes when you catch it. Small, edge-hugging and
+   fixed, so it never sits on a CTA or a line of reading text.
+   ===================================================================== */
+.hunt-pigeon{position:fixed;z-index:70;width:42px;height:auto;padding:0;border:0;background:none;
+  cursor:pointer;opacity:0;line-height:0;
+  transition:left 1.5s var(--ease-out),top 1.5s var(--ease-out),opacity .5s,transform .3s var(--ease-spring)}
+.hunt-pigeon.perched{opacity:.9}
+.hunt-pigeon img{width:100%;display:block;filter:drop-shadow(0 6px 18px rgba(2,8,20,.65))}
+.hunt-pigeon:hover{opacity:1;transform:scale(1.12) rotate(-4deg)}
+.hunt-pigeon:focus-visible{opacity:1}
+/* a small idle bob so it reads as alive, not as a sticker */
+@keyframes huntBob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-5px) rotate(3deg)}}
+.hunt-pigeon.perched img{animation:huntBob 3.4s ease-in-out infinite}
+@keyframes huntFlush{
+  0%{transform:translate(0,0) rotate(0);opacity:1}
+  25%{transform:translate(-14px,10px) rotate(-16deg);opacity:1}
+  100%{transform:translate(58vw,-48vh) rotate(26deg);opacity:0}
+}
+.hunt-pigeon.flushed{pointer-events:none;animation:huntFlush 1.5s cubic-bezier(0.3,0,0.2,1) forwards}
+.hunt-pigeon.flushed img{animation:none}
+
+/* progress toast, shared by every find */
+.hunt-toast{position:fixed;left:50%;bottom:3.4rem;z-index:1100;pointer-events:none;
+  transform:translate(-50%,16px);opacity:0;
+  background:rgba(8,20,40,.94);border:1px solid var(--line-2);border-radius:40px;
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  padding:1.1rem 2rem;color:#fff;font-family:var(--mono);font-size:1.25rem;
+  letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;
+  transition:opacity .45s var(--ease-out),transform .45s var(--ease-out)}
+.hunt-toast.show{opacity:1;transform:translate(-50%,0)}
+.hunt-toast b{color:var(--violet-bright);font-weight:600}
+.hunt-toast.done{border-color:rgba(79,209,161,.6)}
+.hunt-toast.done b{color:#4fd1a1}
+@media (max-width:520px){.hunt-toast{font-size:1.1rem;padding:.9rem 1.5rem;bottom:2rem}}
 @keyframes pigeonFlee{  /* short, panicked beats away from the flock */
   0%,100%{transform:translate(calc(-50% + 9vmin),calc(-50% + 16vmin)) rotate(-3deg)}
   50%{transform:translate(calc(-50% + 11.5vmin),calc(-50% + 13.6vmin)) rotate(4deg)}
@@ -697,9 +734,32 @@ html.vt-arrive .project-hero .reveal, html.vt-arrive .project-hero .reveal-media
    cross-fade at .28s was what read as a "pop". */
 @keyframes vtContentOut{to{opacity:0;transform:translateY(-14px) scale(.995)}}
 @keyframes vtContentIn{from{opacity:0;transform:translateY(22px) scale(.995)}}
-::view-transition-old(root){animation:vtContentOut .30s var(--ease) both}
-::view-transition-new(root){animation:vtContentIn .46s var(--ease-out) both;animation-delay:.06s}
-::view-transition-group(vt-hero){animation-duration:.66s;animation-timing-function:cubic-bezier(0.22,1,0.36,1);z-index:20}
+::view-transition-old(root){animation:vtContentOut .26s var(--ease) both}
+::view-transition-new(root){animation:vtContentIn .52s var(--ease-out) both;animation-delay:.10s}
+
+/* ---- Directional travel ----------------------------------------------------
+   A navigation that goes DEEPER (home -> case study) and one that comes BACK
+   should not look identical, or neither reads as movement. initMorph records
+   which way we are heading and tags the arriving document, so the content
+   travels with the direction: inward pushes up and in, outward falls back down.
+   Falls through to the neutral rules above if the direction is unknown. */
+@keyframes vtInFromBelow{from{opacity:0;transform:translateY(34px) scale(.982)}}
+@keyframes vtInFromAbove{from{opacity:0;transform:translateY(-26px) scale(.988)}}
+@keyframes vtOutUp{to{opacity:0;transform:translateY(-22px) scale(.988)}}
+@keyframes vtOutDown{to{opacity:0;transform:translateY(18px) scale(.992)}}
+html.vt-in::view-transition-old(root){animation:vtOutUp .26s var(--ease) both}
+html.vt-in::view-transition-new(root){animation:vtInFromBelow .56s var(--ease-out) both;animation-delay:.10s}
+html.vt-out::view-transition-old(root){animation:vtOutDown .24s var(--ease) both}
+html.vt-out::view-transition-new(root){animation:vtInFromAbove .50s var(--ease-out) both;animation-delay:.08s}
+::view-transition-group(vt-hero){animation-duration:.62s;animation-timing-function:cubic-bezier(0.22,1,0.36,1);z-index:20}
+/* Case-study chrome that exists on BOTH sides of a study -> study jump, so the copy
+   column and the back link glide instead of cross-fading. On home -> study they simply
+   enter, which is correct: they genuinely are new. */
+.project-hero .project-copy{view-transition-name:vt-copy}
+.back-link{view-transition-name:vt-back}
+::view-transition-group(vt-copy){animation-duration:.58s;animation-timing-function:var(--ease-out)}
+::view-transition-group(vt-back){animation-duration:.4s}
+::view-transition-old(vt-back),::view-transition-new(vt-back){animation-duration:.4s}
 /* keep the default cross-fade: invisible when it's the same artwork (home -> study),
    a clean dissolve when it isn't (study -> study). Sizing the snapshots with
    object-fit:cover stops the image squashing while the box morphs. */

@@ -594,6 +594,90 @@
     }
   }
 
+  /* ===================== The pigeon hunt (per mount) =====================
+     The bird from the hero scene hides on every other page too. Catch it once per page
+     and the count follows you around in localStorage. Nine pages hold one; the tenth
+     (404) deliberately does not, so nobody has to break the site to finish.
+     Everything degrades quietly: no storage, no counter — the bird still flushes. */
+  var HUNT_TOTAL = 9;
+  function huntKey() {
+    var p = location.pathname.replace(/\/+$/, "");
+    var f = p.substring(p.lastIndexOf("/") + 1).replace(/\.html$/, "");
+    return f || "index";
+  }
+  function huntFound() {
+    try { var v = JSON.parse(localStorage.getItem("amPigeons") || "[]"); return v.length ? v : []; }
+    catch (_) { return []; }
+  }
+  function huntToast(msg, done) {
+    var t = document.querySelector(".hunt-toast");
+    if (!t) {
+      t = document.createElement("div");
+      t.className = "hunt-toast"; t.setAttribute("role", "status");
+      document.body.appendChild(t);
+    }
+    t.innerHTML = msg;
+    t.classList.toggle("done", !!done);
+    // force a reflow so the transition has a start value, rather than waiting on rAF —
+    // a throttled or background tab would otherwise never reveal the toast at all
+    void t.offsetWidth;
+    t.classList.add("show");
+    clearTimeout(t._hide);
+    t._hide = setTimeout(function () { t.classList.remove("show"); }, done ? 5200 : 3200);
+  }
+  function huntRecord() {
+    var found = huntFound(), k = huntKey();
+    if (found.indexOf(k) < 0) {
+      found.push(k);
+      try { localStorage.setItem("amPigeons", JSON.stringify(found)); } catch (_) {}
+    }
+    var n = Math.min(found.length, HUNT_TOTAL);
+    if (n >= HUNT_TOTAL) huntToast("Every pigeon found — <b>" + n + "/" + HUNT_TOTAL + "</b> · nothing left to chase", true);
+    else huntToast("Pigeon flushed — <b>" + n + "/" + HUNT_TOTAL + "</b> found");
+  }
+
+  /* The hiding bird on every page that is not the home deck (the hero scene has its own,
+     which is part of the artwork). It perches near an edge, hops every so often, and
+     never sits over the middle of the page where the reading and the CTAs are. */
+  function initPigeonHunt() {
+    if (document.querySelector(".ms-pigeon")) return;          // home: the scene owns it
+    if (document.querySelector(".hunt-pigeon")) return;
+    if (huntFound().indexOf(huntKey()) > -1) return;           // already caught here
+    var deep = location.pathname.indexOf("/projects/") > -1;
+    var bird = document.createElement("button");
+    bird.type = "button";
+    bird.className = "hunt-pigeon";
+    bird.setAttribute("aria-label", "A pigeon is hiding on this page. Activate to flush it out.");
+    var im = document.createElement("img");
+    im.src = (deep ? "../" : "./") + "assets/img/hero/pigeon.webp";
+    im.alt = ""; im.setAttribute("aria-hidden", "true");
+    bird.appendChild(im);
+    // edge perches only — left/right gutters and the lower band, never centre stage
+    var PERCHES = [[4, 74], [90, 40], [7, 30], [88, 76], [3, 52], [92, 60]];
+    var at = Math.floor(Math.random() * PERCHES.length);
+    function place() {
+      bird.style.left = PERCHES[at][0] + "%";
+      bird.style.top = PERCHES[at][1] + "%";
+    }
+    place();
+    document.body.appendChild(bird);
+    requestAnimationFrame(function () { bird.classList.add("perched"); });
+    // hop to a new perch now and then, so it is never quite where you last saw it
+    var hop = null;
+    if (!reduce) hop = setInterval(function () {
+      if (!bird.isConnected || bird.classList.contains("flushed")) { clearInterval(hop); return; }
+      at = (at + 1 + Math.floor(Math.random() * (PERCHES.length - 1))) % PERCHES.length;
+      place();
+    }, 11000 + Math.random() * 6000);
+    bird.addEventListener("click", function () {
+      if (bird.classList.contains("flushed")) return;
+      bird.classList.add("flushed");
+      if (hop) clearInterval(hop);
+      huntRecord();
+      setTimeout(function () { bird.remove(); }, 1600);
+    });
+  }
+
   /* ===================== The pigeon escape (per mount) =====================
      The hero scene tells a chase that never resolves. Clicking the pigeon resolves it
      once: it breaks away, the bats overshoot and give up. Purely CSS after one class
@@ -608,6 +692,7 @@
       var scene = pigeon.closest(".moon-scene");
       if (!scene || scene.classList.contains("escaped")) return;
       scene.classList.add("escaped");
+      huntRecord();          // the hero bird counts toward the hunt like any other
     });
   }
 
@@ -867,6 +952,13 @@
       var dest = e.activation && e.activation.entry && e.activation.entry.url;
       tagMorph(cardImgFor(dest));
       try { sessionStorage.setItem("amSlide", String(slide.index)); } catch (_) {}
+      /* Record which way this navigation travels so the ARRIVING document can animate
+         with the direction instead of the same way every time. Only the outgoing page
+         knows both ends of the jump, so it has to be handed over. */
+      var deepNow = location.pathname.indexOf("/projects/") > -1;
+      var deepNext = !!dest && String(dest).indexOf("/projects/") > -1;
+      var dir = deepNext === deepNow ? "lateral" : (deepNext ? "in" : "out");
+      try { sessionStorage.setItem("amVtDir", dir); } catch (_) {}
     });
     // arriving: if we came back from a study, that study's card morphs in — but only once
     // it is actually parked on screen, or the snapshot would target an off-screen box and
@@ -881,9 +973,16 @@
          synchronously, so the incoming snapshot is the finished page. */
       var root = document.documentElement;
       root.classList.add("vt-arrive");
+      // travel direction handed over by the page we came from (see pageswap)
+      var dir = "";
+      try { dir = sessionStorage.getItem("amVtDir") || ""; } catch (_) {}
+      if (dir === "in" || dir === "out") root.classList.add("vt-" + dir);
       var hero = document.querySelector(".hero, .about-hero, .project-hero");
       if (hero) hero.classList.add("is-in");
-      e.viewTransition.finished.finally(function () { root.classList.remove("vt-arrive"); });
+      e.viewTransition.finished.finally(function () {
+        root.classList.remove("vt-arrive", "vt-in", "vt-out");
+        try { sessionStorage.removeItem("amVtDir"); } catch (_) {}
+      });
 
       var img = cameFromProjectImg();
       if (!img) return;
@@ -1095,6 +1194,7 @@
     initMagnetic();
     initCardParallax();
     initPigeon();
+    initPigeonHunt();
     initGlowFollow();
     initVideoEmbeds();
     initGameEmbeds();
