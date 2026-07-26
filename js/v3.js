@@ -137,7 +137,7 @@
      slide.active  = the desktop JS controller (wheel/keys drive an eased scroll).
      The progress indicator is INDEPENDENT of it: it is built on every device that has a
      multi-panel .snap, and on touch it follows the native scroll-snap position. */
-  var slide = { snap: null, panels: [], index: 0, animating: false, active: false, nav: null, dots: [], count: null };
+  var slide = { snap: null, panels: [], index: 0, animating: false, active: false, nav: null, dots: [], count: null, pending: 0 };
   var lastStoredSlide = -1;
   function setupSlides() {
     themedEls = null;               // re-resolve the theme cache for this mount
@@ -290,7 +290,13 @@
       slide.snap.scrollTop = start + dist * e;
       setDepth(pr < 1 ? +(dist * depthK * e * (1 - e) * 4).toFixed(1) : 0);
       if (pr < 1) requestAnimationFrame(step);
-      else { slide.snap.scrollTop = end; slide.animating = false; }
+      else {
+        slide.snap.scrollTop = end; slide.animating = false;
+        // consume one queued notch (see the wheel handler): input that arrived mid-slide
+        // is honoured instead of destroyed. Depth 1 only — deeper and an inertia tail
+        // would chain straight past the panel the visitor actually aimed for.
+        if (slide.pending) { var q = slide.pending; slide.pending = 0; slideGo(slide.index + q, q < 0); }
+      }
     }
     requestAnimationFrame(step);
   }
@@ -318,7 +324,11 @@
         return;
       }
       e.preventDefault();
-      if (slide.animating || Math.abs(e.deltaY) < 4) return;
+      if (Math.abs(e.deltaY) < 4) return;
+      if (slide.animating) {                   // queue one notch rather than discarding it
+        if (now - lastWheel > 90) slide.pending = dir;
+        return;
+      }
       if (now - lastInner < 160) return;       // settle on the tall panel's edge first
       if (now - lastWheel < 90) return;        // swallow the momentum/inertia tail only
       lastWheel = now;
@@ -421,14 +431,34 @@
     var label = document.createElement("span"); label.className = "cursor-label"; ring.appendChild(label);
     document.body.appendChild(dot); document.body.appendChild(ring);
     tagCursorTargets();
-    var mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my, on = false;
+    var mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my, on = false, ringRunning = false;
+    /* body.cursor-on sets cursor:none. If anything later throws, the visitor would be
+       left with no pointer at all — the one failure here that is worse than no feature.
+       bootSafe cannot cover it (this class is added after boot, on first mouse move),
+       so guarantee restoration unconditionally. */
+    var restoreCursor = function () { document.body.classList.remove("cursor-on"); on = false; };
+    addEventListener("error", restoreCursor);
     addEventListener("mousemove", function (e) {
       mx = e.clientX; my = e.clientY;
       if (!on) { on = true; document.body.classList.add("cursor-on"); }
       dot.style.transform = "translate(" + mx + "px," + my + "px) translate(-50%,-50%)";
+      startRing();
     }, { passive: true });
-    addEventListener("mouseout", function (e) { if (!e.relatedTarget) { document.body.classList.remove("cursor-on"); on = false; } });
-    (function raf() { rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18; ring.style.transform = "translate(" + rx + "px," + ry + "px) translate(-50%,-50%)"; requestAnimationFrame(raf); })();
+    addEventListener("mouseout", function (e) { if (!e.relatedTarget) restoreCursor(); });
+    // the ring eases toward the pointer, so it only needs frames while it is catching up
+    function startRing() {
+      if (ringRunning) return;
+      ringRunning = true;
+      requestAnimationFrame(function raf() {
+        try {
+          rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18;
+          ring.style.transform = "translate(" + rx + "px," + ry + "px) translate(-50%,-50%)";
+          if (Math.abs(mx - rx) < 0.5 && Math.abs(my - ry) < 0.5) { ringRunning = false; return; }
+          requestAnimationFrame(raf);
+        } catch (err) { ringRunning = false; restoreCursor(); }
+      });
+    }
+    startRing();
 
     var inside = function (el, sel) { return el && el.closest && el.closest(sel); };
     document.addEventListener("mouseover", function (e) {
@@ -784,10 +814,15 @@
         ctx.globalAlpha = reduce ? s.a : s.a * (0.55 + 0.45 * Math.sin(t * 0.001 * s.tw + s.ph));
         ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.283); ctx.fill(); }
       ctx.globalAlpha = 1;
-      if (!reduce) { drawShoot(t); requestAnimationFrame(draw); }
+      // Don't paint a starfield nobody can see: a background tab shouldn't burn frames
+      // (or battery) on ambient decoration. visibilitychange resumes it.
+      if (!reduce) { drawShoot(t); if (!document.hidden) requestAnimationFrame(draw); }
     }
     size(); requestAnimationFrame(draw);
     document.body.classList.add("stars-on");
+    if (!reduce) document.addEventListener("visibilitychange", function () {
+      if (!document.hidden) requestAnimationFrame(draw);   // resume where the loop bailed
+    });
     var to; addEventListener("resize", function () { clearTimeout(to); to = setTimeout(size, 160); });
   }
 

@@ -350,7 +350,7 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
   background:#e9ecfb;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .9s var(--ease-out)}
 .gimica-card img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .9s var(--ease-out)}
 .gimica-card::after{content:"";position:absolute;inset:0;border:1px solid rgba(255,255,255,.14);border-radius:8px;pointer-events:none}
-.work:hover .gimica-card{transform:scale(1.015)}
+.gimica-card:hover{transform:scale(1.015)}   /* the card, not the whole panel — motion needs a cause */
 /* stats row (in the work copy column) */
 .work-stats{display:flex;gap:clamp(2rem,3vw,3.2rem);margin-top:.6rem}
 .work-stats .st b{display:block;font-family:var(--num);font-size:clamp(2.4rem,3.4vw,3rem);line-height:1;color:transparent;-webkit-background-clip:text;background-clip:text;background-image:var(--grad-accent)}
@@ -477,11 +477,9 @@ html.vt-arrive .project-hero .reveal, html.vt-arrive .project-hero .reveal-media
 @media (max-width:640px){.skills{grid-template-columns:1fr}}
 .skill-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1rem}
 .skill-name{font-size:1.7rem;font-weight:600;letter-spacing:.04em}
-.skill-pct{font-family:var(--mono);font-size:1.2rem;color:var(--violet)}
-.skill-track{height:6px;border-radius:10px;background:rgba(10,26,48,.12);overflow:hidden}
-.panel[data-theme="light"] .skill-track{background:#dde3ec}
-.skill-fill{height:100%;width:0;border-radius:10px;background:var(--grad-accent);transition:width 1.4s var(--ease-out)}
-.is-in .skill-fill{width:var(--v)}
+/* (the percentage-meter rules that used to live here were dead: no markup uses
+   .skill-track/.skill-fill/.skill-pct since the skill tree and the résumé's labelled
+   proficiency rows replaced them. Removed rather than carried.) */
 
 /* earlier work list */
 .earlier{display:flex;flex-direction:column;margin-top:1rem}
@@ -517,15 +515,21 @@ html.vt-arrive .project-hero .reveal, html.vt-arrive .project-hero .reveal-media
 /* =====================================================================
    PROJECT page (seamless View-Transition target)
    ===================================================================== */
-.project-hero{min-height:100vh;min-height:100dvh;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:clamp(3rem,6vw,7rem);
+/* minmax(0,1fr), not 1fr: a bare 1fr is minmax(auto,1fr), so a long unbreakable title
+   ("R4D10HEAD" at 130px) forces its column open on min-content and squeezes the hero
+   image ~24% narrower than on every other case study. */
+.project-hero{min-height:100vh;min-height:100dvh;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:clamp(3rem,6vw,7rem);
   padding:calc(var(--header-h) + 3rem) var(--pad) 6rem;max-width:1400px;margin:0 auto}
 @media (max-width:900px){.project-hero{grid-template-columns:1fr;gap:2.6rem}}
 .project-copy{display:flex;flex-direction:column;gap:2rem}
 .project-shot{border-radius:8px;overflow:hidden;box-shadow:var(--shadow-img);aspect-ratio:4/3}
 .project-shot img,.project-shot video{width:100%;height:100%;object-fit:cover}
 .project-body{max-width:900px;margin:0 auto;padding:1rem var(--pad) clamp(8rem,14vh,16rem)}
-.meta-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1.8rem 2.4rem;
+/* 3 fixed columns: auto-fit resolved to 4 at this content width, so every page ended on
+   a ragged 4+1 or 4+2 orphan row. 3 gives a clean 3+3 for six fields and 3+2 for five. */
+.meta-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8rem 2.4rem;
   padding:2.6rem 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:4.4rem}
+@media (max-width:620px){.meta-row{grid-template-columns:repeat(2,1fr)}}
 .meta-row dt{font-family:var(--mono);font-size:1.1rem;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-bottom:.6rem}
 .meta-row dd{font-size:1.5rem;color:#dbe3ff;margin:0;line-height:1.4}
 .meta-row a{color:var(--violet-bright)}
@@ -540,11 +544,13 @@ html.vt-arrive .project-hero .reveal, html.vt-arrive .project-hero .reveal-media
 .proj-sec strong,.prose strong,.job strong,b{color:inherit;font-weight:600}
 .proj-sec .prose strong{color:#fff;font-weight:600}
 .proj-sec ul{display:flex;flex-direction:column;gap:.9rem;margin-top:.2rem}
-.proj-sec li{position:relative;padding-left:1.8rem;color:var(--muted);font-size:1.6rem;line-height:1.55}
+.proj-sec li{position:relative;padding-left:1.8rem;max-width:62ch;color:var(--muted);font-size:1.6rem;line-height:1.55}
 .proj-sec li::before{content:"▸";position:absolute;left:0;color:var(--violet)}
 .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.6rem;margin:1rem 0 3rem}
 .gallery figure{margin:0;border-radius:8px;overflow:hidden;box-shadow:var(--shadow-img);background:#0a1a30}
-.gallery img,.gallery video{width:100%;display:block;aspect-ratio:4/3;object-fit:cover}
+/* 16/9, matching the actual sources. A 4/3 box with object-fit:cover threw away 25% of
+   every 16:9 screenshot — and would do the same to any level map or curve added later. */
+.gallery img,.gallery video{width:100%;display:block;aspect-ratio:16/9;object-fit:cover}
 
 /* click-to-play facades: the YouTube trailer iframe and the itch.io playable-game
    iframe both load only on click — no third-party request until the visitor chooses */
@@ -568,7 +574,9 @@ html.vt-arrive .project-hero .reveal, html.vt-arrive .project-hero .reveal-media
 .video-embed.is-playing .ve-label,.game-embed.is-playing .ve-label{display:none}
 /* escape hatch for embed-blocking browsers (DuckDuckGo's Duck Player, strict
    tracker blockers, corporate proxies): the trailer is always reachable */
-.ve-alt{margin:-2.6rem 0 3.6rem;text-align:right;font-family:var(--mono);font-size:1.15rem;letter-spacing:.1em;text-transform:uppercase}
+/* Left-aligned and at label size: for anyone whose browser blocks the embed this is not
+   a footnote, it is the only route to the trailer or the playable build. */
+.ve-alt{margin:-2.6rem 0 3.6rem;font-family:var(--mono);font-size:1.3rem;letter-spacing:.1em;text-transform:uppercase}
 .ve-alt a{color:var(--faint);transition:color .3s}
 .ve-alt a:hover{color:var(--violet-bright)}
 
@@ -629,11 +637,19 @@ html.vt-arrive .project-hero .reveal, html.vt-arrive .project-hero .reveal-media
   .contact .social a,.drawer-social a{padding:.9rem .2rem}
   .copy-mail,.foot-links a,.foot-links .copy-mail{min-height:4.2rem}
   .ve-alt a{display:inline-block;padding:.8rem 0}
+  /* The dot rail is the ONLY random-access nav on touch (the JS controller is off for
+     coarse pointers), but the dots are 6px. Keep the 6px visual, grow the hit area —
+     7 dots in a ~128px rail caps the honest maximum at ~26px, a 4x improvement. */
+  .slide-dot{position:relative}
+  .slide-dot::after{content:"";position:absolute;inset:-9px -10px}
+  /* hover-revealed plates never appear on touch, leaving the largest images with no
+     visible affordance — show them outright */
+  .work-media .plate,.about-portrait .plate{opacity:1;transform:none}
 }
 /* phones (9px root): keep reading text at or above ~16px real pixels */
 @media (max-width:420px){
   .lead{font-size:1.8rem}
-  .about-slide .lead{font-size:1.6rem}
+  .about-slide .lead{font-size:1.75rem}   /* was 1.6rem = 14.4px — under this block's own floor */
   .prose{font-size:1.9rem}
   .proj-sec .prose{font-size:1.85rem}
   .proj-sec li{font-size:1.75rem}
@@ -641,7 +657,7 @@ html.vt-arrive .project-hero .reveal, html.vt-arrive .project-hero .reveal-media
   .earlier li p{font-size:1.65rem}
   .meta-row dd{font-size:1.65rem}
   .meta-row dt{font-size:1.2rem}
-  .mc-line{font-size:1.5rem}
+  .mc-line{font-size:1.7rem}              /* was 1.5rem = 13.5px — under the floor */
   .mc-meta{font-size:1.15rem}
   .work-meta span{font-size:1.25rem}
   .pc-note{font-size:1.45rem}
@@ -651,10 +667,25 @@ html.vt-arrive .project-hero .reveal, html.vt-arrive .project-hero .reveal-media
   .moon-scene{left:56%;right:-12%}
   .hero-copy{max-width:44rem}
 }
+/* Portrait tablets (768x1024, 820x1180): the bats sit 18vmin left of centre, which at
+   these widths drags the artwork behind the transparent ghost CTA. Park the animation
+   and re-place them — a bare transform override would be animated away by the keyframes. */
+@media (min-width:761px) and (max-width:1000px) and (orientation:portrait){
+  .ms-bats{animation:none;transform:translate(calc(-50% - 4vmin),calc(-50% + 26vmin))}
+}
 /* portrait tablets: three More-work cards don't fit ~200px columns — go two-up.
    Portrait-only: in landscape (phones on their side) taller panels help nobody. */
 @media (min-width:761px) and (max-width:1000px) and (orientation:portrait){
   .more-grid{grid-template-columns:repeat(2,1fr)}
+}
+/* Short viewports (~1280x720 laptops, 125% OS scaling): the deck's contract is that a
+   panel fits its viewport. Four of seven overflowed by 9-68px here — just enough to
+   trigger the inner-scroll path for almost no content. Reclaim ~70px so they fit. */
+@media (max-height:780px) and (min-height:521px) and (min-width:901px){
+  .work-copy{gap:1.6rem}
+  .work-copy .display{font-size:clamp(3.4rem,6vw,6.4rem)}
+  .work-stats{margin-top:0}
+  .about-slide .work-copy .display{font-size:clamp(3.2rem,5.6vw,5.8rem)}
 }
 /* short landscape viewports (phones on their side): compact the deck */
 @media (max-height:520px){
@@ -662,10 +693,15 @@ html.vt-arrive .project-hero .reveal, html.vt-arrive .project-hero .reveal-media
   .panel{padding-top:calc(var(--header-h) + 1rem);padding-bottom:3.4rem}
   .ticker,.scroll-hint{display:none}
   .hero{gap:1.4rem}
-  .hero-copy{gap:1.4rem}
+  .hero-copy{gap:1rem}
   .display{font-size:clamp(3.6rem,8vw,7rem)}
   .work-copy .display{font-size:clamp(3rem,5.5vw,5.2rem)}
   .work-stats .st b{font-size:2.2rem}
+  /* the hero CTA row was landing below the fold at 812x375 — reclaim the last ~55px */
+  .hero .lead{font-size:1.5rem;max-width:52ch}
+  .hero-cta{margin-top:0}
+  .hero-cta .btn{padding:1rem 1.8rem;font-size:1.2rem}
+  .hero-sub{gap:1rem}
 }
 
 /* =====================================================================
