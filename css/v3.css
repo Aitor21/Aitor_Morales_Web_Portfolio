@@ -540,13 +540,23 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
 .js img[loading="lazy"]{opacity:0}
 .js img[loading="lazy"].is-loaded{animation:lazyIn .6s var(--ease-out) both}
 
-/* Arriving through a page morph (see pagereveal in v3.js): the hero is settled
-   synchronously so it is already composed in the snapshot. Killing the transition for
-   that one frame is what stops it animating in on top of the morph. Cleared as soon as
-   the transition finishes, so scroll reveals further down still animate normally. */
-html.vt-arrive .hero .reveal,       html.vt-arrive .hero .reveal-line>span,       html.vt-arrive .hero .reveal-media,
-html.vt-arrive .about-hero .reveal, html.vt-arrive .about-hero .reveal-line>span, html.vt-arrive .about-hero .reveal-media,
-html.vt-arrive .project-hero .reveal, html.vt-arrive .project-hero .reveal-media{transition:none!important}
+/* ---- Arriving through a page morph -----------------------------------------
+   A cross-document transition snapshots the incoming page at its FIRST paint. Every
+   .reveal starts at opacity:0 until its section is observed, and every lazy image
+   starts hidden until it decodes — so the browser captured a half-built page and the
+   rest arrived afterwards. That is the "text and images popping in" this fixes.
+
+   settleForArrival() (js/v3.js) marks everything that will actually be on screen when
+   we land, and this kills their entrance so they are already final in the snapshot.
+   `.vt-settled` is per-element and PERMANENT, deliberately: scoping it to html.vt-arrive
+   would restart every one of these animations the instant the transition ended, which
+   is the same pop one frame later. Sections below the fold never get the class, so
+   their scroll reveals still play normally. */
+.vt-settled .reveal,.vt-settled .reveal-line>span,.vt-settled .reveal-media{transition:none!important}
+.vt-settled .node{animation:none!important;opacity:1!important}
+.vt-settled .nodes::before{transition:none!important;transform:scaleY(1)!important}
+/* an image that has already decoded must not fade in on top of the morph */
+html.vt-arrive img[loading="lazy"].is-loaded{animation:none!important;opacity:1!important}
 
 /* =====================================================================
    About page

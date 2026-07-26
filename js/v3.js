@@ -920,6 +920,24 @@
     var from = navigation.activation.from;
     return from ? cardImgFor(from.url) : null;
   }
+  /* Everything that will be ON SCREEN when this navigation lands, forced to its final
+     state synchronously — before the browser snapshots the incoming page. Sections
+     below the fold are left alone, so their scroll reveals still play when reached.
+     Called from pagereveal, after the deck has been scrolled into position. */
+  function settleForArrival() {
+    var vh = window.innerHeight || 0;
+    var hero = document.querySelector(".hero, .about-hero, .project-hero");
+    if (hero) { hero.classList.add("is-in", "vt-settled"); }
+    document.querySelectorAll(".panel, .section-block, .reveal-solo").forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.top < vh * 1.05 && r.bottom > -24) el.classList.add("is-in", "vt-settled");
+    });
+    // an image already decoded should be visible in the snapshot, not fade in after it
+    document.querySelectorAll('img[loading="lazy"]').forEach(function (im) {
+      if (im.complete && im.naturalWidth > 0) im.classList.add("is-loaded");
+    });
+  }
+
   function tagMorph(img) {
     if (!img) return;
     document.querySelectorAll("[data-vt]").forEach(function (el) {
@@ -960,18 +978,22 @@
       var dir = "";
       try { dir = sessionStorage.getItem("amVtDir") || ""; } catch (_) {}
       if (dir === "in" || dir === "out") root.classList.add("vt-" + dir);
-      var hero = document.querySelector(".hero, .about-hero, .project-hero");
-      if (hero) hero.classList.add("is-in");
       e.viewTransition.finished.finally(function () {
         root.classList.remove("vt-arrive", "vt-in", "vt-out");
         try { sessionStorage.removeItem("amVtDir"); } catch (_) {}
       });
 
+      /* ORDER MATTERS. Put the deck where it will actually land FIRST — until the
+         restore has happened, "what is on screen" is the wrong answer, and we would
+         settle the wrong sections and leave the visible ones to pop in. */
       var img = cameFromProjectImg();
-      if (!img) return;
-      var snap = document.querySelector(".snap"), panel = img.closest(".panel");
-      if (snap && panel) snap.scrollTop = panel.offsetTop;
-      tagMorph(img);
+      var snap = document.querySelector(".snap");
+      if (img && snap) {
+        var panel = img.closest(".panel");
+        if (panel) snap.scrollTop = panel.offsetTop;
+      }
+      settleForArrival();
+      if (img) tagMorph(img);
     });
   }
 
