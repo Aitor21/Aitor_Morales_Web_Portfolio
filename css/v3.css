@@ -193,7 +193,9 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
 /* buttons */
 .btn{display:inline-flex;align-items:center;gap:1rem;font-family:var(--mono);font-size:1.4rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
   color:#fff;background:var(--violet);padding:1.6rem 2.8rem;border-radius:50px;transition:transform .3s var(--ease-out),box-shadow .3s,background .3s;
-  box-shadow:0 14px 34px -14px rgba(95,108,230,.8);will-change:transform}
+  box-shadow:0 14px 34px -14px rgba(95,108,230,.8)}
+/* no will-change here: the magnetic pull is fine-pointer-hover only, so promoting every
+   button to its own compositor layer for the whole session is pure cost on a phone */
 .btn:hover{background:var(--violet-bright);box-shadow:0 22px 46px -16px rgba(95,108,230,.9)}
 .btn .arrow{transition:transform .3s var(--ease-out)}
 .btn:hover .arrow{transform:translateX(5px)}
@@ -430,10 +432,15 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
 .is-in .reveal-line>span{transform:translateY(0)}
 .js .reveal-media{clip-path:inset(0 0 100% 0);transition:clip-path 1.1s var(--ease)}
 .is-in .reveal-media{clip-path:inset(0 0 0 0)}
-/* lazy images fade in on decode instead of popping into layout (initImgFade marks them;
-   the failsafe in bootSafe drops .js if anything throws, so nothing can stay invisible) */
-.js img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease-out)}
-.js img[loading="lazy"].is-loaded{opacity:1}
+/* Lazy images fade in on decode instead of popping into layout (initImgFade marks them;
+   the failsafe in bootSafe drops .js if anything throws, so nothing can stay invisible).
+   MUST be an animation, not a transition: this selector outranks `.work-media img` etc,
+   and the `transition` SHORTHAND would reset transition-property to opacity alone —
+   which silently disabled the hover zoom and the card-parallax damping on every
+   lazy-loaded card image. An animation never touches transition-property. */
+@keyframes lazyIn{from{opacity:0}to{opacity:1}}
+.js img[loading="lazy"]{opacity:0}
+.js img[loading="lazy"].is-loaded{animation:lazyIn .6s var(--ease-out) both}
 
 /* Arriving through a page morph (see pagereveal in v3.js): the hero is settled
    synchronously so it is already composed in the snapshot. Killing the transition for

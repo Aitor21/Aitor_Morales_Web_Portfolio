@@ -37,6 +37,8 @@
   function Parallax(scene) {
     this.scene = scene;
     this.layers = Array.prototype.slice.call(scene.querySelectorAll("[data-depth]"));
+    // depths are static — read them once instead of parsing an attribute per layer per frame
+    this.depths = this.layers.map(function (l) { return parseFloat(l.getAttribute("data-depth")) || 0; });
     this.scalar = parseFloat(scene.getAttribute("data-scalar")) || 4.2;
     this.friction = 0.09; this.tx = 0; this.ty = 0; this.cx = 0; this.cy = 0;
     this.calib = null; this.running = false; this.dead = false;
@@ -53,6 +55,7 @@
           if (self.calib == null) self.calib = { g: e.gamma, b: e.beta };
           self.tx = clamp((e.gamma - self.calib.g) / 40, -1, 1);
           self.ty = clamp((e.beta - self.calib.b) / 40, -1, 1);
+          self.start();   // the loop parks itself when settled; tilt wakes it
         };
         window.addEventListener("deviceorientation", self._orient);
         self.start();
@@ -61,7 +64,10 @@
         motionPrompt(function () { DeviceOrientationEvent.requestPermission().then(function (s) { if (s === "granted") attach(); }).catch(function () {}); });
       } else { attach(); }
     } else {
-      self._move = function (e) { self.tx = (e.clientX / innerWidth) * 2 - 1; self.ty = (e.clientY / innerHeight) * 2 - 1; };
+      self._move = function (e) {
+        self.tx = (e.clientX / innerWidth) * 2 - 1; self.ty = (e.clientY / innerHeight) * 2 - 1;
+        self.start();   // the loop parks itself when settled; input wakes it
+      };
       window.addEventListener("mousemove", self._move, { passive: true });
       this.start();
     }
@@ -72,8 +78,13 @@
     this.cx += (this.tx - this.cx) * this.friction;
     this.cy += (this.ty - this.cy) * this.friction;
     for (var i = 0; i < this.layers.length; i++) {
-      var l = this.layers[i], d = parseFloat(l.getAttribute("data-depth")) || 0;
-      l.style.transform = "translate3d(" + (-this.cx * d * this.scalar).toFixed(2) + "vmin," + (-this.cy * d * this.scalar).toFixed(2) + "vmin,0)";
+      var d = this.depths[i];
+      this.layers[i].style.transform = "translate3d(" + (-this.cx * d * this.scalar).toFixed(2) + "vmin," + (-this.cy * d * this.scalar).toFixed(2) + "vmin,0)";
+    }
+    // Park the loop once the eased position has caught up to the target, instead of
+    // burning a frame forever while the pointer sits still. _move / _orient restart it.
+    if (Math.abs(this.tx - this.cx) < 0.0005 && Math.abs(this.ty - this.cy) < 0.0005) {
+      this.running = false; return;
     }
     requestAnimationFrame(this.loop);
   };
@@ -92,16 +103,27 @@
     setTimeout(function () { if (el.parentNode) el.remove(); }, 9000);
   }
 
-  /* ===================== Header theme flip (global listener) ===================== */
-  var header;
+  /* ===================== Header theme flip (global listener) =====================
+     Runs on every scroll event, so it caches its inputs. When every themed section on
+     the page shares one theme (the home deck is all `dark`), the answer is a constant —
+     resolve it once and skip the per-element getBoundingClientRect loop entirely. */
+  var header, themedEls = null, themedUniform = false;
+  function themeOf(el) { return el.getAttribute("data-theme") || "dark"; }
   function headerFlipResolve() {
     if (!header) return;
-    var themed = document.querySelectorAll("[data-theme]:not(.site-header)");
-    if (!themed.length) return;
-    var LINE = 34, theme = themed[0].getAttribute("data-theme") || "dark";
-    for (var i = 0; i < themed.length; i++) {
-      var r = themed[i].getBoundingClientRect();
-      if (r.top <= LINE && r.bottom > LINE) { theme = themed[i].getAttribute("data-theme") || "dark"; break; }
+    if (!themedEls) {
+      themedEls = Array.prototype.slice.call(document.querySelectorAll("[data-theme]:not(.site-header)"));
+      themedUniform = themedEls.length > 0 && themedEls.every(function (e) {
+        return themeOf(e) === themeOf(themedEls[0]);
+      });
+    }
+    if (!themedEls.length) return;
+    var LINE = 34, theme = themeOf(themedEls[0]);
+    if (!themedUniform) {
+      for (var i = 0; i < themedEls.length; i++) {
+        var r = themedEls[i].getBoundingClientRect();
+        if (r.top <= LINE && r.bottom > LINE) { theme = themeOf(themedEls[i]); break; }
+      }
     }
     if (header.getAttribute("data-theme") !== theme) {
       header.setAttribute("data-theme", theme);
@@ -116,7 +138,9 @@
      The progress indicator is INDEPENDENT of it: it is built on every device that has a
      multi-panel .snap, and on touch it follows the native scroll-snap position. */
   var slide = { snap: null, panels: [], index: 0, animating: false, active: false, nav: null, dots: [], count: null };
+  var lastStoredSlide = -1;
   function setupSlides() {
+    themedEls = null;               // re-resolve the theme cache for this mount
     slide.snap = document.querySelector(".snap");
     slide.panels = slide.snap ? Array.prototype.slice.call(slide.snap.querySelectorAll(".panel")) : [];
     slide.index = 0; slide.animating = false;
@@ -129,8 +153,13 @@
         if (!slide.animating) {
           slide.index = nearestPanel();
           updateSlideNav();
-          // remember where we are, so the case-study Back button can bring us right back
-          try { sessionStorage.setItem("amSlide", String(slide.index)); } catch (_) {}
+          // remember where we are, so the case-study Back button can bring us right back.
+          // sessionStorage is synchronous and disk-backed, so only write on an actual
+          // change — not once per scroll event through a momentum flick.
+          if (slide.index !== lastStoredSlide) {
+            lastStoredSlide = slide.index;
+            try { sessionStorage.setItem("amSlide", String(slide.index)); } catch (_) {}
+          }
         }
       }, { passive: true });
 
@@ -431,27 +460,46 @@
       if (card._cp) return; card._cp = true;
       var img = card.querySelector("img,video");
       if (!img) return;
+      // Measure once per hover, not once per mousemove: the card's own box does not move
+      // while the pointer crosses it, and a layout read per pointer event is wasted work.
+      var box = null, boxAt = -1;
+      var scrollNow = function () { return (slide.snap ? slide.snap.scrollTop : 0) + (window.scrollY || 0); };
+      var measure = function () { box = card.getBoundingClientRect(); boxAt = scrollNow(); };
+      card.addEventListener("mouseenter", measure);
       card.addEventListener("mousemove", function (e) {
-        var b = card.getBoundingClientRect();
-        var dx = ((e.clientX - b.left) / b.width - 0.5) * -10;
-        var dy = ((e.clientY - b.top) / b.height - 0.5) * -10;
+        if (!box || boxAt !== scrollNow()) measure();   // scrolled under the pointer
+        var dx = ((e.clientX - box.left) / box.width - 0.5) * -10;
+        var dy = ((e.clientY - box.top) / box.height - 0.5) * -10;
         // scale slightly past the CSS hover zoom so the drift can never expose an edge
         img.style.transform = "scale(1.06) translate(" + dx.toFixed(1) + "px," + dy.toFixed(1) + "px)";
       });
-      card.addEventListener("mouseleave", function () { img.style.transform = ""; });
+      card.addEventListener("mouseleave", function () { box = null; img.style.transform = ""; });
     });
   }
 
-  /* ===================== Magnetic buttons (per mount) ===================== */
+  /* ===================== Magnetic buttons (per mount) =====================
+     Pull factors stay below 1 so the button always still contains the pointer — that
+     invariant is what stops the hover-boundary oscillation this pattern is prone to.
+     The rect is measured on enter, BEFORE any translate is applied: measuring it per
+     move meant reading the button's own displaced box mid-transition, so the pull was
+     computed from a moving origin and felt mushy. */
   function initMagnetic() {
     if (!fine || reduce) return;
     document.querySelectorAll(".btn").forEach(function (el) {
       if (el._mag) return; el._mag = true;
+      var box = null, boxAt = -1;
+      var scrollNow = function () { return (slide.snap ? slide.snap.scrollTop : 0) + (window.scrollY || 0); };
+      var measure = function () {
+        el.style.transform = "";                  // read the resting box, not the pulled one
+        box = el.getBoundingClientRect(); boxAt = scrollNow();
+      };
+      el.addEventListener("mouseenter", measure);
       el.addEventListener("mousemove", function (e) {
-        var b = el.getBoundingClientRect();
-        el.style.transform = "translate(" + (e.clientX - (b.left + b.width / 2)) * 0.3 + "px," + (e.clientY - (b.top + b.height / 2)) * 0.4 + "px)";
+        if (!box || boxAt !== scrollNow()) measure();
+        el.style.transform = "translate(" + ((e.clientX - (box.left + box.width / 2)) * 0.3).toFixed(1) +
+                             "px," + ((e.clientY - (box.top + box.height / 2)) * 0.4).toFixed(1) + "px)";
       });
-      el.addEventListener("mouseleave", function () { el.style.transform = ""; });
+      el.addEventListener("mouseleave", function () { box = null; el.style.transform = ""; });
     });
   }
 
@@ -728,8 +776,14 @@
     }
     function draw(t) {
       ctx.clearRect(0, 0, w, h);
-      for (var i = 0; i < stars.length; i++) { var s = stars[i]; var a = reduce ? s.a : s.a * (0.55 + 0.45 * Math.sin(t * 0.001 * s.tw + s.ph));
-        ctx.beginPath(); ctx.fillStyle = "rgba(210,220,255," + a.toFixed(3) + ")"; ctx.arc(s.x, s.y, s.r, 0, 6.283); ctx.fill(); }
+      // One fillStyle for the whole field, twinkle via globalAlpha. Writing an rgba()
+      // string per star per frame meant ~7k string allocations AND CSS colour parses a
+      // second; this is the same picture for a fraction of the cost.
+      ctx.fillStyle = "rgb(210,220,255)";
+      for (var i = 0; i < stars.length; i++) { var s = stars[i];
+        ctx.globalAlpha = reduce ? s.a : s.a * (0.55 + 0.45 * Math.sin(t * 0.001 * s.tw + s.ph));
+        ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.283); ctx.fill(); }
+      ctx.globalAlpha = 1;
       if (!reduce) { drawShoot(t); requestAnimationFrame(draw); }
     }
     size(); requestAnimationFrame(draw);
