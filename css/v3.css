@@ -337,19 +337,8 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
 .hunt-pigeon.flushed{pointer-events:none;animation:huntFlush 1.5s cubic-bezier(0.3,0,0.2,1) forwards}
 .hunt-pigeon.flushed img{animation:none}
 
-/* progress toast, shared by every find */
-.hunt-toast{position:fixed;left:50%;bottom:3.4rem;z-index:1100;pointer-events:none;
-  transform:translate(-50%,16px);opacity:0;
-  background:rgba(8,20,40,.94);border:1px solid var(--line-2);border-radius:40px;
-  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
-  padding:1.1rem 2rem;color:#fff;font-family:var(--mono);font-size:1.25rem;
-  letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;
-  transition:opacity .45s var(--ease-out),transform .45s var(--ease-out)}
-.hunt-toast.show{opacity:1;transform:translate(-50%,0)}
-.hunt-toast b{color:var(--violet-bright);font-weight:600}
-.hunt-toast.done{border-color:rgba(79,209,161,.6)}
-.hunt-toast.done b{color:#4fd1a1}
-@media (max-width:520px){.hunt-toast{font-size:1.1rem;padding:.9rem 1.5rem;bottom:2rem}}
+/* (no progress toast: catching the bird is its own feedback. The find is still
+   recorded so a cleared page does not respawn the same pigeon on every visit.) */
 @keyframes pigeonFlee{  /* short, panicked beats away from the flock */
   0%,100%{transform:translate(calc(-50% + 9vmin),calc(-50% + 16vmin)) rotate(-3deg)}
   50%{transform:translate(calc(-50% + 11.5vmin),calc(-50% + 13.6vmin)) rotate(4deg)}

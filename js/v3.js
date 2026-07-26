@@ -599,7 +599,6 @@
      and the count follows you around in localStorage. Nine pages hold one; the tenth
      (404) deliberately does not, so nobody has to break the site to finish.
      Everything degrades quietly: no storage, no counter — the bird still flushes. */
-  var HUNT_TOTAL = 9;
   function huntKey() {
     var p = location.pathname.replace(/\/+$/, "");
     var f = p.substring(p.lastIndexOf("/") + 1).replace(/\.html$/, "");
@@ -609,31 +608,15 @@
     try { var v = JSON.parse(localStorage.getItem("amPigeons") || "[]"); return v.length ? v : []; }
     catch (_) { return []; }
   }
-  function huntToast(msg, done) {
-    var t = document.querySelector(".hunt-toast");
-    if (!t) {
-      t = document.createElement("div");
-      t.className = "hunt-toast"; t.setAttribute("role", "status");
-      document.body.appendChild(t);
-    }
-    t.innerHTML = msg;
-    t.classList.toggle("done", !!done);
-    // force a reflow so the transition has a start value, rather than waiting on rAF —
-    // a throttled or background tab would otherwise never reveal the toast at all
-    void t.offsetWidth;
-    t.classList.add("show");
-    clearTimeout(t._hide);
-    t._hide = setTimeout(function () { t.classList.remove("show"); }, done ? 5200 : 3200);
-  }
+  /* Silent by design: the bird breaking cover IS the feedback, so there is no toast on
+     top of it. The record is still kept, purely so a page you have already cleared stays
+     cleared instead of respawning the same pigeon on every visit. */
   function huntRecord() {
     var found = huntFound(), k = huntKey();
     if (found.indexOf(k) < 0) {
       found.push(k);
       try { localStorage.setItem("amPigeons", JSON.stringify(found)); } catch (_) {}
     }
-    var n = Math.min(found.length, HUNT_TOTAL);
-    if (n >= HUNT_TOTAL) huntToast("Every pigeon found — <b>" + n + "/" + HUNT_TOTAL + "</b> · nothing left to chase", true);
-    else huntToast("Pigeon flushed — <b>" + n + "/" + HUNT_TOTAL + "</b> found");
   }
 
   /* The hiding bird on every page that is not the home deck (the hero scene has its own,
