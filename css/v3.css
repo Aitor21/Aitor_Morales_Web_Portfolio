@@ -285,8 +285,31 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
   0%,100%{transform:translate(calc(-50% - 18vmin),calc(-50% + 24vmin))}
   50%{transform:translate(calc(-50% - 14.5vmin),calc(-50% + 22.4vmin))}
 }
+/* The pigeon is the one clickable thing in the scene. Click it and the chase resolves:
+   it breaks away, the bats overshoot and give up. The scene is pointer-events:none, so
+   only this one layer opts back in — and only on fine pointers, so it can never steal a
+   tap from the hero CTA on a phone. */
 .ms-pigeon{width:9vmin;transform:translate(calc(-50% + 9vmin),calc(-50% + 16vmin));
   filter:drop-shadow(0 8px 20px rgba(2,8,20,.5));animation:pigeonFlee 2.6s ease-in-out infinite}
+@media (hover:hover) and (pointer:fine){
+  .js .ms-layer:has(.ms-pigeon){pointer-events:auto}
+  .js .ms-pigeon{cursor:pointer}
+  .js .ms-pigeon:hover{filter:drop-shadow(0 8px 26px rgba(139,150,255,.85))}
+}
+/* the escape: a hard break up and to the right, then gone */
+@keyframes pigeonEscape{
+  0%{transform:translate(calc(-50% + 9vmin),calc(-50% + 16vmin)) rotate(-3deg)}
+  22%{transform:translate(calc(-50% + 4vmin),calc(-50% + 19vmin)) rotate(-18deg)}
+  100%{transform:translate(calc(-50% + 78vmin),calc(-50% - 34vmin)) rotate(24deg);opacity:0}
+}
+/* the bats overshoot where it was, then slow to a confused drift */
+@keyframes batsOvershoot{
+  0%{transform:translate(calc(-50% - 18vmin),calc(-50% + 24vmin))}
+  45%{transform:translate(calc(-50% + 6vmin),calc(-50% + 15vmin)) rotate(6deg)}
+  100%{transform:translate(calc(-50% - 2vmin),calc(-50% + 21vmin)) rotate(-2deg)}
+}
+.escaped .ms-pigeon{animation:pigeonEscape 1.6s cubic-bezier(0.3,0,0.2,1) forwards;pointer-events:none}
+.escaped .ms-bats{animation:batsOvershoot 2.1s var(--ease-out) forwards}
 @keyframes pigeonFlee{  /* short, panicked beats away from the flock */
   0%,100%{transform:translate(calc(-50% + 9vmin),calc(-50% + 16vmin)) rotate(-3deg)}
   50%{transform:translate(calc(-50% + 11.5vmin),calc(-50% + 13.6vmin)) rotate(4deg)}
@@ -632,8 +655,38 @@ html.vt-arrive .project-hero .reveal, html.vt-arrive .project-hero .reveal-media
    study->home all morph with the same code path. */
 @view-transition{navigation:auto}
 ::view-transition-group(*){animation-duration:.6s;animation-timing-function:var(--ease-out)}
+
+/* ---- Persistent chrome ----------------------------------------------------
+   Without this, EVERYTHING lives inside the single `root` snapshot, so a
+   navigation cross-fades the starfield, the nebula, the grain and the header
+   along with the content — two nearly identical dark frames dissolving into
+   each other, which reads as a blink rather than a move. Naming these makes the
+   browser pair them across documents and hold them perfectly still, so only the
+   content actually transitions. That is what makes it feel continuous. */
+.bg{view-transition-name:vt-bg}
+.bg-glow{view-transition-name:vt-glow}
+.bg-stars{view-transition-name:vt-stars}
+.grain{view-transition-name:vt-grain}
+.site-header{view-transition-name:vt-header}
+.slide-nav{view-transition-name:vt-rail}
+/* the chrome must not animate at all — it is the fixed frame the content moves inside */
+::view-transition-group(vt-bg),::view-transition-group(vt-glow),
+::view-transition-group(vt-stars),::view-transition-group(vt-grain),
+::view-transition-group(vt-header),::view-transition-group(vt-rail){animation-duration:.001s}
+::view-transition-old(vt-bg),::view-transition-new(vt-bg),
+::view-transition-old(vt-glow),::view-transition-new(vt-glow),
+::view-transition-old(vt-stars),::view-transition-new(vt-stars),
+::view-transition-old(vt-grain),::view-transition-new(vt-grain),
+::view-transition-old(vt-header),::view-transition-new(vt-header),
+::view-transition-old(vt-rail),::view-transition-new(vt-rail){animation:none;mix-blend-mode:normal}
 /* quick, subtle root fade so the morph is the star (not a fade-to-black) */
-::view-transition-old(root),::view-transition-new(root){animation-duration:.28s}
+/* Content only (the chrome is excluded above), so it can afford real movement:
+   the outgoing page lifts and fades, the incoming page rises into place. A pure
+   cross-fade at .28s was what read as a "pop". */
+@keyframes vtContentOut{to{opacity:0;transform:translateY(-14px) scale(.995)}}
+@keyframes vtContentIn{from{opacity:0;transform:translateY(22px) scale(.995)}}
+::view-transition-old(root){animation:vtContentOut .30s var(--ease) both}
+::view-transition-new(root){animation:vtContentIn .46s var(--ease-out) both;animation-delay:.06s}
 ::view-transition-group(vt-hero){animation-duration:.66s;animation-timing-function:cubic-bezier(0.22,1,0.36,1);z-index:20}
 /* keep the default cross-fade: invisible when it's the same artwork (home -> study),
    a clean dissolve when it isn't (study -> study). Sizing the snapshots with

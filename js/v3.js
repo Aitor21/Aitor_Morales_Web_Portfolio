@@ -329,7 +329,19 @@
      deck only advances from the panel's edge. Room is measured per event — resize and
      zoom are always honoured. Ctrl+wheel (browser zoom) is never intercepted. */
   function initSlideListeners() {
-    var lastWheel = 0, lastInner = 0;
+    /* Advancing is gated on ACCUMULATED INTENT, not on a timer.
+       The old logic used a flat 160ms quiet period after inner-scrolling plus a 90ms
+       throttle, which produced the two complaints this replaces: a decisive scroll that
+       arrived inside the quiet window was swallowed (so "it doesn't go to the next
+       slide"), while a stray one-notch nudge at a panel edge could still fire.
+       Now: wheel deltas in one direction add up, and the deck advances the moment they
+       cross ADVANCE_PX. Small nudges never reach it (no false positives); a real scroll
+       crosses it almost immediately (nothing to wait for). Intent decays after
+       ACC_WINDOW and resets on a direction change, so it can never leak between
+       gestures. EDGE_GRACE only has to outlast a trackpad's momentum tail, so it is
+       much shorter than the old settle gate. */
+    var ADVANCE_PX = 42, ACC_WINDOW = 300, EDGE_GRACE = 80, REARM = 110;
+    var lastWheel = 0, lastInner = 0, acc = 0, accDir = 0, accAt = 0;
     function panelRoom(dir) {   // px of hidden panel content in that direction
       var p = slide.panels[slide.index];
       if (!p) return 0;
@@ -343,19 +355,26 @@
       var now = (window.performance && performance.now) ? performance.now() : Date.now();
       var dir = e.deltaY > 0 ? 1 : -1;
       if (!slide.animating && e.deltaY && panelRoom(dir) > 1) {
-        lastInner = now;                       // tall panel: hand the event to native scroll
+        // tall panel: hand the event to native scroll, and drop any intent built up at
+        // the edge so arriving mid-panel never carries a stale advance with it
+        lastInner = now; acc = 0; accDir = 0;
         return;
       }
       e.preventDefault();
-      if (Math.abs(e.deltaY) < 4) return;
+      if (Math.abs(e.deltaY) < 2) return;
       if (slide.animating) {                   // queue one notch rather than discarding it
-        if (now - lastWheel > 90) slide.pending = dir;
+        if (now - lastWheel > REARM) slide.pending = dir;
         return;
       }
-      if (now - lastInner < 160) return;       // settle on the tall panel's edge first
-      if (now - lastWheel < 90) return;        // swallow the momentum/inertia tail only
+      if (dir !== accDir || now - accAt > ACC_WINDOW) { acc = 0; accDir = dir; }
+      acc += Math.abs(e.deltaY);
+      accAt = now;
+      if (now - lastInner < EDGE_GRACE) return; // let a momentum tail die at the edge
+      if (now - lastWheel < REARM) return;      // one advance per gesture, not per notch
+      if (acc < ADVANCE_PX) return;             // not enough intent yet — no false positive
+      acc = 0; accDir = 0;
       lastWheel = now;
-      slideGo(slide.index + dir, dir < 0);     // fire on the FIRST real notch — no wait
+      slideGo(slide.index + dir, dir < 0);
     }, { passive: false });
     window.addEventListener("keydown", function (e) {
       if (!slide.active || e.altKey || e.ctrlKey || e.metaKey) return;
@@ -530,6 +549,23 @@
         img.style.transform = "scale(1.06) translate(" + dx.toFixed(1) + "px," + dy.toFixed(1) + "px)";
       });
       card.addEventListener("mouseleave", function () { box = null; img.style.transform = ""; });
+    });
+  }
+
+  /* ===================== The pigeon escape (per mount) =====================
+     The hero scene tells a chase that never resolves. Clicking the pigeon resolves it
+     once: it breaks away, the bats overshoot and give up. Purely CSS after one class
+     toggle, fires once per load, and is skipped entirely under reduced motion (where
+     the chase animations are already frozen, so there would be nothing to resolve). */
+  function initPigeon() {
+    if (!fine || reduce) return;
+    var pigeon = document.querySelector(".ms-pigeon");
+    if (!pigeon || pigeon._esc) return;
+    pigeon._esc = true;
+    pigeon.addEventListener("click", function () {
+      var scene = pigeon.closest(".moon-scene");
+      if (!scene || scene.classList.contains("escaped")) return;
+      scene.classList.add("escaped");
     });
   }
 
@@ -819,6 +855,13 @@
   function initStars() {
     var c = document.querySelector(".bg-stars"); if (!c) return;
     var ctx = c.getContext("2d"), w, h, dpr, stars = [];
+    /* Cursor gravity: stars inside a radius lean very slightly toward the pointer and
+       brighten. It is deliberately below the threshold of conscious notice — the field
+       just feels alive rather than printed. Costs one distance check per star per frame
+       and no extra allocation, and it is skipped entirely on touch and reduced motion. */
+    var px = -9999, py = -9999, RADIUS = 190;
+    if (fine && !reduce) addEventListener("mousemove", function (e) { px = e.clientX; py = e.clientY; }, { passive: true });
+    addEventListener("mouseout", function (e) { if (!e.relatedTarget) { px = py = -9999; } });
     /* A rare shooting star: one quiet streak, first ~12-30s in, then every 20-40s.
        Never drawn under prefers-reduced-motion (that loop renders a single static frame). */
     var shoot = null, nextShoot = 0;
@@ -857,8 +900,19 @@
       // second; this is the same picture for a fraction of the cost.
       ctx.fillStyle = "rgb(210,220,255)";
       for (var i = 0; i < stars.length; i++) { var s = stars[i];
-        ctx.globalAlpha = reduce ? s.a : s.a * (0.55 + 0.45 * Math.sin(t * 0.001 * s.tw + s.ph));
-        ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.283); ctx.fill(); }
+        var a = reduce ? s.a : s.a * (0.55 + 0.45 * Math.sin(t * 0.001 * s.tw + s.ph));
+        var x = s.x, y = s.y, r = s.r;
+        if (!reduce) {
+          var dx = px - s.x, dy = py - s.y, d2 = dx * dx + dy * dy;
+          if (d2 < RADIUS * RADIUS) {
+            var pull = 1 - Math.sqrt(d2) / RADIUS;   // 0 at the edge, 1 at the pointer
+            x += dx * pull * 0.10; y += dy * pull * 0.10;
+            a = Math.min(1, a + pull * 0.55);
+            r += pull * 0.5;
+          }
+        }
+        ctx.globalAlpha = a;
+        ctx.beginPath(); ctx.arc(x, y, r, 0, 6.283); ctx.fill(); }
       ctx.globalAlpha = 1;
       // Don't paint a starfield nobody can see: a background tab shouldn't burn frames
       // (or battery) on ambient decoration. visibilitychange resumes it.
@@ -958,6 +1012,7 @@
     initReveals();
     initMagnetic();
     initCardParallax();
+    initPigeon();
     initVideoEmbeds();
     initGameEmbeds();
     initLoopVideos();
