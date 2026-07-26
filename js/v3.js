@@ -313,13 +313,7 @@
       slide.snap.scrollTop = start + dist * e;
       setDepth(pr < 1 ? +(dist * depthK * e * (1 - e) * 4).toFixed(1) : 0);
       if (pr < 1) requestAnimationFrame(step);
-      else {
-        slide.snap.scrollTop = end; slide.animating = false;
-        // consume one queued notch (see the wheel handler): input that arrived mid-slide
-        // is honoured instead of destroyed. Depth 1 only — deeper and an inertia tail
-        // would chain straight past the panel the visitor actually aimed for.
-        if (slide.pending) { var q = slide.pending; slide.pending = 0; slideGo(slide.index + q, q < 0); }
-      }
+      else { slide.snap.scrollTop = end; slide.animating = false; }
     }
     requestAnimationFrame(step);
   }
@@ -340,9 +334,20 @@
        ACC_WINDOW and resets on a direction change, so it can never leak between
        gestures. EDGE_GRACE only has to outlast a trackpad's momentum tail, so it is
        much shorter than the old settle gate. */
-    var ADVANCE_PX = 42, ACC_WINDOW = 300, EDGE_GRACE = 80, REARM = 110;
-    var lastWheel = 0, lastInner = 0, acc = 0, accDir = 0, accAt = 0;
-    function panelRoom(dir) {   // px of hidden panel content in that direction
+    /* TALL_SLACK is the fix for the asymmetry. panelRoom > 1 meant a panel overflowing
+       by even a few px counted as "scrollable", so wheeling DOWN always handed off to
+       native scroll and never snapped, while wheeling UP from a panel top had zero room,
+       hit the advance path, and chained. A panel now only earns inner-scroll if it hides
+       a readable amount; below that it just advances, identically in both directions.
+       LOCKOUT then swallows the whole momentum tail after an advance, which is what
+       stops one flick from skipping several slides. */
+    var TALL_SLACK = 90, ADVANCE_PX = 34, ACC_WINDOW = 260, EDGE_GRACE = 70, LOCKOUT = 430;
+    var lastAdvance = -1e6, lastInner = -1e6, acc = 0, accDir = 0, accAt = 0;
+    function overflowOf(i) {     // px this panel hides beyond the viewport
+      var p = slide.panels[i];
+      return p ? p.offsetHeight - slide.snap.clientHeight : 0;
+    }
+    function panelRoom(dir) {    // px of hidden panel content in that direction
       var p = slide.panels[slide.index];
       if (!p) return 0;
       return dir > 0
@@ -352,29 +357,32 @@
     window.addEventListener("wheel", function (e) {
       if (!slide.active) return;
       if (e.ctrlKey) return;                   // pinch / Ctrl+wheel zoom stays the browser's
+      if (!e.deltaY) return;
       var now = (window.performance && performance.now) ? performance.now() : Date.now();
       var dir = e.deltaY > 0 ? 1 : -1;
-      if (!slide.animating && e.deltaY && panelRoom(dir) > 1) {
-        // tall panel: hand the event to native scroll, and drop any intent built up at
-        // the edge so arriving mid-panel never carries a stale advance with it
+
+      // One advance per gesture: eat everything until the slide has landed and the
+      // trackpad's inertia has died. Without this a single flick chains 3-4 panels.
+      if (now - lastAdvance < LOCKOUT) { e.preventDefault(); acc = 0; return; }
+      if (slide.animating) { e.preventDefault(); return; }
+
+      if (panelRoom(dir) > TALL_SLACK) {       // genuinely tall: let them read it
         lastInner = now; acc = 0; accDir = 0;
-        return;
+        return;                                 // native scroll, not intercepted
       }
       e.preventDefault();
       if (Math.abs(e.deltaY) < 2) return;
-      if (slide.animating) {                   // queue one notch rather than discarding it
-        if (now - lastWheel > REARM) slide.pending = dir;
-        return;
-      }
+      if (now - lastInner < EDGE_GRACE) return; // settle at the edge first
+
       if (dir !== accDir || now - accAt > ACC_WINDOW) { acc = 0; accDir = dir; }
       acc += Math.abs(e.deltaY);
       accAt = now;
-      if (now - lastInner < EDGE_GRACE) return; // let a momentum tail die at the edge
-      if (now - lastWheel < REARM) return;      // one advance per gesture, not per notch
-      if (acc < ADVANCE_PX) return;             // not enough intent yet — no false positive
+      if (acc < ADVANCE_PX) return;             // not enough intent yet
       acc = 0; accDir = 0;
-      lastWheel = now;
-      slideGo(slide.index + dir, dir < 0);
+      lastAdvance = now;
+      // only bottom-align when moving UP into a panel that really is taller than the
+      // viewport — otherwise land on its top like every other jump
+      slideGo(slide.index + dir, dir < 0 && overflowOf(slide.index - 1) > TALL_SLACK);
     }, { passive: false });
     window.addEventListener("keydown", function (e) {
       if (!slide.active || e.altKey || e.ctrlKey || e.metaKey) return;
@@ -390,11 +398,11 @@
       e.preventDefault();                      // Space no longer scrolls to un-snapped spots
       if (slide.animating) return;
       var dir = down ? 1 : -1, room = panelRoom(dir);
-      if (room > 1) {                          // tall panel: step through it, never past it
+      if (room > TALL_SLACK) {                 // tall panel: step through it, never past it
         var step = Math.min(room, k === "ArrowDown" || k === "ArrowUp" ? 140 : slide.snap.clientHeight * 0.85);
         scrollElTo(slide.snap, slide.snap.scrollTop + dir * step, true);
       } else {
-        slideGo(slide.index + dir, dir < 0);
+        slideGo(slide.index + dir, dir < 0 && overflowOf(slide.index - 1) > TALL_SLACK, true);
       }
     });
   }
@@ -543,13 +551,47 @@
       card.addEventListener("mouseenter", measure);
       card.addEventListener("mousemove", function (e) {
         if (!box || boxAt !== scrollNow()) measure();   // scrolled under the pointer
-        var dx = ((e.clientX - box.left) / box.width - 0.5) * -10;
-        var dy = ((e.clientY - box.top) / box.height - 0.5) * -10;
+        var nx = (e.clientX - box.left) / box.width - 0.5;    // -0.5 .. 0.5
+        var ny = (e.clientY - box.top) / box.height - 0.5;
         // scale slightly past the CSS hover zoom so the drift can never expose an edge
-        img.style.transform = "scale(1.06) translate(" + dx.toFixed(1) + "px," + dy.toFixed(1) + "px)";
+        img.style.transform = "scale(1.06) translate(" + (nx * -10).toFixed(1) + "px," +
+                              (ny * -10).toFixed(1) + "px)";
+        // and tip the card itself toward the pointer — a few degrees only, so it reads
+        // as a physical card catching the light rather than a novelty 3D toy
+        card.style.transform = "perspective(900px) rotateY(" + (nx * 5.5).toFixed(2) +
+                               "deg) rotateX(" + (ny * -4.5).toFixed(2) + "deg)";
       });
-      card.addEventListener("mouseleave", function () { box = null; img.style.transform = ""; });
+      card.addEventListener("mouseleave", function () {
+        box = null; img.style.transform = ""; card.style.transform = "";
+      });
     });
+  }
+
+  /* ===================== Nebula follows the pointer (global) =====================
+     The glow leans toward wherever you are working — far too slowly to catch in the act,
+     but the background stops feeling like a printed backdrop. Writes two custom props on
+     one element, eased on a self-parking rAF, so the cost is a single style write/frame
+     while the pointer is moving and nothing at all when it rests. */
+  function initGlowFollow() {
+    if (!fine || reduce) return;
+    var glow = document.querySelector(".bg-glow");
+    if (!glow || glow._gf) return; glow._gf = true;
+    var tx = 0, ty = 0, cx = 0, cy = 0, running = false;
+    addEventListener("mousemove", function (e) {
+      tx = ((e.clientX / innerWidth) * 2 - 1) * 46;    // px, max lean
+      ty = ((e.clientY / innerHeight) * 2 - 1) * 34;
+      start();
+    }, { passive: true });
+    function start() {
+      if (running) return; running = true;
+      requestAnimationFrame(function loop() {
+        cx += (tx - cx) * 0.035; cy += (ty - cy) * 0.035;   // very slow follow
+        glow.style.setProperty("--gx", cx.toFixed(1) + "px");
+        glow.style.setProperty("--gy", cy.toFixed(1) + "px");
+        if (Math.abs(tx - cx) < 0.3 && Math.abs(ty - cy) < 0.3) { running = false; return; }
+        requestAnimationFrame(loop);
+      });
+    }
   }
 
   /* ===================== The pigeon escape (per mount) =====================
@@ -859,9 +901,13 @@
        brighten. It is deliberately below the threshold of conscious notice — the field
        just feels alive rather than printed. Costs one distance check per star per frame
        and no extra allocation, and it is skipped entirely on touch and reduced motion. */
-    var px = -9999, py = -9999, RADIUS = 190;
+    var px = -9999, py = -9999, RADIUS = 190, near = [], ripples = [];
     if (fine && !reduce) addEventListener("mousemove", function (e) { px = e.clientX; py = e.clientY; }, { passive: true });
     addEventListener("mouseout", function (e) { if (!e.relatedTarget) { px = py = -9999; } });
+    // a click sends a ring out through the field — the only effect that answers a click
+    if (!reduce) addEventListener("pointerdown", function (e) {
+      if (ripples.length < 4) ripples.push({ x: e.clientX, y: e.clientY, t0: 0 });
+    }, { passive: true });
     /* A rare shooting star: one quiet streak, first ~12-30s in, then every 20-40s.
        Never drawn under prefers-reduced-motion (that loop renders a single static frame). */
     var shoot = null, nextShoot = 0;
@@ -899,6 +945,7 @@
       // string per star per frame meant ~7k string allocations AND CSS colour parses a
       // second; this is the same picture for a fraction of the cost.
       ctx.fillStyle = "rgb(210,220,255)";
+      near.length = 0;
       for (var i = 0; i < stars.length; i++) { var s = stars[i];
         var a = reduce ? s.a : s.a * (0.55 + 0.45 * Math.sin(t * 0.001 * s.tw + s.ph));
         var x = s.x, y = s.y, r = s.r;
@@ -909,10 +956,45 @@
             x += dx * pull * 0.10; y += dy * pull * 0.10;
             a = Math.min(1, a + pull * 0.55);
             r += pull * 0.5;
+            near.push(x, y, pull);                   // candidate for a constellation line
           }
         }
         ctx.globalAlpha = a;
         ctx.beginPath(); ctx.arc(x, y, r, 0, 6.283); ctx.fill(); }
+      ctx.globalAlpha = 1;
+
+      /* Constellations: stars lit by the cursor link up to their close neighbours, so a
+         little figure forms under the pointer and dissolves as it moves on. Only the
+         handful already inside RADIUS are considered, so the pair loop stays tiny. */
+      if (!reduce && near.length > 5) {
+        var LINK = 118, LINK2 = LINK * LINK;
+        ctx.strokeStyle = "rgb(150,162,255)"; ctx.lineWidth = 0.7;
+        for (var p1 = 0; p1 < near.length; p1 += 3) {
+          for (var p2 = p1 + 3; p2 < near.length; p2 += 3) {
+            var lx = near[p1] - near[p2], ly = near[p1 + 1] - near[p2 + 1];
+            var ld2 = lx * lx + ly * ly;
+            if (ld2 > LINK2) continue;
+            ctx.globalAlpha = (1 - Math.sqrt(ld2) / LINK) * 0.55 *
+                              Math.min(near[p1 + 2], near[p2 + 2]);
+            ctx.beginPath();
+            ctx.moveTo(near[p1], near[p1 + 1]); ctx.lineTo(near[p2], near[p2 + 1]);
+            ctx.stroke();
+          }
+        }
+        ctx.globalAlpha = 1;
+      }
+
+      // click ripples: a ring expanding out through the field, then gone
+      for (var ri = ripples.length - 1; ri >= 0; ri--) {
+        var rp = ripples[ri];
+        if (!rp.t0) rp.t0 = t;
+        var age = (t - rp.t0) / 850;
+        if (age >= 1) { ripples.splice(ri, 1); continue; }
+        ctx.globalAlpha = (1 - age) * (1 - age) * 0.42;
+        ctx.strokeStyle = "rgb(139,150,255)";
+        ctx.lineWidth = 2 * (1 - age);
+        ctx.beginPath(); ctx.arc(rp.x, rp.y, 12 + age * 210, 0, 6.283); ctx.stroke();
+      }
       ctx.globalAlpha = 1;
       // Don't paint a starfield nobody can see: a background tab shouldn't burn frames
       // (or battery) on ambient decoration. visibilitychange resumes it.
@@ -1013,6 +1095,7 @@
     initMagnetic();
     initCardParallax();
     initPigeon();
+    initGlowFollow();
     initVideoEmbeds();
     initGameEmbeds();
     initLoopVideos();

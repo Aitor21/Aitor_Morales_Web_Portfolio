@@ -94,10 +94,13 @@ h1,h2,h3{text-wrap:balance}
   animation:glowDrift 90s ease-in-out infinite}
 /* the nebula breathes — minutes-long, transform-only, imperceptible on purpose
    (the global reduced-motion block flattens it to a static frame) */
+/* --gx/--gy are nudged toward the pointer by initGlowFollow, so the nebula leans very
+   slowly in whichever direction you are working. They default to 0, so the drift is
+   unchanged for touch, keyboard and reduced-motion visitors. */
 @keyframes glowDrift{
-  0%,100%{transform:translate(-50%,-50%) scale(1)}
-  33%{transform:translate(calc(-50% + 3vmin),calc(-50% - 2vmin)) scale(1.06)}
-  66%{transform:translate(calc(-50% - 2.5vmin),calc(-50% + 2vmin)) scale(.96)}
+  0%,100%{transform:translate(calc(-50% + var(--gx,0px)),calc(-50% + var(--gy,0px))) scale(1)}
+  33%{transform:translate(calc(-50% + 3vmin + var(--gx,0px)),calc(-50% - 2vmin + var(--gy,0px))) scale(1.06)}
+  66%{transform:translate(calc(-50% - 2.5vmin + var(--gx,0px)),calc(-50% + 2vmin + var(--gy,0px))) scale(.96)}
 }
 /* starfield boots after the page morph finishes (see afterTransition in v3.js) — fade it in */
 .bg-stars{position:fixed;inset:0;z-index:-3;width:100%;height:100%;pointer-events:none;opacity:0;transition:opacity .9s var(--ease-out)}
@@ -389,6 +392,12 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
    Deliberately NOT scroll-padding-top on .snap — that would shift every panel snap
    position down by a header height for touch and reduced-motion users. */
 .work-media,.gimica-card,.about-portrait{scroll-margin-top:calc(var(--header-h) + 2rem)}
+/* short transform transition so initCardParallax's tilt is damped rather than jittery.
+   Declared after .gimica-card's own .9s rule so the tilt tracks at the same rate on all
+   three cards; the image inside keeps its slower .9s drift. */
+@media (hover:hover) and (pointer:fine){
+  body .work-media,body .gimica-card,body .about-portrait{transition:transform .35s var(--ease-out)}
+}
 .work-media{position:relative;aspect-ratio:4/3;border-radius:6px;overflow:hidden;box-shadow:var(--shadow-img);cursor:pointer}
 .work-media img{width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease-out)}
 .work-media:hover img{transform:scale(1.05)}
@@ -490,7 +499,10 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
 .reveal-line>span{display:block}
 .js .reveal-line>span{transform:translateY(110%);transition:transform 1s var(--ease-slide);transition-delay:calc(var(--i,0)*90ms)}
 .is-in .reveal-line>span{transform:translateY(0)}
-.js .reveal-media{clip-path:inset(0 0 100% 0);transition:clip-path 1.1s var(--ease)}
+/* transform is listed here too: this selector outranks the card rules, and the
+   `transition` shorthand would otherwise reset transition-property to clip-path alone,
+   leaving the hover tilt undamped on every .reveal-media card. */
+.js .reveal-media{clip-path:inset(0 0 100% 0);transition:clip-path 1.1s var(--ease),transform .35s var(--ease-out)}
 .is-in .reveal-media{clip-path:inset(0 0 0 0)}
 /* Lazy images fade in on decode instead of popping into layout (initImgFade marks them;
    the failsafe in bootSafe drops .js if anything throws, so nothing can stay invisible).
