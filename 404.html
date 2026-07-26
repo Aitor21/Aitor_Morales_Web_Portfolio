@@ -11,9 +11,10 @@
   <link rel="preload" as="font" type="font/woff2" href="assets/font/Futura-Dem.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="assets/font/Futura-Med.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="assets/font/Futura-Boo.woff2" crossorigin>
-  <link rel="stylesheet" href="./css/v3.css?v=38">
+  <link rel="stylesheet" href="./css/v3.css?v=39">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
   <div class="bg" aria-hidden="true"></div>
   <div class="bg-glow" aria-hidden="true"></div>
   <canvas class="bg-stars" aria-hidden="true"></canvas>
@@ -31,8 +32,8 @@
   </header>
 
   <div class="drawer-backdrop" aria-hidden="true"></div>
-  <aside class="drawer" aria-label="Menu">
-    <nav class="drawer-nav">
+  <aside class="drawer" role="dialog" aria-modal="true" aria-label="Menu">
+    <nav class="drawer-nav" aria-label="Menu">
       <a href="./index.html"><span class="idx">01</span> Home</a>
       <a href="./index.html#work"><span class="idx">02</span> Work</a>
       <a href="./about.html"><span class="idx">03</span> About</a>
@@ -49,7 +50,7 @@
     </div>
   </aside>
 
-  <main>
+  <main id="main-content" tabindex="-1">
     <section class="panel hero is-in" data-theme="dark">
       <div class="moon-scene" data-parallax data-scalar="4.4" aria-hidden="true">
         <div class="ms-layer" data-depth="0.12"><img class="ms-glow2" src="assets/img/moonlight.svg" alt=""></div>
@@ -68,6 +69,6 @@
     </section>
   </main>
 
-  <script src="./js/v3.js?v=38"></script>
+  <script src="./js/v3.js?v=39"></script>
 </body>
 </html>

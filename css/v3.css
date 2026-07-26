@@ -19,9 +19,12 @@
 :root{
   --void:#020b16; --deep:#061220; --navy:#072142; --navy-2:#0a2a52;
   --violet:#5f6ce6; --violet-bright:#8b96ff; --magenta:#8c2b7a; --magenta-bright:#c2478f;
-  /* --faint clears WCAG AA (≥4.5:1) against every backdrop it sits on, including the
-     gradient's lightest stop (#08203f), while staying visibly quieter than --muted */
-  --white:#f4f7ff; --ink:#0a1a30; --muted:#9fb0d4; --faint:#7e90b8;
+  /* --faint clears WCAG AA (≥4.5:1) against the REAL composited backdrop, not just the
+     sky gradient: .bg-glow (rgba(95,108,230,.20), fixed at 46% viewport height) sits on
+     top of .bg, and because it is fixed every element passes through its core while
+     scrolling. Worst case is that composite, ~#192f60 — measured 4.81:1 here. The
+     earlier #7e90b8 was verified against the bare gradient only and was 4.06:1 there. */
+  --white:#f4f7ff; --ink:#0a1a30; --muted:#9fb0d4; --faint:#8e9dc4;
   --line:rgba(140,160,210,.14); --line-2:rgba(140,160,210,.28);
 
   --grad-nav:linear-gradient(135deg,#0a1f3d 0%,#3a2a6e 46%,#8c2b7a 100%);
@@ -62,6 +65,23 @@ h1,h2,h3,h4{margin:0;line-height:1.02;font-weight:500}
 p{margin:0}
 button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
 :focus-visible{outline:2px solid var(--violet-bright);outline-offset:5px;border-radius:3px}
+/* outline-offset draws the ring on the PAGE background, so on the light sections
+   --violet-bright was only 2.35:1 against it (needs 3:1). The light-theme accent the
+   site already uses gives 6.1:1 on #eef1f6 and 6.9:1 on the white press cards. */
+.section-block[data-theme="light"] :focus-visible,
+.panel[data-theme="light"] :focus-visible,
+.press-card:focus-visible,.press-hero:focus-visible{outline-color:#5145c9}
+
+/* Screen-reader-only text, and a keyboard skip link. Both pages of chrome (banner, 4 nav
+   items, hamburger — plus 7 dots on the deck) precede content, and heading navigation
+   only helps AT users, not sighted keyboard-only ones. */
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+  clip-path:inset(50%);white-space:nowrap;border:0}
+.skip-link{position:fixed;top:0;left:0;z-index:1200;transform:translateY(-120%);
+  background:var(--violet);color:#fff;padding:1rem 1.8rem;border-radius:0 0 8px 0;
+  font-family:var(--mono);font-size:1.3rem;letter-spacing:.1em;text-transform:uppercase;
+  transition:transform .25s var(--ease-out)}
+.skip-link:focus{transform:translateY(0)}
 ::selection{background:rgba(95,108,230,.55);color:#fff}
 /* progressive niceties — ignored by browsers that don't know them */
 h1,h2,h3{text-wrap:balance}
@@ -100,6 +120,11 @@ body.cursor-hover .cursor-dot{opacity:0}
 body.cursor-media .cursor-ring{width:76px;height:76px;background:var(--violet);border-color:transparent;box-shadow:0 12px 34px -10px rgba(95,108,230,.75)}
 body.cursor-media .cursor-label{opacity:1;transform:scale(1)}
 body.cursor-media .cursor-dot{opacity:0}
+/* On the light sections --violet-bright is only 2.35:1 against the background, so the
+   replaced pointer became near-invisible. headerFlipResolve already resolves the active
+   section theme, so it toggles this class too. */
+body.cursor-light .cursor-dot{background:#3b2fb0}
+body.cursor-light .cursor-ring{border-color:rgba(59,47,176,.65)}
 @media (hover:hover) and (pointer:fine){body.cursor-on{cursor:none}body.cursor-on a,body.cursor-on button{cursor:none}}
 
 /* =====================================================================
@@ -284,7 +309,11 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
 @media (max-width:760px){.scroll-hint{display:none}}
 
 /* slide progress nav — desktop rail (left) and mobile rail (right) */
-.slide-nav{position:fixed;left:2.2rem;top:50%;transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;align-items:center;gap:1.3rem}
+/* pointer-events:none on the rail itself — at 320px (i.e. 400% zoom) the fixed rail
+   overlaps the text column and was intercepting taps meant for card links and the
+   contact email. The dots themselves stay clickable. */
+.slide-nav{position:fixed;left:2.2rem;top:50%;transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;align-items:center;gap:1.3rem;pointer-events:none}
+.slide-dot{pointer-events:auto}
 .slide-dot{width:9px;height:9px;border-radius:50%;border:1px solid rgba(255,255,255,.45);background:transparent;padding:0;cursor:pointer;
   transition:transform .4s var(--ease-out),background .4s,border-color .4s,box-shadow .4s,height .4s var(--ease-out)}
 .slide-dot:hover{border-color:#fff;transform:scale(1.25)}
@@ -332,6 +361,11 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
 .work-meta{display:flex;flex-wrap:wrap;gap:.8rem 1rem}
 .work-meta span{font-family:var(--mono);font-size:1.15rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
   border:1px solid var(--line);border-radius:40px;padding:.5rem 1.1rem}
+/* scroll-margin-top on the cards only: focusing one by keyboard scrolled it flush to the
+   viewport top, i.e. behind the 95px fixed header, with the focus ring clipped off-screen.
+   Deliberately NOT scroll-padding-top on .snap — that would shift every panel snap
+   position down by a header height for touch and reduced-motion users. */
+.work-media,.gimica-card,.about-portrait{scroll-margin-top:calc(var(--header-h) + 2rem)}
 .work-media{position:relative;aspect-ratio:4/3;border-radius:6px;overflow:hidden;box-shadow:var(--shadow-img);cursor:pointer}
 .work-media img{width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease-out)}
 .work-media:hover img{transform:scale(1.05)}
@@ -393,8 +427,11 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
    ===================================================================== */
 .hero-cta{margin-top:.4rem}
 .about-slide .work-copy .display{font-size:clamp(3.4rem,6.5vw,6.8rem)}
+/* width:100% matters: margin-left:auto defeats grid stretch, so with a lazy unloaded
+   image this collapsed to a 0x0 box — a focusable link with nothing to click and no
+   room for a focus ring. max-width still caps it exactly where it lands today. */
 .about-portrait{position:relative;display:block;border-radius:8px;overflow:hidden;box-shadow:var(--shadow-img);
-  aspect-ratio:4/5;max-width:42rem;margin-left:auto;cursor:pointer}
+  aspect-ratio:4/5;width:100%;max-width:42rem;margin-left:auto;cursor:pointer}
 .about-portrait img{width:100%;height:100%;object-fit:cover;object-position:center 22%;transition:transform .9s var(--ease-out)}
 .about-portrait:hover img{transform:scale(1.05)}
 .about-portrait .plate{position:absolute;left:1.4rem;bottom:1.4rem;font-family:var(--mono);font-size:1.1rem;letter-spacing:.16em;text-transform:uppercase;
@@ -711,6 +748,10 @@ html.vt-arrive .project-hero .reveal, html.vt-arrive .project-hero .reveal-media
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
   .js .reveal,.js .reveal-line>span,.js .reveal-media{opacity:1!important;transform:none!important;clip-path:none!important}
   .js .tree-sec .node{opacity:1!important;animation:none!important}
+  /* insurance: lazy images currently reach opacity 1 via the lazyIn fill, which survives
+     the .001ms duration forced below. If anyone ever changes that to animation:none,
+     this keeps six images per page from silently blanking. */
+  .js img[loading="lazy"]{opacity:1}
   .tree-sec .nodes::before{transform:scaleY(1)!important}
   .ticker-track{animation:none}
   .ms-robot,.ms-bats,.ms-pigeon{animation:none}
@@ -768,7 +809,7 @@ html.vt-arrive .project-hero .reveal, html.vt-arrive .project-hero .reveal-media
 .tags{display:flex;flex-wrap:wrap;gap:.7rem}
 .tags span{font-family:var(--mono);font-size:1.2rem;letter-spacing:.04em;border:1px solid var(--line-2);border-radius:30px;padding:.55rem 1.1rem;color:#cdd6ff}
 .skill-group{margin-bottom:1.8rem}
-.skill-group h4{font-family:var(--mono);font-size:1.15rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.9rem}
+.skill-group h3{font-family:var(--mono);font-size:1.15rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.9rem}
 .lang-row{display:flex;justify-content:space-between;padding:.9rem 0;border-bottom:1px solid var(--line);font-size:1.5rem}
 .lang-row:last-child{border-bottom:none}
 .lang-row span:last-child{font-family:var(--mono);font-size:1.2rem;color:var(--faint);text-transform:uppercase;letter-spacing:.06em}
@@ -870,7 +911,7 @@ a.proj-line:hover b{color:var(--violet-bright)}
   .proj-line .ext{color:#5145c9!important}
 
   .skill-group{margin-bottom:2mm}
-  .skill-group h4{font-size:8pt;color:#5145c9;margin-bottom:1.5mm}
+  .skill-group h3{font-size:8pt;color:#5145c9;margin-bottom:1.5mm}
   .tags{gap:1.6mm}
   .tags span{border-color:#c9c9e6;color:#2c2c3c;font-size:7.9pt;padding:.6mm 2mm}
   .rcard{border-color:#dcdcf0;background:#fafaff;padding:1.7mm 2.3mm;margin-bottom:1.4mm;border-radius:2mm}

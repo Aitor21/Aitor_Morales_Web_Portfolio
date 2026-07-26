@@ -130,6 +130,8 @@
       var c = theme === "light" ? "var(--ink)" : "var(--white)";
       var back = document.querySelector(".back-link"); if (back) back.style.color = c;
       var hint = document.querySelector(".scroll-hint"); if (hint) hint.style.color = c;
+      // the replaced pointer is only 2.35:1 on the light sections — recolour it there
+      document.body.classList.toggle("cursor-light", theme === "light");
     }
   }
 
@@ -224,7 +226,7 @@
       var b = document.createElement("button");
       b.className = "slide-dot"; b.type = "button";
       b.setAttribute("aria-label", panelLabel(p, i));
-      b.addEventListener("click", function () { slideGo(i); });
+      b.addEventListener("click", function () { slideGo(i, false, true); });
       nav.appendChild(b); slide.dots.push(b);
     });
     var count = document.createElement("span");
@@ -232,7 +234,22 @@
     count.innerHTML = '<b></b>' + pad2(slide.panels.length);
     nav.appendChild(count); slide.count = count;
 
-    document.body.appendChild(nav); slide.nav = nav;
+    /* Insert BEFORE <main>, not at the end of <body>: the rail is a fixed left-edge
+       element that reads as page chrome, but appended last it landed at tab index 34 of
+       41 — reachable only after traversing all seven panels, the opposite of a nav aid.
+       position:fixed means the DOM move is visually invisible. */
+    var mainEl = document.querySelector("main");
+    if (mainEl && mainEl.parentNode === document.body) document.body.insertBefore(nav, mainEl);
+    else document.body.appendChild(nav);
+    slide.nav = nav;
+    /* Activating a dot was completely silent to assistive tech: aria-current changes are
+       not announced, and focus never moved. Announce on explicit activation only —
+       never on wheel scroll, which would announce continuously. */
+    if (!slide.live) {
+      var live = document.createElement("span");
+      live.className = "sr-only"; live.setAttribute("role", "status");
+      document.body.appendChild(live); slide.live = live;
+    }
     slide.index = nearestPanel();
     updateSlideNav();
   }
@@ -256,11 +273,17 @@
      with its bottom edge in view — you arrive at the content you were headed for and
      scroll up through the panel, instead of skipping straight past its below-fold half.
      Dots, hash links and Home/End keep landing on the panel top (no flag). */
-  function slideGo(i, alignBottom) {
+  function slideGo(i, alignBottom, announce) {
     if (!slide.snap || !slide.panels.length) return;
     i = clamp(i, 0, slide.panels.length - 1);
     try { sessionStorage.setItem("amSlide", String(i)); } catch (_) {}
     var p = slide.panels[i];
+    if (announce) {
+      // move the virtual cursor to the panel the visitor asked for, and say where we are
+      p.setAttribute("tabindex", "-1");
+      try { p.focus({ preventScroll: true }); } catch (_) {}
+      if (slide.live) slide.live.textContent = panelLabel(p, i) + ", section " + (i + 1) + " of " + slide.panels.length;
+    }
     var end = alignBottom
       ? Math.max(p.offsetTop, p.offsetTop + p.offsetHeight - slide.snap.clientHeight)
       : p.offsetTop;
@@ -339,8 +362,8 @@
       var t = e.target;
       if (t && (/^(input|textarea|select)$/i.test(t.tagName) || t.isContentEditable)) return;
       var k = e.key;
-      if (k === "Home") { e.preventDefault(); slideGo(0); return; }
-      if (k === "End") { e.preventDefault(); slideGo(slide.panels.length - 1); return; }
+      if (k === "Home") { e.preventDefault(); slideGo(0, false, true); return; }
+      if (k === "End") { e.preventDefault(); slideGo(slide.panels.length - 1, false, true); return; }
       if (k === " " && t && t.closest && t.closest("a,button,summary")) return; // Space activates those
       var down = k === "ArrowDown" || k === "PageDown" || (k === " " && !e.shiftKey);
       var up = k === "ArrowUp" || k === "PageUp" || (k === " " && e.shiftKey);
@@ -391,11 +414,14 @@
       if (!isOpen()) return;
       document.body.classList.remove("menu-open");
       btn.setAttribute("aria-expanded", "false");
+      btn.setAttribute("aria-label", "Open menu");
       if (refocus) btn.focus();
     };
     btn.addEventListener("click", function () {
       var open = !isOpen();
       document.body.classList.toggle("menu-open", open); btn.setAttribute("aria-expanded", open ? "true" : "false");
+      // "Open menu, expanded" is nonsense — name the action the button now performs
+      btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
       if (open) { var f = focusables(); if (f.length) f[0].focus(); }
     });
     if (backdrop) backdrop.addEventListener("click", function () { closeMenu(true); });
@@ -526,8 +552,12 @@
       el.addEventListener("mouseenter", measure);
       el.addEventListener("mousemove", function (e) {
         if (!box || boxAt !== scrollNow()) measure();
-        el.style.transform = "translate(" + ((e.clientX - (box.left + box.width / 2)) * 0.3).toFixed(1) +
-                             "px," + ((e.clientY - (box.top + box.height / 2)) * 0.4).toFixed(1) + "px)";
+        // cap the travel: uncapped this reached ±36px, so the target a user aimed at was
+        // never where they clicked — a Fitts's-law cost paid entirely by anyone with
+        // tremor or limited fine motor control. 8px still reads as weight and response.
+        var cap = function (v) { return v < -8 ? -8 : v > 8 ? 8 : v; };
+        el.style.transform = "translate(" + cap((e.clientX - (box.left + box.width / 2)) * 0.3).toFixed(1) +
+                             "px," + cap((e.clientY - (box.top + box.height / 2)) * 0.4).toFixed(1) + "px)";
       });
       el.addEventListener("mouseleave", function () { box = null; el.style.transform = ""; });
     });
@@ -543,12 +573,17 @@
       var play = function () {
         var id = el.getAttribute("data-yt"); if (!id || el.classList.contains("is-playing")) return;
         var f = document.createElement("iframe");
-        f.src = "https://www.youtube-nocookie.com/embed/" + id + "?autoplay=1&rel=0";
+        // cc_load_policy=1 turns on a caption track when the source video has one
+        f.src = "https://www.youtube-nocookie.com/embed/" + id + "?autoplay=1&rel=0&cc_load_policy=1";
         f.title = el.getAttribute("data-title") || "Trailer";
         f.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
         f.setAttribute("allowfullscreen", "");
         el.classList.add("is-playing");
-        el.innerHTML = ""; el.appendChild(f);
+        // replaceChildren + focus, NOT innerHTML="": wiping the container destroys the
+        // .ve-play button the user just activated, which strands focus on <body>. A
+        // keyboard user would lose their place and conclude the button did nothing.
+        el.replaceChildren(f);
+        try { f.focus({ preventScroll: true }); } catch (_) {}
       };
       el.addEventListener("click", play);
       var btn = el.querySelector(".ve-play");
@@ -644,8 +679,10 @@
         f.style.cssText = "position:absolute;top:0;left:0;border:0;width:" + w + "px;height:" + h + "px;transform-origin:0 0";
         var fit = function () { f.style.transform = "scale(" + (el.clientWidth / w).toFixed(5) + ")"; };
         el.classList.add("is-playing");
-        el.innerHTML = ""; el.appendChild(f);
+        // see the trailer facade: innerHTML="" would strand focus on <body>
+        el.replaceChildren(f);
         fit();
+        try { f.focus({ preventScroll: true }); } catch (_) {}
         addEventListener("resize", fit);
       };
       el.addEventListener("click", play);
@@ -664,9 +701,18 @@
       var base = b.textContent;
       b.addEventListener("click", function () {
         var text = b.getAttribute("data-copy") || "";
+        /* The visual "Copied ✓" stays — but it is announced through a separate status
+           region rather than aria-live on the button itself. A live region on the focused
+           control is unreliable across screen readers AND it rewrites the button's own
+           accessible name, so for two seconds the label stopped describing what it does. */
+        var status = document.querySelector("[data-copy-status]");
         var done = function () {
           b.classList.add("copied"); b.textContent = "Copied ✓";
-          setTimeout(function () { b.classList.remove("copied"); b.textContent = base; }, 2000);
+          if (status) status.textContent = "Email address copied to clipboard";
+          setTimeout(function () {
+            b.classList.remove("copied"); b.textContent = base;
+            if (status) status.textContent = "";
+          }, 2000);
         };
         var legacy = function () {
           var ta = document.createElement("textarea");

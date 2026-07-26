@@ -19,7 +19,7 @@
   <link rel="preload" as="font" type="font/woff2" href="assets/font/Futura-Dem.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="assets/font/Futura-Med.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="assets/font/Futura-Boo.woff2" crossorigin>
-  <link rel="stylesheet" href="./css/v3.css?v=38">
+  <link rel="stylesheet" href="./css/v3.css?v=39">
   <script type="application/ld+json">
   {
     "@context":"https://schema.org","@type":"Person",
@@ -46,6 +46,7 @@
   </script>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
   <div class="bg" aria-hidden="true"></div>
   <div class="bg-glow" aria-hidden="true"></div>
   <canvas class="bg-stars" aria-hidden="true"></canvas>
@@ -63,8 +64,8 @@
   </header>
 
   <div class="drawer-backdrop" aria-hidden="true"></div>
-  <aside class="drawer" aria-label="Menu">
-    <nav class="drawer-nav">
+  <aside class="drawer" role="dialog" aria-modal="true" aria-label="Menu">
+    <nav class="drawer-nav" aria-label="Menu">
       <a href="./index.html"><span class="idx">01</span> Home</a>
       <a href="./index.html#work"><span class="idx">02</span> Work</a>
       <a href="./about.html"><span class="idx">03</span> About</a>
@@ -86,7 +87,7 @@
     Back
   </a>
 
-  <main class="resume-page">
+  <main class="resume-page" id="main-content" tabindex="-1">
     <div class="resume-actions no-print">
       <a class="btn" href="./Aitor_Morales_Resume.pdf" download="Aitor_Morales_Resume.pdf">Download PDF <span class="arrow">↓</span></a>
       <a class="btn btn--ghost" href="mailto:aitormorales@honeybungames.com">Get in touch <span class="arrow">→</span></a>
@@ -170,7 +171,7 @@
 
         </div>
 
-        <aside class="resume-aside">
+        <aside class="resume-aside" aria-label="Skills and education">
           <section class="rsec" aria-label="Core strengths">
             <h2>Core Strengths</h2>
             <div class="rstrength"><span>Level &amp; Systems Design</span><span>Expert</span></div>
@@ -182,15 +183,15 @@
           <section class="rsec" aria-label="Skills">
             <h2>Skills</h2>
             <div class="skill-group">
-              <h4>Design</h4>
+              <h3>Design</h3>
               <div class="tags"><span>Level Design</span><span>Systems Design</span><span>Game Economy</span><span>Monetization</span><span>Retention</span><span>Core Game Loops</span><span>Adaptive Difficulty</span><span>GDD</span></div>
             </div>
             <div class="skill-group">
-              <h4>Engines &amp; Code</h4>
+              <h3>Engines &amp; Code</h3>
               <div class="tags"><span>Unity</span><span>C#</span><span>Godot</span><span>Babylon.js</span><span>Unreal</span></div>
             </div>
             <div class="skill-group">
-              <h4>Live &amp; Tools</h4>
+              <h3>Live &amp; Tools</h3>
               <div class="tags"><span>LiveOps</span><span>A/B Testing</span><span>KPIs · Telemetry</span><span>Agile</span><span>Figma</span></div>
             </div>
           </section>
@@ -240,6 +241,6 @@
     </article>
   </main>
 
-  <script src="./js/v3.js?v=38"></script>
+  <script src="./js/v3.js?v=39"></script>
 </body>
 </html>

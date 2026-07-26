@@ -20,12 +20,13 @@
   <link rel="preload" as="font" type="font/woff2" href="assets/font/Futura-Dem.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="assets/font/Futura-Med.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="assets/font/Futura-Boo.woff2" crossorigin>
-  <link rel="stylesheet" href="./css/v3.css?v=38">
+  <link rel="stylesheet" href="./css/v3.css?v=39">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"Person","@id":"https://aitormorales.com/#person","name":"Aitor Morales","url":"https://aitormorales.com/","jobTitle":"Game Designer","hasOccupation":{"@type":"Occupation","name":"Game Designer","occupationLocation":{"@type":"City","name":"Madrid"},"skills":"Systems design, level design, game economy, LiveOps, A/B testing, Unity, C#, Godot"},"worksFor":{"@type":"Organization","name":"Gimica","parentOrganization":{"@type":"Organization","name":"JustPlay"}},"address":{"@type":"PostalAddress","addressLocality":"Madrid","addressCountry":"ES"},"knowsAbout":["Level Design","Game Design","Systems Design","Game Economy","A/B Testing","Unity","C#","Godot","Babylon.js"],"sameAs":["https://www.linkedin.com/in/aitor-morales-7a5b93146/","https://aitormorales.itch.io/","https://www.instagram.com/aitor_21m/"]}
   </script>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
   <div class="bg" aria-hidden="true"></div>
   <div class="bg-glow" aria-hidden="true"></div>
   <canvas class="bg-stars" aria-hidden="true"></canvas>
@@ -43,8 +44,8 @@
   </header>
 
   <div class="drawer-backdrop" aria-hidden="true"></div>
-  <aside class="drawer" aria-label="Menu">
-    <nav class="drawer-nav">
+  <aside class="drawer" role="dialog" aria-modal="true" aria-label="Menu">
+    <nav class="drawer-nav" aria-label="Menu">
       <a href="./index.html"><span class="idx">01</span> Home</a>
       <a href="./index.html#work"><span class="idx">02</span> Work</a>
       <a href="./about.html"><span class="idx">03</span> About</a>
@@ -63,7 +64,7 @@
 
   <p class="scroll-hint" aria-hidden="true">Scroll</p>
 
-  <main class="snap" id="top">
+  <main class="snap" id="main-content" tabindex="-1">
 
     <!-- HERO -->
     <section class="panel hero" data-theme="dark" data-label="Top">
@@ -225,7 +226,8 @@
         <span class="eyebrow reveal" style="--i:0">Get in touch</span>
         <h2 class="display"><span class="reveal-line" style="--i:1"><span>Let's build</span></span><span class="reveal-line" style="--i:2"><span>something.</span></span></h2>
         <a class="big-mail reveal" style="--i:2" href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a>
-        <button class="copy-mail reveal" style="--i:3" type="button" data-copy="aitormorales@honeybungames.com" aria-live="polite">Copy email</button>
+        <button class="copy-mail reveal" style="--i:3" type="button" data-copy="aitormorales@honeybungames.com">Copy email</button>
+        <span class="sr-only" role="status" data-copy-status></span>
         <div class="social reveal" style="--i:3">
           <a href="https://aitormorales.itch.io/" target="_blank" rel="noopener">itch.io</a>
           <a href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank" rel="noopener">LinkedIn</a>
@@ -236,6 +238,6 @@
 
   </main>
 
-  <script src="./js/v3.js?v=38"></script>
+  <script src="./js/v3.js?v=39"></script>
 </body>
 </html>

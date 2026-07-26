@@ -23,7 +23,7 @@
   <link rel="preload" as="font" type="font/woff2" href="../assets/font/Futura-Dem.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../assets/font/Futura-Med.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../assets/font/Futura-Boo.woff2" crossorigin>
-  <link rel="stylesheet" href="../css/v3.css?v=38">
+  <link rel="stylesheet" href="../css/v3.css?v=39">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"VideoGame","name":"Blaster Buds","genre":"Puzzle","gamePlatform":["PC","Windows","macOS"],"author":{"@type":"Person","name":"Aitor Morales"},"award":"Winner, Mechanics category, Spain Game Devs Jam II","url":"https://aitormorales.itch.io/"}
   </script>
@@ -32,6 +32,7 @@
   </script>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
   <div class="bg" aria-hidden="true"></div>
   <div class="bg-glow" aria-hidden="true"></div>
   <canvas class="bg-stars" aria-hidden="true"></canvas>
@@ -49,8 +50,8 @@
   </header>
 
   <div class="drawer-backdrop" aria-hidden="true"></div>
-  <aside class="drawer" aria-label="Menu">
-    <nav class="drawer-nav">
+  <aside class="drawer" role="dialog" aria-modal="true" aria-label="Menu">
+    <nav class="drawer-nav" aria-label="Menu">
       <a href="../index.html"><span class="idx">01</span> Home</a>
       <a href="../index.html#work"><span class="idx">02</span> Work</a>
       <a href="../about.html"><span class="idx">03</span> About</a>
@@ -72,7 +73,7 @@
     Back
   </a>
 
-  <main>
+  <main id="main-content" tabindex="-1">
     <section class="project-hero" data-theme="dark">
       <div class="project-copy">
         <span class="eyebrow">SGD Jam II · 2020 · Winner, Mechanics</span>
@@ -143,6 +144,6 @@
     </div>
   </main>
 
-  <script src="../js/v3.js?v=38"></script>
+  <script src="../js/v3.js?v=39"></script>
 </body>
 </html>
