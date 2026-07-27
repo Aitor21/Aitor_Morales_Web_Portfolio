@@ -30,6 +30,12 @@
   --grad-nav:linear-gradient(135deg,#0a1f3d 0%,#3a2a6e 46%,#8c2b7a 100%);
   --grad-sky:linear-gradient(175deg,#08203f 0%,#061c37 30%,#07182b 58%,#050f1e 80%,#020a13 100%);
   --grad-accent:linear-gradient(101deg,#0a2242,#8c2b7a 54%,#5f6ce6);
+  /* --grad-accent is a BACKGROUND gradient: its dark navy start is deliberate behind
+     white text, but clipped to text on a dark page it rendered the numerals at 1.22:1
+     at the start and 2.95:1 at its brightest — below the 3:1 large text needs, which is
+     why the stats were nearly invisible. This variant keeps the violet-magenta identity
+     but every stop clears 4.7:1 on the darkest backdrop they sit on. */
+  --grad-num:linear-gradient(101deg,#9fa8ff,#e07ab8 58%,#a78bfa);
 
   --ease:cubic-bezier(0.76,0,0.24,1);
   --ease-out:cubic-bezier(0.16,1,0.3,1);
@@ -433,9 +439,8 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
   color:#fff;background:rgba(6,12,26,.5);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:.6rem 1.1rem;border-radius:30px;
   opacity:0;transform:translateY(8px);transition:opacity .4s var(--ease-out),transform .4s var(--ease-out)}
 .work-media:hover .plate{opacity:1;transform:translateY(0)}
-.work-media .page-num{position:absolute;right:-1rem;top:-3.4rem;font-family:var(--num);font-size:clamp(5rem,9vw,9rem);color:var(--white);
-  text-shadow:0 10px 30px rgba(2,8,20,.5);z-index:4}
-@media (max-width:900px){.work-media .page-num{font-size:5rem;right:.4rem;top:-3rem}}
+/* (the big white 01/02 numerals that used to overlay the work cards are gone — they
+   competed with the key art and clipped against the card's overflow) */
 
 /* Gimica typographic card */
 .gimica-card{position:relative;aspect-ratio:4/3;border-radius:8px;overflow:hidden;box-shadow:var(--shadow-img);
@@ -445,7 +450,7 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
 .gimica-card:hover{transform:scale(1.015)}   /* the card, not the whole panel — motion needs a cause */
 /* stats row (in the work copy column) */
 .work-stats{display:flex;gap:clamp(2rem,3vw,3.2rem);margin-top:.6rem}
-.work-stats .st b{display:block;font-family:var(--num);font-size:clamp(2.4rem,3.4vw,3rem);line-height:1;color:transparent;-webkit-background-clip:text;background-clip:text;background-image:var(--grad-accent)}
+.work-stats .st b{display:block;font-family:var(--num);font-size:clamp(2.4rem,3.4vw,3rem);line-height:1;color:transparent;-webkit-background-clip:text;background-clip:text;background-image:var(--grad-num)}
 .work-stats .st span{display:block;font-family:var(--mono);font-size:1.1rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:.6rem}
 
 /* =====================================================================
@@ -643,7 +648,7 @@ html.vt-arrive img[loading="lazy"].is-loaded{animation:none!important;opacity:1!
 .meta-row a{color:var(--violet-bright)}
 .proj-sec{margin-bottom:3.6rem;display:grid;grid-template-columns:5rem 1fr;gap:1.6rem 2.6rem;align-items:baseline}
 @media (max-width:620px){.proj-sec{grid-template-columns:1fr;gap:.6rem}}
-.proj-sec .num{font-family:var(--num);font-size:3rem;line-height:1;color:transparent;-webkit-background-clip:text;background-clip:text;background-image:var(--grad-accent)}
+.proj-sec .num{font-family:var(--num);font-size:3rem;line-height:1;color:transparent;-webkit-background-clip:text;background-clip:text;background-image:var(--grad-num)}
 .proj-sec h2{font-size:clamp(1.9rem,2.6vw,2.4rem);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.2rem}
 .proj-sec .prose{color:var(--muted);font-size:1.65rem;line-height:1.8;max-width:62ch}
 /* 600, not the UA default 700 — a 700 face would be a whole extra ~34KB WOFF2
