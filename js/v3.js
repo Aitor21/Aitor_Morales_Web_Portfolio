@@ -197,6 +197,22 @@
     }
     buildSlideNav();
   }
+  /* Keep the address bar honest about which panel you are on.
+     The deck is a scroll container, so the hash you arrived with used to stick forever:
+     open Gimica from #work, come back, scroll three panels down, and the URL still said
+     #work. That made a reload or a shared link land somewhere the visitor had not been,
+     and it is what made Back look like it was ignoring which card you opened — the hash
+     was the only record of position and it was lying.
+     replaceState, never pushState: scrolling a page must not fill the history stack. And
+     the hash is cleared on panels that have no id, because a wrong hash is worse than
+     none. */
+  function syncHash() {
+    if (!slide.panels.length) return;
+    var p = slide.panels[slide.index];
+    var want = location.pathname + location.search + (p && p.id ? "#" + p.id : "");
+    if (location.pathname + location.search + location.hash === want) return;
+    try { history.replaceState(history.state, "", want); } catch (_) {}
+  }
   function panelIndexOfCard(img) {
     if (!img || !slide.panels.length) return -1;
     var p = img.closest(".panel");
@@ -273,6 +289,7 @@
   }
   function pad2(n) { return (n < 10 ? "0" : "") + n; }
   function updateSlideNav() {
+    syncHash();          // every panel change flows through here — before the rail guard
     if (!slide.nav) return;
     for (var i = 0; i < slide.dots.length; i++) {
       var on = i === slide.index;
