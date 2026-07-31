@@ -171,7 +171,14 @@ body.cursor-light .cursor-ring{border-color:rgba(59,47,176,.65)}
    Header — colour flips with the section theme
    ===================================================================== */
 .site-header{position:fixed;top:0;left:0;width:100%;z-index:1000;display:flex;justify-content:space-between;align-items:center;
-  height:var(--header-h);padding:0 var(--pad);color:var(--white);transition:color .55s var(--ease-out)}
+  height:var(--header-h);padding:0 var(--pad);color:var(--white);transition:color .55s var(--ease-out);
+  /* The header is a full-width transparent bar at z-index 1000, and mostly empty space —
+     but it was still swallowing every tap that landed in that space. The back link is
+     tucked just under its bottom edge, so the header covered its top half and roughly
+     half the button was simply not clickable, which is why it needed such a precise tap.
+     The bar itself takes no pointer events now; its actual controls opt back in. */
+  pointer-events:none}
+.site-header > *{pointer-events:auto}
 .site-header[data-theme="light"]{color:var(--ink)}
 .site-header[data-theme="light"] .menu-btn i{background:var(--ink)}
 /* scrolled-state scrim: long pages slide content under the transparent fixed header,
@@ -618,6 +625,14 @@ html.vt-arrive img[loading="lazy"].is-loaded{animation:none!important;opacity:1!
 .back-link{position:fixed;top:calc(var(--header-h) + 2rem);left:var(--pad);z-index:800;display:inline-flex;align-items:center;gap:1rem;
   font-family:var(--mono);font-size:1.25rem;letter-spacing:.18em;text-transform:uppercase;transition:color .55s var(--ease-out),transform .35s var(--ease-out)}
 .back-link:hover{transform:translateX(-6px)}.back-link svg{width:2.4rem}
+/* The back link is 12.5px text beside a 24px icon with no padding, so its hit box was
+   only 65x18 — under even WCAG 2.2 AA's 24px floor, which is why it needed a precise
+   tap. Grown to ~105x48 with a transparent ::after rather than padding, so the arrow and
+   label stay exactly where they were and only the touch area changes. Every pointer
+   type, not just touch: a forgiving target is kinder to a mouse too. */
+/* Biased downward, away from the header: growing evenly put its top edge inside the
+   header name's own hit area, which then won the overlap and clawed back a few pixels. */
+.back-link::after{content:"";position:absolute;inset:-10px -20px -20px}
 @media (max-width:760px){.back-link{top:calc(var(--header-h) - 1rem)}}
 
 /* skills */
@@ -923,6 +938,27 @@ html.vt-out::view-transition-new(root){animation:vtInFromAbove .58s var(--ease-o
   /* hover-revealed plates never appear on touch, leaving the largest images with no
      visible affordance — show them outright */
   .work-media .plate,.about-portrait .plate{opacity:1;transform:none}
+
+  /* ---- Everything else that was under a fingertip ----
+     Audited at 375px: ten controls came in under 44x44 (Apple HIG / WCAG 2.5.5). Each is
+     grown with a transparent ::after so the layout, alignment and spacing are untouched
+     and only the touch area changes — the same trick as the dot rail above. */
+  .menu-btn::after{content:"";position:absolute;inset:-7px}          /* 34 -> 48 */
+  .site-header .name{position:relative}
+  .site-header .name::after{content:"";position:absolute;inset:-9px -10px}   /* 29 -> 47 */
+  .proj-foot-nav a{position:relative}
+  .proj-foot-nav a::after{content:"";position:absolute;inset:-5px -10px}     /* 38 -> 48 */
+
+  /* The meta-row links were the smallest on the page at 15px tall. They sit inline,
+     separated by "·", often wrapping to several lines — so an expansion big enough for
+     44px would overlap the line above and steal its taps, which is worse than a small
+     target. The line box is opened up instead and the hit area grown to exactly fill it:
+     ~37px, no overlap, comfortably past the 24px AA minimum. The tradeoff is a more airy
+     metadata block on phones; that reads fine at this size, and mis-tapping a link that
+     opens a different site does not. */
+  .meta-row dd{line-height:2.9}
+  .meta-row dd a{position:relative;display:inline-block}
+  .meta-row dd a::after{content:"";position:absolute;inset:-11px -8px}
 }
 /* phones (9px root): keep reading text at or above ~16px real pixels */
 @media (max-width:420px){
