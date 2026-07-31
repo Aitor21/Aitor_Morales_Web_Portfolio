@@ -53,8 +53,15 @@
         self._orient = function (e) {
           if (e.gamma == null || e.beta == null) return;
           if (self.calib == null) self.calib = { g: e.gamma, b: e.beta };
-          self.tx = clamp((e.gamma - self.calib.g) / 40, -1, 1);
-          self.ty = clamp((e.beta - self.calib.b) / 40, -1, 1);
+          var nx = clamp((e.gamma - self.calib.g) / 40, -1, 1);
+          var ny = clamp((e.beta - self.calib.b) / 40, -1, 1);
+          /* Deadzone. The loop is written to park once it catches up with the target, but
+             deviceorientation fires continuously and a hand-held phone is never perfectly
+             still — every tremor rewrote the target and woke it again, so on a phone it
+             never parked at all and ran rAF for the life of the page. Only a deliberate
+             tilt counts now; resting in someone's hand does not. */
+          if (Math.abs(nx - self.tx) < 0.02 && Math.abs(ny - self.ty) < 0.02) return;
+          self.tx = nx; self.ty = ny;
           self.start();   // the loop parks itself when settled; tilt wakes it
         };
         window.addEventListener("deviceorientation", self._orient);
@@ -1073,7 +1080,18 @@
       var n = Math.round(Math.min(150, (w * h) / 11000)); stars = [];
       for (var i = 0; i < n; i++) stars.push({ x: Math.random() * w, y: Math.random() * h, r: Math.random() * 1.2 + 0.2, a: Math.random() * 0.5 + 0.15, tw: Math.random() * 0.8 + 0.2, ph: Math.random() * 6.28 });
     }
+    /* Repaint budget. The field is ambient decoration, but it was redrawing on every
+       animation frame — and a modern phone runs at 120Hz, so it was doing twice the work
+       of a 60Hz desktop for a twinkle nobody tracks frame by frame. Capped to ~30fps on
+       touch: the twinkle is driven by elapsed time, not frame count, so it moves at
+       exactly the same speed, it is just sampled less often. Desktop is left uncapped. */
+    var MIN_DT = coarse ? 32 : 0, lastPaint = -1e6;
     function draw(t) {
+      if (running && MIN_DT && t - lastPaint < MIN_DT) {
+        if (!document.hidden) requestAnimationFrame(draw);
+        return;
+      }
+      lastPaint = t;
       ctx.clearRect(0, 0, w, h);
       // One fillStyle for the whole field, twinkle via globalAlpha. Writing an rgba()
       // string per star per frame meant ~7k string allocations AND CSS colour parses a
@@ -1636,6 +1654,22 @@
     return true;
   }
 
+  /* Park animations that are running where nobody is looking (touch only).
+     A CSS animation keeps running when its element scrolls out of view, so on the home
+     deck the hero's three loops and the ticker animate for the whole visit no matter
+     which panel you are on. Desktop absorbs it; a phone pays for it in every frame it
+     spends compositing something off screen. The margin keeps the neighbouring panel
+     live, so a section is never seen frozen as it scrolls in. */
+  function initIdleAnimations() {
+    if (!coarse || reduce || !("IntersectionObserver" in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        en.target.classList.toggle("panel-idle", !en.isIntersecting);
+      });
+    }, { rootMargin: "25% 0px" });
+    document.querySelectorAll(".panel, .project-hero, .ticker").forEach(function (el) { io.observe(el); });
+  }
+
   /* ===================== Mount (per page) ===================== */
   function mountContent() {
     setupSlides();
@@ -1650,6 +1684,7 @@
     initLoopVideos();
     initCopyMail();
     initImgFade();
+    initIdleAnimations();
     var hero = document.querySelector(".hero, .about-hero, .project-hero");
     if (hero) requestAnimationFrame(function () { hero.classList.add("is-in"); });
   }

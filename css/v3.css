@@ -983,6 +983,41 @@ html.vt-out::view-transition-new(root){animation:vtInFromAbove .58s var(--ease-o
 }
 
 /* =====================================================================
+   Touch devices — stop paying for effects that cost the most where they
+   show the least. Keyed on pointer capability, not width, so a narrow
+   desktop window keeps the full treatment.
+   ===================================================================== */
+@media (hover:none) and (pointer:coarse){
+  /* The grain is a full-screen fixed layer with mix-blend-mode. That forces the
+     compositor to re-blend the ENTIRE viewport against everything beneath it on every
+     single frame — during scroll, during the page morph, during the starfield. It is the
+     most expensive thing on the page and, at 5% opacity on a phone-sized screen, the one
+     nobody can see. Desktop keeps it. */
+  .grain{display:none}
+  /* A 90-second infinite drift on a 140vmin gradient never lets the compositor idle: the
+     nebula is animating for the entire life of the page for a movement measured in a few
+     viewport-percent over a minute and a half. Frozen at its resting frame here — the
+     gradient itself is untouched, so it looks identical unless you stare for a minute. */
+  .bg-glow{animation:none}
+  /* backdrop-filter re-samples what is behind the element every frame. On the mobile
+     rail that element is permanently on screen while you scroll the deck, which is the
+     worst possible case. A solid tint reads the same at this size. */
+  .slide-nav{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(4,12,26,.82)}
+  .work-media .plate,.about-portrait .plate,.ve-label{
+    -webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(6,12,26,.8)}
+  /* A CSS animation does not stop when its element scrolls out of view. The hero's robot,
+     bats and pigeon loops and the 32s ticker all keep running — and keep the compositor
+     working — while you are five panels away looking at something else. initIdleAnimations
+     marks what is off screen; this parks it. It resumes on approach, so nothing is ever
+     seen frozen. */
+  .panel-idle,.panel-idle *{animation-play-state:paused!important}
+  /* will-change on a permanently-animating marquee reserves a composited layer for the
+     life of the page. The animation still runs when visible; it just stops holding memory
+     for the ~95% of the time it is off screen. */
+  .ticker-track{will-change:auto}
+}
+
+/* =====================================================================
    Reduced motion
    ===================================================================== */
 @media (prefers-reduced-motion:reduce){
