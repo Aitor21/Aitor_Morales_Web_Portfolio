@@ -736,10 +736,10 @@ html.vt-arrive img[loading="lazy"].is-loaded{animation:none!important;opacity:1!
 /* Content only (the chrome is excluded above), so it can afford real movement:
    the outgoing page lifts and fades, the incoming page rises into place. A pure
    cross-fade at .28s was what read as a "pop". */
-@keyframes vtContentOut{to{opacity:0;transform:translateY(-14px) scale(.995)}}
-@keyframes vtContentIn{from{opacity:0;transform:translateY(22px) scale(.995)}}
-::view-transition-old(root){animation:vtContentOut .26s var(--ease) both}
-::view-transition-new(root){animation:vtContentIn .52s var(--ease-out) both;animation-delay:.10s}
+@keyframes vtContentOut{to{opacity:0;transform:translateY(-9px) scale(.996)}}
+@keyframes vtContentIn{from{opacity:0;transform:translateY(15px) scale(.993)}}
+::view-transition-old(root){animation:vtContentOut .22s var(--ease) both}
+::view-transition-new(root){animation:vtContentIn .60s var(--ease-out) both;animation-delay:.05s}
 
 /* ---- Directional travel ----------------------------------------------------
    A navigation that goes DEEPER (home -> case study) and one that comes BACK
@@ -747,14 +747,18 @@ html.vt-arrive img[loading="lazy"].is-loaded{animation:none!important;opacity:1!
    which way we are heading and tags the arriving document, so the content
    travels with the direction: inward pushes up and in, outward falls back down.
    Falls through to the neutral rules above if the direction is unknown. */
-@keyframes vtInFromBelow{from{opacity:0;transform:translateY(34px) scale(.982)}}
-@keyframes vtInFromAbove{from{opacity:0;transform:translateY(-26px) scale(.988)}}
-@keyframes vtOutUp{to{opacity:0;transform:translateY(-22px) scale(.988)}}
-@keyframes vtOutDown{to{opacity:0;transform:translateY(18px) scale(.992)}}
-html.vt-in::view-transition-old(root){animation:vtOutUp .26s var(--ease) both}
-html.vt-in::view-transition-new(root){animation:vtInFromBelow .56s var(--ease-out) both;animation-delay:.10s}
-html.vt-out::view-transition-old(root){animation:vtOutDown .24s var(--ease) both}
-html.vt-out::view-transition-new(root){animation:vtInFromAbove .50s var(--ease-out) both;animation-delay:.08s}
+/* Short travel, long ease. A full-page snapshot moving 34px reads as a lurch because
+   every pixel of the viewport shifts together; 16px with a slow decay reads as a glide.
+   The outgoing page also leaves faster than the incoming one arrives, and they overlap,
+   so there is never a frame of empty screen between them. */
+@keyframes vtInFromBelow{from{opacity:0;transform:translateY(16px) scale(.992)}}
+@keyframes vtInFromAbove{from{opacity:0;transform:translateY(-13px) scale(.995)}}
+@keyframes vtOutUp{to{opacity:0;transform:translateY(-10px) scale(.995)}}
+@keyframes vtOutDown{to{opacity:0;transform:translateY(8px) scale(.997)}}
+html.vt-in::view-transition-old(root){animation:vtOutUp .22s var(--ease) both}
+html.vt-in::view-transition-new(root){animation:vtInFromBelow .62s var(--ease-out) both;animation-delay:.05s}
+html.vt-out::view-transition-old(root){animation:vtOutDown .20s var(--ease) both}
+html.vt-out::view-transition-new(root){animation:vtInFromAbove .58s var(--ease-out) both;animation-delay:.04s}
 ::view-transition-group(vt-hero){animation-duration:.62s;animation-timing-function:cubic-bezier(0.22,1,0.36,1);z-index:20}
 /* Case-study chrome that exists on BOTH sides of a study -> study jump, so the copy
    column and the back link glide instead of cross-fading. On home -> study they simply

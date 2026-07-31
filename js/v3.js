@@ -205,6 +205,11 @@
     slide.snap.scrollTop = slide.panels[i].offsetTop;
     updateSlideNav();
     headerFlipResolve();
+    // If this restore happened during an arrival, whatever we just scrolled INTO view has
+    // not been settled yet — settleForArrival ran earlier against a different panel. Re-run
+    // it here or the panel we actually land on animates its content in, which is the
+    // "information popping out of nowhere" on the way back from a case study.
+    if (document.documentElement.classList.contains("vt-arrive")) settleForArrival();
   }
   function nearestPanel() {
     var y = slide.snap.scrollTop, best = 0, bestD = Infinity;
@@ -920,6 +925,34 @@
     var from = navigation.activation.from;
     return from ? cardImgFor(from.url) : null;
   }
+  /* Park the deck where this navigation will actually land, BEFORE anything is settled or
+     snapshotted. Runs at pagereveal, when setupSlides has not executed yet, so it works
+     straight off the DOM rather than off slide state. Covers both routes home:
+       1. the Navigation API tells us exactly which card we came back from, or
+       2. the Back link's flag plus the remembered index.
+     Route 2 previously only ran inside setupSlides at boot — i.e. after the page had
+     already been settled around the hero — which is what made the return trip pop.
+     Returns the card image so the caller can tag the morph. */
+  function restoreDeckEarly() {
+    var snap = document.querySelector(".snap");
+    var img = cameFromProjectImg();
+    if (!snap) return img;
+    var panels = snap.querySelectorAll(".panel");
+    if (panels.length < 2) return img;
+    if (img) {
+      var p = img.closest(".panel");
+      if (p) { snap.scrollTop = p.offsetTop; return img; }
+    }
+    var amBack = false, idx = 0;
+    try { amBack = sessionStorage.getItem("amBack") === "1"; } catch (_) {}
+    if (!amBack) return img;
+    try { idx = parseInt(sessionStorage.getItem("amSlide") || "0", 10); } catch (_) {}
+    // deliberately does NOT clear amBack — setupSlides still consumes it, and repeating
+    // the same jump is idempotent
+    if (idx > 0 && idx < panels.length) snap.scrollTop = panels[idx].offsetTop;
+    return img;
+  }
+
   /* Everything that will be ON SCREEN when this navigation lands, forced to its final
      state synchronously — before the browser snapshots the incoming page. Sections
      below the fold are left alone, so their scroll reveals still play when reached.
@@ -986,12 +1019,7 @@
       /* ORDER MATTERS. Put the deck where it will actually land FIRST — until the
          restore has happened, "what is on screen" is the wrong answer, and we would
          settle the wrong sections and leave the visible ones to pop in. */
-      var img = cameFromProjectImg();
-      var snap = document.querySelector(".snap");
-      if (img && snap) {
-        var panel = img.closest(".panel");
-        if (panel) snap.scrollTop = panel.offsetTop;
-      }
+      var img = restoreDeckEarly();
       settleForArrival();
       if (img) tagMorph(img);
     });
