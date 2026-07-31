@@ -1280,98 +1280,15 @@
     return u;
   }
 
-  /* Keyed WITHOUT the hash: #work and #more are the same document, and keying on the full
-     href meant hovering "Back to work" warmed index.html#work while the actual traversal
-     asked for index.html — a miss, and a visible stall, on the single most-used link. */
-  function pjaxFetch(u) {
-    var href = u.origin + u.pathname + u.search;
+  function pjaxFetch(href) {
     if (pjax.cache[href]) return pjax.cache[href];
-    var p = fetch(href, { credentials: "same-origin" })
-      .then(function (r) {
-        if (!r.ok) throw new Error("HTTP " + r.status);
-        return r.text();
-      })
-      .then(function (text) {
-        // Parse once, here, and start pulling the images down immediately — see pjaxWarm.
-        var doc = new DOMParser().parseFromString(text, "text/html");
-        return { doc: doc, ready: pjaxWarm(doc, href) };
-      });
+    var p = fetch(href, { credentials: "same-origin" }).then(function (r) {
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.text();
+    });
     pjax.cache[href] = p;
     p.catch(function () { delete pjax.cache[href]; });   // a failure must not be cached
     return p;
-  }
-
-  /* Pull the destination's above-the-fold images down BEFORE we need them.
-
-     The swap holds the incoming page invisible until its images have decoded, so it never
-     appears half-built. But if those images only start loading at swap time, that hold
-     happens with the old page already gone — the screen sits on the bare backdrop until
-     they arrive. Measured at ~240ms going home -> case study, which read as the entrance
-     being missing altogether. Going the other way felt perfect purely because the home
-     page's images were already cached, so the hold was zero.
-
-     So the loading is moved forward: it starts the moment the HTML lands, which is on
-     hover for a prefetched link, and otherwise runs underneath the exit animation. By the
-     time the swap happens the images are decoded and the hold costs nothing.
-
-     They are staged as real elements in a 1px clipped box rather than fetched as bare
-     URLs, so <picture> does its own source selection and we warm the exact file the page
-     will ask for (the WebP, not the PNG fallback). URLs are absolutised against the
-     DESTINATION: a relative src means something different depending on which page we are
-     standing on when it is inserted. */
-  function pjaxAbs(v, base) { try { return new URL(v, base).href; } catch (_) { return v; } }
-  function pjaxAbsSet(v, base) {
-    return v.split(",").map(function (part) {
-      var bits = part.trim().split(/\s+/);
-      if (!bits[0]) return "";
-      bits[0] = pjaxAbs(bits[0], base);
-      return bits.join(" ");
-    }).filter(Boolean).join(", ");
-  }
-  function pjaxWarm(doc, href) {
-    var main = doc.querySelector("main");
-    if (!main) return Promise.resolve();
-    var stage = document.getElementById("am-warm");
-    if (!stage) {
-      stage = document.createElement("div");
-      stage.id = "am-warm";
-      stage.setAttribute("aria-hidden", "true");
-      document.body.appendChild(stage);
-    }
-    var waits = [], n = 0;
-    main.querySelectorAll("picture, img").forEach(function (el) {
-      /* Warm every eager image, not a fixed few: `loading` already encodes the author's
-         call about what is needed immediately, and the home hero alone is a nine-piece
-         scene. Capping at 4 left five of them to load after the swap, which is why
-         returning to the home page still stalled. The bound is only a guard against a
-         page with an unreasonable number of eager images. */
-      if (n >= 12) return;
-      if (el.tagName === "IMG" && el.parentNode && el.parentNode.tagName === "PICTURE") return;
-      var probe = el.tagName === "IMG" ? el : el.querySelector("img");
-      if (!probe || probe.getAttribute("loading") === "lazy") return;   // lazy owns itself
-      n++;
-      var clone = document.importNode(el, true);
-      var srcs = clone.tagName === "PICTURE"
-        ? Array.prototype.slice.call(clone.querySelectorAll("source, img"))
-        : [clone];
-      srcs.forEach(function (s) {
-        if (s.getAttribute("src")) s.setAttribute("src", pjaxAbs(s.getAttribute("src"), href));
-        if (s.getAttribute("srcset")) s.setAttribute("srcset", pjaxAbsSet(s.getAttribute("srcset"), href));
-      });
-      var img = clone.tagName === "IMG" ? clone : clone.querySelector("img");
-      img.removeAttribute("fetchpriority");
-      stage.appendChild(clone);
-      waits.push(new Promise(function (res) {
-        if (img.complete) return res();          // already cached: nothing to wait for
-        img.onload = img.onerror = res;
-      }));
-    });
-    if (!waits.length) return Promise.resolve();
-    // Never let a slow image hold a navigation hostage — this is an optimisation, not a gate.
-    return Promise.race([
-      Promise.all(waits),
-      new Promise(function (res) { setTimeout(res, 1200); })
-    ]);
   }
 
   /* Depth decides which way the content travels, so going in and coming back are mirror
@@ -1397,28 +1314,17 @@
      because one slow image must never be able to stall a navigation. */
   function pjaxPainted(root) {
     var waits = [];
-    var vh = window.innerHeight || 0;
     root.querySelectorAll("img").forEach(function (im) {
-      /* Wait for exactly what pjaxWarm pre-loaded: eager images that are genuinely on
-         screen. Two things used to widen this set wrongly. Lazy images were included,
-         though they are authored to arrive later and already fade in on their own — that
-         is the design, not a pop. And the fold was taken as 1.15 viewports, which on the
-         home page reaches into the deck's SECOND panel, so the swap sat waiting on work
-         cards nobody could see. Both made the hold longer than the thing it was
-         protecting against. */
-      if (im.getAttribute("loading") === "lazy") return;
       var r = im.getBoundingClientRect();
-      if (r.top >= vh || r.bottom <= 0) return;                  // not on screen
+      if (r.top > (window.innerHeight || 0) * 1.15) return;      // below the fold, let it lazy-load
       if (im.complete && im.naturalWidth > 0) return;
       waits.push(im.decode ? im.decode().catch(function () {})
                            : new Promise(function (res) { im.onload = im.onerror = res; }));
     });
     if (!waits.length) return Promise.resolve();
-    /* Short, because pjaxWarm has normally already brought these down — this is the
-       backstop for a link that was clicked without ever being hovered. */
     return Promise.race([
       Promise.all(waits),
-      new Promise(function (res) { setTimeout(res, 260); })
+      new Promise(function (res) { setTimeout(res, 450); })
     ]);
   }
 
@@ -1431,7 +1337,8 @@
       });
   }
 
-  function pjaxSwap(doc, u, push, dir, state) {
+  function pjaxSwap(html, u, push, dir, state) {
+    var doc = new DOMParser().parseFromString(html, "text/html");
     var incoming = doc.querySelector("main");
     var outgoing = document.querySelector("main");
     if (!incoming || !outgoing) throw new Error("no <main>");
@@ -1441,8 +1348,6 @@
     // Chrome that belongs to the page we are leaving, and lives outside <main>.
     var rp = document.querySelector(".read-progress"); if (rp) rp.remove();
     var hp = document.querySelector(".hunt-pigeon"); if (hp) hp.remove();
-    var warm = document.getElementById("am-warm");
-    if (warm) warm.textContent = "";        // staged images have served their purpose
     parallaxes.length = 0;                       // drop scenes that no longer exist
 
     incoming = document.importNode(incoming, true);
@@ -1516,7 +1421,7 @@
     var dir = pjaxDir(u);
     var root = document.documentElement;
     var main = document.querySelector("main");
-    var got = pjaxFetch(u);                       // in flight during the exit animation
+    var html = pjaxFetch(u.href);                 // in flight during the exit animation
 
     if (push) pjaxRemember();                     // record where we are leaving from
     closeMenu();
@@ -1525,15 +1430,8 @@
 
     var exited = new Promise(function (res) { setTimeout(res, reduce ? 0 : OUT_MS); });
 
-    Promise.all([got, exited])
-      .then(function (v) {
-        /* The images have had the whole exit animation to arrive. Give them a short last
-           grace so a nearly-finished one is not thrown away — but a hard cap, because
-           past this point waiting costs a visibly empty screen, which is worse than an
-           image settling in a fraction late. */
-        return Promise.race([v[0].ready, new Promise(function (r) { setTimeout(r, 220); })])
-          .then(function () { return pjaxSwap(v[0].doc, u, push, dir, state); });
-      })
+    Promise.all([html, exited])
+      .then(function (v) { return pjaxSwap(v[0], u, push, dir, state); })
       .then(function () {
         pjax.busy = false;
         root.classList.remove("nav-busy", "nav-in", "nav-out");
@@ -1550,7 +1448,7 @@
     var warm = function (e) {
       var a = e.target && e.target.closest && e.target.closest("a[href]");
       var u = a && pjaxTarget(a);
-      if (u) pjaxFetch(u);
+      if (u) pjaxFetch(u.href);
     };
     document.addEventListener("mouseover", warm, { passive: true });
     document.addEventListener("touchstart", warm, { passive: true });
