@@ -788,6 +788,11 @@ html.vt-arrive img[loading="lazy"].is-loaded{animation:none!important;opacity:1!
 .js.nav-out main.page-in{animation-name:pageInDown}
 /* The swap must never leave a gap in the scrollbar or a jump in page height mid-flight. */
 .js.nav-busy{overflow-anchor:none}
+/* Staging box for the next page's hero images (see pjaxWarm). It has to be RENDERED, not
+   display:none, so <picture> performs source selection and the browser actually decodes
+   what it fetches — so it is clipped to a pixel and pushed behind everything instead. */
+#am-warm{position:fixed;left:0;top:0;width:1px;height:1px;overflow:hidden;opacity:0;
+  pointer-events:none;z-index:-1;contain:strict}
 @media (prefers-reduced-motion:reduce){
   .js main.page-out,.js main.page-in{animation-duration:.001ms!important}
 }
