@@ -1479,7 +1479,7 @@
       });
   }
 
-  function pjaxSwap(html, u, push, dir, state, ghost, from) {
+  function pjaxSwap(html, u, push, dir, state, ghost, from, isBack) {
     var doc = new DOMParser().parseFromString(html, "text/html");
     var incoming = doc.querySelector("main");
     var outgoing = document.querySelector("main");
@@ -1515,7 +1515,26 @@
 
     // Land in the right place BEFORE anything is visible, so nothing is seen jumping.
     var snap = incoming.classList.contains("snap") ? incoming : null;
-    if (state && typeof state.y === "number") {
+    /* Returning to the deck: go to the panel holding the card for the page we just left,
+       worked out from the DOM rather than remembered.
+
+       This used to lean on a breadcrumb set at click time, falling back to the back
+       link's own href — and every case study's back link points at #work, which is the
+       GIMICA panel. So any time the breadcrumb did not match you were silently dumped on
+       Gimica no matter which study you were in. It failed after a reload, after moving
+       sideways between two studies, and after any history traversal (which cleared it),
+       so it broke on the second visit to the same page.
+
+       Deriving it from the card means it cannot drift out of sync: the panel containing
+       the link back to where we came from is the panel we came from. It also puts the
+       morph target on screen, which is why the return flight had stopped animating —
+       the ghost was correctly refusing to fly to a card that was not visible. */
+    var backCard = (isBack && snap && from) ? pjaxCardMedia(from) : null;
+    var backPanel = backCard && backCard.closest ? backCard.closest(".panel") : null;
+    if (backPanel) {
+      snap.scrollTop = backPanel.offsetTop;
+      window.scrollTo(0, 0);
+    } else if (state && typeof state.y === "number") {
       if (snap) snap.scrollTop = state.snap || 0;
       window.scrollTo(0, state.y);
     } else if (u.hash) {
@@ -1573,7 +1592,7 @@
     live.textContent = (title || "").split("·")[0].trim() + " — page loaded";
   }
 
-  function pjaxGo(u, push, state) {
+  function pjaxGo(u, push, state, isBack) {
     if (pjax.busy) return;
     pjax.busy = true;
     var dir = pjaxDir(u);
@@ -1601,7 +1620,7 @@
     var exited = new Promise(function (res) { setTimeout(res, reduce ? 0 : OUT_MS); });
 
     Promise.all([html, exited])
-      .then(function (v) { return pjaxSwap(v[0], u, push, dir, state, ghost, from); })
+      .then(function (v) { return pjaxSwap(v[0], u, push, dir, state, ghost, from, isBack); })
       .then(function () {
         pjax.busy = false;
         root.classList.remove("nav-busy", "nav-in", "nav-out");
@@ -1637,19 +1656,20 @@
       /* Back link: if it points at the page we actually came from, traverse history
          instead of pushing a new entry. That keeps the stack clean and restores the deck
          to the exact card you opened, because the position is in the history state. */
-      if (a.classList.contains("back-link") && pjax.from === pageKey(u) && history.length > 1) {
+      var isBack = a.classList.contains("back-link");
+      if (isBack && pjax.from === pageKey(u) && history.length > 1) {
         history.back();
         return;
       }
       pjax.from = pageKey(location);
-      pjaxGo(u, true, null);
+      pjaxGo(u, true, null, isBack);
     });
 
     addEventListener("popstate", function (e) {
       if (pageKey(location) === pjax.at) { return; }   // hash-only move, not a page change
       var u; try { u = new URL(location.href); } catch (_) { return; }
       pjax.from = null;
-      pjaxGo(u, false, e.state);
+      pjaxGo(u, false, e.state, true);   // a traversal is always a "return"
     });
     return true;
   }
