@@ -4,16 +4,25 @@
    ===================================================================== */
 
 /* ---------- Fonts ---------- */
-/* font-display:block, not swap. With `swap` the browser paints fallback text first and
-   only later substitutes Futura — and a cross-document view transition snapshots the new
-   page at its FIRST paint, so the incoming page arrived in the wrong face and then
-   reflowed ("everything pops"). `block` holds the text until the real face is ready.
-   The faces are same-origin, ~60KB, preloaded in every <head> and shared across pages,
-   so after the first paint they come straight from cache and the wait is imperceptible. */
-@font-face{font-family:"Futura";src:url(../assets/font/Futura-Med.woff2) format("woff2"),url(../assets/font/Futura-Med.woff) format("woff");font-weight:500;font-display:block}
-@font-face{font-family:"Futura";src:url(../assets/font/Futura-Boo.woff2) format("woff2"),url(../assets/font/Futura-Boo.woff) format("woff");font-weight:400;font-display:block}
-@font-face{font-family:"Futura";src:url(../assets/font/Futura-Bol.woff2) format("woff2"),url(../assets/font/Futura-Bol.woff) format("woff");font-weight:700;font-display:block}
-@font-face{font-family:"Futura";src:url(../assets/font/Futura-Dem.woff2) format("woff2"),url(../assets/font/Futura-Dem.woff) format("woff");font-weight:600;font-display:block}
+/* font-display:optional.
+   This used to be `block`, to stop a font swap reflowing the incoming page. That was the
+   wrong trade: `block` means the browser paints NO TEXT AT ALL until Futura resolves, so
+   a page that arrived a moment before its font showed the backdrop and nothing else, and
+   then the whole page of copy appeared at once. That blank beat — background visible, no
+   text, no image, then everything at once — is the "pop" this site was being judged on.
+   `optional` gives a 100ms grace period and then commits, for the life of that page, to
+   whichever face it has. So:
+     · font cached (every navigation after the first) -> real Futura from the first frame;
+     · font not ready -> the fallback, held for the whole page, never swapped.
+   Either way there is no invisible-text window and no reflow. The cost, named plainly:
+   a first-time visitor on a slow connection can read one page in Century Gothic / Avenir
+   before the cache warms. Losing the brand face on one page-view is a smaller price than
+   a blank frame on every navigation, and the <link rel=preload> in every <head> still
+   fetches the faces immediately so that page-view is usually the only one. */
+@font-face{font-family:"Futura";src:url(../assets/font/Futura-Med.woff2) format("woff2"),url(../assets/font/Futura-Med.woff) format("woff");font-weight:500;font-display:optional}
+@font-face{font-family:"Futura";src:url(../assets/font/Futura-Boo.woff2) format("woff2"),url(../assets/font/Futura-Boo.woff) format("woff");font-weight:400;font-display:optional}
+@font-face{font-family:"Futura";src:url(../assets/font/Futura-Bol.woff2) format("woff2"),url(../assets/font/Futura-Bol.woff) format("woff");font-weight:700;font-display:optional}
+@font-face{font-family:"Futura";src:url(../assets/font/Futura-Dem.woff2) format("woff2"),url(../assets/font/Futura-Dem.woff) format("woff");font-weight:600;font-display:optional}
 
 /* ---------- Tokens ---------- */
 :root{
@@ -55,9 +64,16 @@
 
 /* ---------- Reset ---------- */
 *,*::before,*::after{box-sizing:border-box}
-/* No grey/blue tap flash on touch: it outlines the hit box on every tap, which reads as
-   a debug overlay rather than feedback. Buttons and cards give their own :active and
-   hover feedback instead, and :focus-visible is untouched for keyboard users. */
+/* Nothing may paint a box showing where an element is tappable. Three separate things
+   can do it, so all three are shut off:
+     1. the tap highlight (touch), on EVERY element — some UA styles set it per-element,
+        so `html` alone is not enough;
+     2. the focus ring when focus came from a pointer or a tap, which is what lingers on
+        the back link and the pigeon after you hit them. Keyboard focus is untouched:
+        :focus-visible still draws its ring, which is the one that matters;
+     3. text selection over controls (handled below).  */
+*,*::before,*::after{-webkit-tap-highlight-color:transparent}
+:focus:not(:focus-visible){outline:none!important}
 html{font-size:62.5%;-webkit-text-size-adjust:100%;scroll-behavior:smooth;overflow-x:hidden;overflow-x:clip;
   -webkit-tap-highlight-color:transparent}
 a,button,summary,[role="button"],.more-card,.work-media,.gimica-card,.about-portrait,
@@ -386,6 +402,10 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
    overlaps the text column and was intercepting taps meant for card links and the
    contact email. The dots themselves stay clickable. */
 .slide-nav{position:fixed;left:2.2rem;top:50%;transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;align-items:center;gap:1.3rem;pointer-events:none}
+/* The rail is built by JS, so on arrival it would blink into existence next to a page
+   that is still moving. It drifts in from the left instead, like everything else. */
+@keyframes railIn{from{opacity:0;transform:translateY(-50%) translateX(-14px)}}
+.js .slide-nav{animation:railIn .7s var(--ease-out) both;animation-delay:.12s}
 .slide-dot{pointer-events:auto}
 .slide-dot{width:9px;height:9px;border-radius:50%;border:1px solid rgba(255,255,255,.45);background:transparent;padding:0;cursor:pointer;
   transition:transform .4s var(--ease-out),background .4s,border-color .4s,box-shadow .4s,height .4s var(--ease-out)}
@@ -741,15 +761,27 @@ html.vt-arrive img[loading="lazy"].is-loaded{animation:none!important;opacity:1!
 .bg-stars{view-transition-name:vt-stars}
 .grain{view-transition-name:vt-grain}
 .site-header{view-transition-name:vt-header}
-/* the chrome must not animate at all — it is the fixed frame the content moves inside */
+/* The chrome never MOVES — it is the fixed frame the content travels inside, and the
+   whole illusion depends on it holding still while the page changes underneath. */
 ::view-transition-group(vt-bg),::view-transition-group(vt-glow),
 ::view-transition-group(vt-stars),::view-transition-group(vt-grain),
 ::view-transition-group(vt-header){animation-duration:.001s}
+/* The backdrop layers are pixel-identical on every page, so they hard-cut invisibly. */
 ::view-transition-old(vt-bg),::view-transition-new(vt-bg),
 ::view-transition-old(vt-glow),::view-transition-new(vt-glow),
 ::view-transition-old(vt-stars),::view-transition-new(vt-stars),
-::view-transition-old(vt-grain),::view-transition-new(vt-grain),
-::view-transition-old(vt-header),::view-transition-new(vt-header){animation:none;mix-blend-mode:normal}
+::view-transition-old(vt-grain),::view-transition-new(vt-grain){animation:none;mix-blend-mode:normal}
+/* The header is NOT identical: its theme flips (dark/light) and the scrolled state
+   differs page to page, so a hard cut snaps the bar from one colour to another mid-
+   transition — the one bit of chrome that visibly jumped. It stays anchored in place
+   (group duration above) but its two versions cross-fade, so the colour change reads as
+   a dissolve rather than a cut. Identical headers cross-fade invisibly, so this costs
+   nothing when nothing changed. */
+::view-transition-old(vt-header),::view-transition-new(vt-header){mix-blend-mode:normal}
+::view-transition-old(vt-header){animation:vtFadeOut .5s var(--ease-out) both}
+::view-transition-new(vt-header){animation:vtFadeIn .5s var(--ease-out) both}
+@keyframes vtFadeOut{to{opacity:0}}
+@keyframes vtFadeIn{from{opacity:0}}
 /* quick, subtle root fade so the morph is the star (not a fade-to-black) */
 /* Content only (the chrome is excluded above), so it can afford real movement:
    the outgoing page lifts and fades, the incoming page rises into place. A pure

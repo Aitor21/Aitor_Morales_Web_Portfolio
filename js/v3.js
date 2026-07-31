@@ -660,6 +660,7 @@
     bird.addEventListener("click", function () {
       if (bird.classList.contains("flushed")) return;
       bird.classList.add("flushed");
+      bird.blur();                       // no focus ring left sitting where the bird was
       if (hop) clearInterval(hop);
       huntRecord();
       setTimeout(function () { bird.remove(); }, 1600);
@@ -1033,7 +1034,7 @@
        brighten. It is deliberately below the threshold of conscious notice — the field
        just feels alive rather than printed. Costs one distance check per star per frame
        and no extra allocation, and it is skipped entirely on touch and reduced motion. */
-    var px = -9999, py = -9999, RADIUS = 190, near = [], ripples = [];
+    var px = -9999, py = -9999, RADIUS = 190, near = [], ripples = [], running = false;
     if (fine && !reduce) addEventListener("mousemove", function (e) { px = e.clientX; py = e.clientY; }, { passive: true });
     addEventListener("mouseout", function (e) { if (!e.relatedTarget) { px = py = -9999; } });
     // a click sends a ring out through the field — the only effect that answers a click
@@ -1130,12 +1131,19 @@
       ctx.globalAlpha = 1;
       // Don't paint a starfield nobody can see: a background tab shouldn't burn frames
       // (or battery) on ambient decoration. visibilitychange resumes it.
-      if (!reduce) { drawShoot(t); if (!document.hidden) requestAnimationFrame(draw); }
+      if (!reduce) { drawShoot(t); if (running && !document.hidden) requestAnimationFrame(draw); }
     }
-    size(); requestAnimationFrame(draw);
+    /* One static frame RIGHT NOW, before anything is deferred. The field used to be
+       painted inside the post-transition callback, which meant the arriving page carried
+       an empty canvas: the outgoing snapshot had stars, the incoming one did not, so the
+       sky blinked out and refilled a beat later. Painting once synchronously costs ~150
+       arcs and guarantees the backdrop is identical on both sides of every navigation.
+       Only the animated loop waits for the morph to land. */
+    size(); draw(0);
     document.body.classList.add("stars-on");
+    afterTransition(function () { running = true; requestAnimationFrame(draw); });
     if (!reduce) document.addEventListener("visibilitychange", function () {
-      if (!document.hidden) requestAnimationFrame(draw);   // resume where the loop bailed
+      if (running && !document.hidden) requestAnimationFrame(draw);   // resume where the loop bailed
     });
     var to; addEventListener("resize", function () { clearTimeout(to); to = setTimeout(size, 160); });
   }
@@ -1227,13 +1235,12 @@
     initMagnetic();
     initCardParallax();
     initPigeon();
-    initPigeonHunt();
+    initStars();          // paints one frame now; its rAF loop still waits (see initStars)
     initGlowFollow();
     initVideoEmbeds();
     initGameEmbeds();
     initLoopVideos();
     initCopyMail();
-    initReadProgress();
     initImgFade();
     var hero = document.querySelector(".hero, .about-hero, .project-hero");
     if (hero) requestAnimationFrame(function () { hero.classList.add("is-in"); });
@@ -1254,9 +1261,13 @@
     initSlideListeners(); addEventListener("scroll", headerFlipResolve, { passive: true }); addEventListener("resize", headerFlipResolve, { passive: true });
     initHashNav(); initBackReturn();
     mountContent(); headerFlipResolve();
-    // the two rAF-hungry loops wait for the page morph to land
+    // Everything that INJECTS new chrome waits for the page morph to land. Injecting
+    // mid-transition is what makes an element appear out of nowhere a beat after the
+    // page arrives — the pigeon and the reading bar were doing exactly that. Held back,
+    // they fade in on a settled page instead of popping onto a moving one.
     afterTransition(function () {
-      initStars();
+      initPigeonHunt();
+      initReadProgress();
       document.querySelectorAll("[data-parallax]").forEach(function (s) { parallaxes.push(new Parallax(s)); });
     });
   }
