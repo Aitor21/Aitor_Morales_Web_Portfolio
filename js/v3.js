@@ -1297,7 +1297,18 @@
     return !!(window.fetch && window.DOMParser && window.history && history.pushState &&
               window.Promise && document.querySelector("main"));
   }
-  function pageKey(u) { return u.pathname + u.search; }
+  /* One identity per page, whatever the URL happens to look like.
+
+     The deployed site does not serve the hrefs this repo contains: Netlify's pretty-URL
+     processing rewrites ./projects/gimica.html to /projects/gimica on the way out. So the
+     same page arrives as "/projects/gimica" from a link and "/projects/gimica.html" from a
+     direct load or a bookmark, and "/" and "/index.html" are both the home page. Comparing
+     raw paths made those look like different pages, which is why everything here worked
+     locally and not once deployed. Normalise, and both spellings answer to one key. */
+  function pageKey(u) {
+    var p = String(u.pathname || "/").replace(/\.html?$/i, "").replace(/\/index$/i, "/");
+    return (p || "/") + (u.search || "");
+  }
 
   /* Which links we take over. Everything else — external, downloads, new tabs, mailto,
      PDFs, same-page anchors — is left to the browser, which already does it right. */
@@ -1310,7 +1321,14 @@
     if (!raw || raw.charAt(0) === "#") return null;
     var u; try { u = new URL(raw, location.href); } catch (_) { return null; }
     if (u.origin !== location.origin) return null;
-    if (!/(\.html?|\/)$/.test(u.pathname)) return null;      // not a page (.pdf, assets)
+    /* Is this a page, or a file? It used to demand a path ending in .html or "/", which
+       on the deployed site rejected EVERY internal link — Netlify serves them
+       extensionless (/projects/gimica), so pjax never intercepted a single card click and
+       opening a case study was a plain full page load with no morph at all.
+       Inverted: anything without a file extension is a page; a real extension that is not
+       .html (.pdf, .png, .zip) is a file and belongs to the browser. */
+    var last = u.pathname.split("/").pop();
+    if (last && /\.[a-z0-9]+$/i.test(last) && !/\.html?$/i.test(last)) return null;
     if (pageKey(u) === pageKey(location)) return null;       // same page -> hash nav
     return u;
   }
@@ -1376,7 +1394,14 @@
 
      If the source or destination cannot be identified — a nav link, a card scrolled out
      of view — nothing is created and the plain cross-fade runs instead. */
-  function pjaxFileKey(h) { return String(h || "").split("#")[0].split("?")[0].split("/").pop(); }
+  /* Same normalisation for matching a card to a destination: "/projects/gimica" from a
+     rewritten href and "/projects/gimica.html" from the address bar are the same thing.
+     Comparing them literally is what sent Back to Gimica from every case study — no card
+     ever matched, so it fell through to the back link's own #work href. */
+  function pjaxFileKey(h) {
+    var last = String(h || "").split("#")[0].split("?")[0].replace(/\/+$/, "").split("/").pop();
+    return last.replace(/\.html?$/i, "").toLowerCase();
+  }
 
   // The media that stands for a destination on THIS page: the card art for that project.
   function pjaxCardMedia(href) {
