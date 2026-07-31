@@ -62,6 +62,15 @@ html{font-size:62.5%;-webkit-text-size-adjust:100%;scroll-behavior:smooth;overfl
   -webkit-tap-highlight-color:transparent}
 a,button,summary,[role="button"],.more-card,.work-media,.gimica-card,.about-portrait,
 .hunt-pigeon,.slide-dot,.press-card,.press-hero{-webkit-tap-highlight-color:transparent}
+/* ::selection is violet, so a tap that drags even slightly paints a blue block over a
+   card or button. Controls and labels are not there to be selected — turn it off for
+   them. Prose, headings, the email and the résumé stay selectable, because people copy
+   those. */
+.btn,.nav a,.menu-btn,.drawer-nav a,.slide-dot,.hunt-pigeon,.ve-play,.ve-label,.plate,
+.work-media,.gimica-card,.about-portrait,.more-card,.mc-shot,.eyebrow,.work-index,
+.work-meta span,.pill,.scroll-hint,.ticker,.skip-link,.back-link,.foot-links a,
+.proj-foot-nav a,.case-link,.hero-tags span,.tags span,.branch-glyph
+{user-select:none;-webkit-user-select:none}
 @media (max-width:420px){html{font-size:56.25%}}   /* 9px base — stops runaway vw sizing */
 body{
   margin:0;font-family:var(--font);font-weight:400;font-size:1.7rem;line-height:1.6;
@@ -722,22 +731,25 @@ html.vt-arrive img[loading="lazy"].is-loaded{animation:none!important;opacity:1!
    each other, which reads as a blink rather than a move. Naming these makes the
    browser pair them across documents and hold them perfectly still, so only the
    content actually transitions. That is what makes it feel continuous. */
+/* ONLY name things that exist, identically, on BOTH sides of every navigation.
+   A name on a one-sided element is worse than no name: it lifts that element out of the
+   page snapshot and animates it as its own entering/exiting group, so it detaches from
+   the content and arrives separately. That is what made the copy column, the dot rail
+   and the back link appear on their own instead of travelling with the page. */
 .bg{view-transition-name:vt-bg}
 .bg-glow{view-transition-name:vt-glow}
 .bg-stars{view-transition-name:vt-stars}
 .grain{view-transition-name:vt-grain}
 .site-header{view-transition-name:vt-header}
-.slide-nav{view-transition-name:vt-rail}
 /* the chrome must not animate at all — it is the fixed frame the content moves inside */
 ::view-transition-group(vt-bg),::view-transition-group(vt-glow),
 ::view-transition-group(vt-stars),::view-transition-group(vt-grain),
-::view-transition-group(vt-header),::view-transition-group(vt-rail){animation-duration:.001s}
+::view-transition-group(vt-header){animation-duration:.001s}
 ::view-transition-old(vt-bg),::view-transition-new(vt-bg),
 ::view-transition-old(vt-glow),::view-transition-new(vt-glow),
 ::view-transition-old(vt-stars),::view-transition-new(vt-stars),
 ::view-transition-old(vt-grain),::view-transition-new(vt-grain),
-::view-transition-old(vt-header),::view-transition-new(vt-header),
-::view-transition-old(vt-rail),::view-transition-new(vt-rail){animation:none;mix-blend-mode:normal}
+::view-transition-old(vt-header),::view-transition-new(vt-header){animation:none;mix-blend-mode:normal}
 /* quick, subtle root fade so the morph is the star (not a fade-to-black) */
 /* Content only (the chrome is excluded above), so it can afford real movement:
    the outgoing page lifts and fades, the incoming page rises into place. A pure
@@ -771,14 +783,9 @@ html.vt-in::view-transition-new(root){animation:vtInFromBelow .62s var(--ease-ou
 html.vt-out::view-transition-old(root){animation:vtOutDown .44s var(--ease-out) both}
 html.vt-out::view-transition-new(root){animation:vtInFromAbove .58s var(--ease-out) both;animation-delay:.04s}
 ::view-transition-group(vt-hero){animation-duration:.62s;animation-timing-function:cubic-bezier(0.22,1,0.36,1);z-index:20}
-/* Case-study chrome that exists on BOTH sides of a study -> study jump, so the copy
-   column and the back link glide instead of cross-fading. On home -> study they simply
-   enter, which is correct: they genuinely are new. */
-.project-hero .project-copy{view-transition-name:vt-copy}
-.back-link{view-transition-name:vt-back}
-::view-transition-group(vt-copy){animation-duration:.58s;animation-timing-function:var(--ease-out)}
-::view-transition-group(vt-back){animation-duration:.4s}
-::view-transition-old(vt-back),::view-transition-new(vt-back){animation-duration:.4s}
+/* (No name on .project-copy or .back-link. They only exist on case studies, so on the
+   far more common home <-> study jump they would be one-sided groups that detach from
+   the page and animate alone. Left inside root, they travel with everything else.) */
 /* keep the default cross-fade: invisible when it's the same artwork (home -> study),
    a clean dissolve when it isn't (study -> study). Sizing the snapshots with
    object-fit:cover stops the image squashing while the box morphs. */
