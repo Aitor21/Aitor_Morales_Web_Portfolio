@@ -1363,7 +1363,8 @@
      home page look like it had a hero, so the ghost aimed at a card three panels below
      the fold instead of the one just clicked. */
   function pjaxHeroMedia() {
-    return document.querySelector(".project-hero .project-shot img, .project-hero .project-shot video");
+    return document.querySelector(".project-hero .project-shot img, .project-hero .project-shot video," +
+                                  ".about-hero .portrait img");
   }
   function pjaxStillOf(el) {
     if (el.tagName === "VIDEO") return el.getAttribute("poster") || "";
@@ -1399,17 +1400,35 @@
      identical rectangles — invisible — rather than a flicker. */
   function pjaxLand(ghost, dest, r) {
     if (!ghost) return;
-    var finish = function () {
+    var finish = function (landed) {
       if (!ghost.parentNode) return;
-      if (dest) dest.style.visibility = "";
+      if (dest) {
+        dest.style.visibility = "";
+        /* Mark it arrived — but ONLY if the ghost actually set it down there. The ghost
+           has carried this image across, so the destination must not then play its OWN
+           entrance (the reveal wipe, the lazy fade) or you watch the same picture appear
+           twice in a row. When the ghost merely dissolved, the destination never received
+           anything and must keep its normal reveal for when it is scrolled to. */
+        if (landed) {
+          dest.classList.add("is-loaded", "pjax-landed");
+          var wrap = dest.closest(".reveal-media, .reveal, .work-media, .about-portrait, .mc-shot, .project-shot");
+          if (wrap) wrap.classList.add("is-in", "pjax-landed");
+        }
+      }
       ghost.parentNode.removeChild(ghost);
     };
-    if (!dest || !r) {                             // nowhere to go: dissolve where it is
+    /* Fly only to somewhere the visitor can actually see. Landing on the home page from a
+       link (rather than Back) puts the deck at the top, so the card this image belongs to
+       can be thousands of pixels below the fold — flying there sends the image sailing off
+       the bottom of the screen. It dissolves in place instead. */
+    var vh = window.innerHeight || 0, vw = window.innerWidth || 0;
+    var offscreen = !r || r.width < 8 || r.height < 8 ||
+                    r.bottom <= 0 || r.top >= vh || r.right <= 0 || r.left >= vw;
+    if (!dest || offscreen) {
       ghost.classList.add("is-done");
-      setTimeout(finish, 420);
+      setTimeout(function () { finish(false); }, 420);
       return;
     }
-    if (r.width < 8 || r.height < 8) { finish(); return; }
     dest.style.visibility = "hidden";
     ghost.classList.add("is-flying");
     void ghost.offsetWidth;                        // commit the start frame before moving
@@ -1422,12 +1441,12 @@
       // don't uncover a hero that has not painted yet
       var img = dest.tagName === "IMG" ? dest : null;
       if (img && !(img.complete && img.naturalWidth > 0)) {
-        var t = setTimeout(finish, 500);
-        img.addEventListener("load", function () { clearTimeout(t); finish(); }, { once: true });
-        img.addEventListener("error", function () { clearTimeout(t); finish(); }, { once: true });
+        var t = setTimeout(function () { finish(true); }, 500);
+        img.addEventListener("load", function () { clearTimeout(t); finish(true); }, { once: true });
+        img.addEventListener("error", function () { clearTimeout(t); finish(true); }, { once: true });
         return;
       }
-      finish();
+      finish(true);
     };
     ghost.addEventListener("transitionend", settle, { once: true });
     setTimeout(settle, 900);                       // never strand the ghost on screen

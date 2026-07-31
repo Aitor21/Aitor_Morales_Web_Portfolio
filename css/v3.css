@@ -669,7 +669,11 @@ html.vt-arrive img[loading="lazy"].is-loaded{animation:none!important;opacity:1!
 .project-hero{min-height:100vh;min-height:100dvh;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:clamp(3rem,6vw,7rem);
   padding:calc(var(--header-h) + 3rem) var(--pad) 6rem;max-width:1400px;margin:0 auto}
 @media (max-width:900px){.project-hero{grid-template-columns:1fr;gap:2.6rem}}
-.project-copy{display:flex;flex-direction:column;gap:2rem}
+.project-copy{display:flex;flex-direction:column;gap:2rem;min-width:0}
+/* A title is one unbreakable word until proven otherwise, and at 11vw a long one walks
+   straight out of its column and under the hero image. This is the backstop; the titles
+   themselves still carry their own line breaks where the wrap wants to be deliberate. */
+.project-copy .display{overflow-wrap:break-word;word-break:normal}
 .project-shot{border-radius:8px;overflow:hidden;box-shadow:var(--shadow-img);aspect-ratio:4/3}
 .project-shot img,.project-shot video{width:100%;height:100%;object-fit:cover}
 .project-body{max-width:900px;margin:0 auto;padding:1rem var(--pad) clamp(8rem,14vh,16rem)}
@@ -801,6 +805,10 @@ html.vt-arrive img[loading="lazy"].is-loaded{animation:none!important;opacity:1!
   width .62s var(--ease),height .62s var(--ease),border-radius .62s var(--ease)}
 .pjax-ghost.is-done{transition:opacity .4s var(--ease-out),transform .4s var(--ease-out);
   opacity:0;transform:scale(.97)}
+/* Where the ghost set an image down. Kills that element's own entrance so the picture
+   does not fade or wipe in a second time immediately after being flown into place.
+   Deliberately does NOT touch transform, so the hover zoom still works afterwards. */
+.pjax-landed,.pjax-landed img{animation:none!important;opacity:1!important;clip-path:none!important}
 @media (prefers-reduced-motion:reduce){.pjax-ghost{display:none}}
 @media (prefers-reduced-motion:reduce){
   .js main.page-out,.js main.page-in{animation-duration:.001ms!important}
