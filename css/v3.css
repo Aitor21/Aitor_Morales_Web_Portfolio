@@ -756,6 +756,42 @@ html.vt-arrive img[loading="lazy"].is-loaded{animation:none!important;opacity:1!
    page snapshot and animates it as its own entering/exiting group, so it detaches from
    the content and arrives separately. That is what made the copy column, the dot rail
    and the back link appear on their own instead of travelling with the page. */
+/* ---------- Owned navigation (the real transition) ----------
+   Everything below the `@view-transition` rules is the FALLBACK, for when JS is off or
+   the swap fails. The transition visitors actually get is driven from JS: a click is
+   intercepted, the next page is fetched, the current <main> animates out while that
+   fetch is in flight, and only then is the content swapped — the document itself is
+   never unloaded.
+
+   That last part is the whole point, and it is the one thing cross-document view
+   transitions cannot do: they genuinely tear down the old document, so there is always a
+   real moment where the page does not exist. Here the backdrop, the starfield, the
+   header and the drawer are the SAME live elements throughout — not snapshots of them —
+   so there is nothing to blink. Only the content column moves.
+
+   It also works in every browser. Cross-document view transitions are Chromium-only
+   (plus Safari 18.2+), so on Firefox the native path degrades to a plain page load,
+   which is exactly the "no transition at all" this replaces. */
+@keyframes pageOutUp{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-12px) scale(.994)}}
+@keyframes pageOutDown{from{opacity:1;transform:none}to{opacity:0;transform:translateY(9px) scale(.997)}}
+@keyframes pageInUp{from{opacity:0;transform:translateY(18px) scale(.992)}to{opacity:1;transform:none}}
+@keyframes pageInDown{from{opacity:0;transform:translateY(-14px) scale(.995)}to{opacity:1;transform:none}}
+/* Leaving: the outgoing content lifts away. Direction follows depth — going deeper
+   pushes the current page up and out, coming back lets it settle downward. */
+.js main.page-out{animation:pageOutUp .34s var(--ease-out) both;will-change:opacity,transform}
+.js.nav-out main.page-out{animation-name:pageOutDown}
+/* Arriving: held at zero until the incoming markup is mounted AND its above-the-fold
+   images have decoded. Revealing before that is precisely how content "pops in" — the
+   page appears, then fills itself. Nothing is shown until it is complete. */
+.js main.page-hold{opacity:0}
+.js main.page-in{animation:pageInUp .55s var(--ease-out) both;will-change:opacity,transform}
+.js.nav-out main.page-in{animation-name:pageInDown}
+/* The swap must never leave a gap in the scrollbar or a jump in page height mid-flight. */
+.js.nav-busy{overflow-anchor:none}
+@media (prefers-reduced-motion:reduce){
+  .js main.page-out,.js main.page-in{animation-duration:.001ms!important}
+}
+
 .bg{view-transition-name:vt-bg}
 .bg-glow{view-transition-name:vt-glow}
 .bg-stars{view-transition-name:vt-stars}

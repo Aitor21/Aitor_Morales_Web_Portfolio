@@ -1028,7 +1028,8 @@
 
   /* ===================== Starfield (persistent) ===================== */
   function initStars() {
-    var c = document.querySelector(".bg-stars"); if (!c) return;
+    // The canvas lives outside <main>, so it survives every page swap — start it once.
+    var c = document.querySelector(".bg-stars"); if (!c || c._on) return; c._on = true;
     var ctx = c.getContext("2d"), w, h, dpr, stars = [];
     /* Cursor gravity: stars inside a radius lean very slightly toward the pointer and
        brighten. It is deliberately below the threshold of conscious notice — the field
@@ -1228,6 +1229,261 @@
     });
   }
 
+  /* ===================== Owned navigation =====================
+     The site swaps pages itself instead of letting the browser load them.
+
+     Why: a cross-document navigation ALWAYS tears the old document down, so there is a
+     real interval with no page — no backdrop, no header, no text. No amount of
+     view-transition tuning removes it, because the gap is the navigation itself. And the
+     native cross-document API is Chromium-only (plus Safari 18.2+), so in Firefox there
+     was never any transition to tune.
+
+     The model is the one v1 used (Barba's close -> fetch -> finish), rebuilt with no
+     dependencies:
+
+       1. a click on an internal link is intercepted;
+       2. the fetch starts immediately — usually already warm, because links prefetch on
+          hover — and the current content animates OUT while it is in flight, so the load
+          happens behind the animation instead of after it;
+       3. the incoming <main> is mounted while still invisible, and held there until its
+          above-the-fold images have decoded;
+       4. only then does it animate in.
+
+     Step 3 is what stops things popping: nothing is ever revealed half-built. And because
+     the document survives, the backdrop, starfield, header and drawer are the same live
+     elements the whole way through — there is no frame in which they do not exist.
+
+     Anything unexpected (a failed fetch, a page with no <main>, no fetch support) falls
+     straight through to a normal browser navigation. A link on this site can never die. */
+  var pjax = { busy: false, cache: Object.create(null), at: "" };
+  var OUT_MS = 340;
+
+  function pjaxSupported() {
+    return !!(window.fetch && window.DOMParser && window.history && history.pushState &&
+              window.Promise && document.querySelector("main"));
+  }
+  function pageKey(u) { return u.pathname + u.search; }
+
+  /* Which links we take over. Everything else — external, downloads, new tabs, mailto,
+     PDFs, same-page anchors — is left to the browser, which already does it right. */
+  function pjaxTarget(a) {
+    if (!a || !a.getAttribute) return null;
+    if (a.hasAttribute("download")) return null;
+    if (a.target && a.target !== "_self") return null;
+    if ((a.getAttribute("rel") || "").indexOf("external") > -1) return null;
+    var raw = a.getAttribute("href");
+    if (!raw || raw.charAt(0) === "#") return null;
+    var u; try { u = new URL(raw, location.href); } catch (_) { return null; }
+    if (u.origin !== location.origin) return null;
+    if (!/(\.html?|\/)$/.test(u.pathname)) return null;      // not a page (.pdf, assets)
+    if (pageKey(u) === pageKey(location)) return null;       // same page -> hash nav
+    return u;
+  }
+
+  function pjaxFetch(href) {
+    if (pjax.cache[href]) return pjax.cache[href];
+    var p = fetch(href, { credentials: "same-origin" }).then(function (r) {
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.text();
+    });
+    pjax.cache[href] = p;
+    p.catch(function () { delete pjax.cache[href]; });   // a failure must not be cached
+    return p;
+  }
+
+  /* Depth decides which way the content travels, so going in and coming back are mirror
+     images rather than the same move twice. */
+  function pjaxDir(u) {
+    var deepNow = location.pathname.indexOf("/projects/") > -1;
+    var deepNext = u.pathname.indexOf("/projects/") > -1;
+    // Only surfacing reverses the move; going deeper and moving sideways both read
+    // as forward travel.
+    return (deepNow && !deepNext) ? "out" : "in";
+  }
+
+  // Where we are right now, so Back can put us back exactly.
+  function pjaxRemember() {
+    var snap = document.querySelector(".snap");
+    try {
+      history.replaceState({ am: 1, y: window.pageYOffset || 0, snap: snap ? snap.scrollTop : 0 },
+                           "", location.href);
+    } catch (_) {}
+  }
+
+  /* Hold the reveal until what is about to be on screen has actually decoded. Bounded,
+     because one slow image must never be able to stall a navigation. */
+  function pjaxPainted(root) {
+    var waits = [];
+    root.querySelectorAll("img").forEach(function (im) {
+      var r = im.getBoundingClientRect();
+      if (r.top > (window.innerHeight || 0) * 1.15) return;      // below the fold, let it lazy-load
+      if (im.complete && im.naturalWidth > 0) return;
+      waits.push(im.decode ? im.decode().catch(function () {})
+                           : new Promise(function (res) { im.onload = im.onerror = res; }));
+    });
+    if (!waits.length) return Promise.resolve();
+    return Promise.race([
+      Promise.all(waits),
+      new Promise(function (res) { setTimeout(res, 450); })
+    ]);
+  }
+
+  function pjaxHead(doc) {
+    if (doc.title) document.title = doc.title;
+    [['meta[name="description"]', "content"], ['link[rel="canonical"]', "href"]]
+      .forEach(function (pair) {
+        var from = doc.querySelector(pair[0]), to = document.querySelector(pair[0]);
+        if (from && to) to.setAttribute(pair[1], from.getAttribute(pair[1]) || "");
+      });
+  }
+
+  function pjaxSwap(html, u, push, dir, state) {
+    var doc = new DOMParser().parseFromString(html, "text/html");
+    var incoming = doc.querySelector("main");
+    var outgoing = document.querySelector("main");
+    if (!incoming || !outgoing) throw new Error("no <main>");
+
+    pjaxHead(doc);
+
+    // Chrome that belongs to the page we are leaving, and lives outside <main>.
+    var rp = document.querySelector(".read-progress"); if (rp) rp.remove();
+    var hp = document.querySelector(".hunt-pigeon"); if (hp) hp.remove();
+    parallaxes.length = 0;                       // drop scenes that no longer exist
+
+    incoming = document.importNode(incoming, true);
+    incoming.classList.add("page-hold");         // mounted, but not yet shown
+    outgoing.replaceWith(incoming);
+
+    // The back link differs per page (or is absent on the home page).
+    var oldBack = document.querySelector(".back-link"), newBack = doc.querySelector(".back-link");
+    if (oldBack && newBack) oldBack.replaceWith(document.importNode(newBack, true));
+    else if (oldBack) oldBack.remove();
+    else if (newBack) incoming.parentNode.insertBefore(document.importNode(newBack, true), incoming);
+
+    var h = document.querySelector(".site-header"), nh = doc.querySelector(".site-header");
+    if (h && nh) h.setAttribute("data-theme", nh.getAttribute("data-theme") || "dark");
+
+    if (push) { try { history.pushState({ am: 1, y: 0, snap: 0 }, "", u.href); } catch (_) {} }
+    pjax.at = pageKey(u);
+
+    document.body.classList.remove("slides-js", "scrolled");
+    mountContent();                              // rebuilds the deck, reveals, embeds…
+    initPigeonHunt(); initReadProgress();
+    document.querySelectorAll("[data-parallax]").forEach(function (s) { parallaxes.push(new Parallax(s)); });
+
+    // Land in the right place BEFORE anything is visible, so nothing is seen jumping.
+    var snap = incoming.classList.contains("snap") ? incoming : null;
+    if (state && typeof state.y === "number") {
+      if (snap) snap.scrollTop = state.snap || 0;
+      window.scrollTo(0, state.y);
+    } else if (u.hash) {
+      var t = document.getElementById(u.hash.slice(1));
+      var p = t && (t.classList.contains("panel") ? t : t.closest && t.closest(".panel"));
+      if (snap && p) snap.scrollTop = p.offsetTop;
+      else if (t) t.scrollIntoView({ behavior: "auto" });
+      else window.scrollTo(0, 0);
+    } else {
+      if (snap) snap.scrollTop = 0;
+      window.scrollTo(0, 0);
+    }
+    headerFlipResolve();
+
+    return pjaxPainted(incoming).then(function () {
+      incoming.classList.remove("page-hold");
+      incoming.classList.add("page-in");
+      // Focus moves with the page, or keyboard users would be stranded at the top of a
+      // document that changed under them. preventScroll keeps the landing exact, and a
+      // pointer-driven focus draws no ring (:focus-visible does not match).
+      try { incoming.focus({ preventScroll: true }); } catch (_) { incoming.focus(); }
+      pjaxAnnounce(document.title);
+      // Drop the class once it has played, so will-change stops holding a layer.
+      incoming.addEventListener("animationend", function () {
+        incoming.classList.remove("page-in");
+      }, { once: true });
+    });
+  }
+
+  // Screen readers get no page-load event here, so say what arrived.
+  function pjaxAnnounce(title) {
+    var live = document.getElementById("am-live");
+    if (!live) {
+      live = document.createElement("p");
+      live.id = "am-live"; live.className = "sr-only";
+      live.setAttribute("aria-live", "polite"); live.setAttribute("role", "status");
+      document.body.appendChild(live);
+    }
+    live.textContent = (title || "").split("·")[0].trim() + " — page loaded";
+  }
+
+  function pjaxGo(u, push, state) {
+    if (pjax.busy) return;
+    pjax.busy = true;
+    var dir = pjaxDir(u);
+    var root = document.documentElement;
+    var main = document.querySelector("main");
+    var html = pjaxFetch(u.href);                 // in flight during the exit animation
+
+    if (push) pjaxRemember();                     // record where we are leaving from
+    closeMenu();
+    root.classList.add("nav-busy", "nav-" + dir);
+    if (main) main.classList.add("page-out");
+
+    var exited = new Promise(function (res) { setTimeout(res, reduce ? 0 : OUT_MS); });
+
+    Promise.all([html, exited])
+      .then(function (v) { return pjaxSwap(v[0], u, push, dir, state); })
+      .then(function () {
+        pjax.busy = false;
+        root.classList.remove("nav-busy", "nav-in", "nav-out");
+      })
+      .catch(function () { location.href = u.href; });   // never leave a dead link
+  }
+
+  function initPjax() {
+    if (!pjaxSupported()) return false;
+    pjax.at = pageKey(location);
+    try { history.replaceState({ am: 1, y: 0, snap: 0 }, "", location.href); } catch (_) {}
+
+    // Warm the next page on intent, so by click time the HTML is usually already here.
+    var warm = function (e) {
+      var a = e.target && e.target.closest && e.target.closest("a[href]");
+      var u = a && pjaxTarget(a);
+      if (u) pjaxFetch(u.href);
+    };
+    document.addEventListener("mouseover", warm, { passive: true });
+    document.addEventListener("touchstart", warm, { passive: true });
+
+    document.addEventListener("click", function (e) {
+      if (e.defaultPrevented) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button) return;
+      var a = e.target.closest && e.target.closest("a[href]");
+      var u = a && pjaxTarget(a);
+      if (!u) return;
+      // A swap is already in flight: hand this click to the browser rather than
+      // swallowing it. Worst case the visitor gets an ordinary page load — never a link
+      // that visibly does nothing.
+      if (pjax.busy) return;
+      e.preventDefault();
+      /* Back link: if it points at the page we actually came from, traverse history
+         instead of pushing a new entry. That keeps the stack clean and restores the deck
+         to the exact card you opened, because the position is in the history state. */
+      if (a.classList.contains("back-link") && pjax.from === pageKey(u) && history.length > 1) {
+        history.back();
+        return;
+      }
+      pjax.from = pageKey(location);
+      pjaxGo(u, true, null);
+    });
+
+    addEventListener("popstate", function (e) {
+      if (pageKey(location) === pjax.at) { return; }   // hash-only move, not a page change
+      var u; try { u = new URL(location.href); } catch (_) { return; }
+      pjax.from = null;
+      pjaxGo(u, false, e.state);
+    });
+    return true;
+  }
+
   /* ===================== Mount (per page) ===================== */
   function mountContent() {
     setupSlides();
@@ -1259,7 +1515,12 @@
     header = document.querySelector(".site-header");
     initCursor(); initMenu(); initScrollState();
     initSlideListeners(); addEventListener("scroll", headerFlipResolve, { passive: true }); addEventListener("resize", headerFlipResolve, { passive: true });
-    initHashNav(); initBackReturn();
+    initHashNav();
+    /* initPjax owns every internal link from here on, back link included: it lands you on
+       the exact card you opened via the scroll position in history state. Only if it
+       can't run (no fetch / no DOMParser) does the old cross-document Back handling take
+       over, so that path is never left unmanned. */
+    if (!initPjax()) initBackReturn();
     mountContent(); headerFlipResolve();
     // Everything that INJECTS new chrome waits for the page morph to land. Injecting
     // mid-transition is what makes an element appear out of nowhere a beat after the
