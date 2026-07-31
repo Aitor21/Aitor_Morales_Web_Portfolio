@@ -1328,6 +1328,111 @@
     ]);
   }
 
+  /* ---------- The morph ----------
+     One element is continuously visible across the whole navigation: a fixed copy of the
+     image you clicked, which flies from the card into the hero slot on the page you land
+     on (and back into the card on the way out).
+
+     It is not decoration. Because the ghost sits above everything and outlives the swap,
+     there is no instant where the screen holds nothing — whatever else is still settling,
+     the subject of the navigation is on screen the entire time, moving. That is what
+     makes it read as one continuous thing rather than a page being replaced. It also
+     means the incoming page can take its time loading without any of that being visible.
+
+     If the source or destination cannot be identified — a nav link, a card scrolled out
+     of view — nothing is created and the plain cross-fade runs instead. */
+  function pjaxFileKey(h) { return String(h || "").split("#")[0].split("?")[0].split("/").pop(); }
+
+  // The media that stands for a destination on THIS page: the card art for that project.
+  function pjaxCardMedia(href) {
+    var key = pjaxFileKey(href);
+    if (!key) return null;
+    var best = null, bestArea = 0;
+    document.querySelectorAll("a[href]").forEach(function (a) {
+      if (pjaxFileKey(a.getAttribute("href")) !== key) return;
+      var m = a.querySelector("img, video");
+      if (!m) return;
+      var r = m.getBoundingClientRect();
+      var area = r.width * r.height;
+      if (area > bestArea) { bestArea = area; best = m; }        // the card, not a thumbnail
+    });
+    return best;
+  }
+  /* Scoped to the hero SECTION on purpose. `.project-shot` / `.about-portrait` also name
+     cards on the home page, sitting in deck panels further down — matching those made the
+     home page look like it had a hero, so the ghost aimed at a card three panels below
+     the fold instead of the one just clicked. */
+  function pjaxHeroMedia() {
+    return document.querySelector(".project-hero .project-shot img, .project-hero .project-shot video");
+  }
+  function pjaxStillOf(el) {
+    if (el.tagName === "VIDEO") return el.getAttribute("poster") || "";
+    return el.currentSrc || el.getAttribute("src") || "";
+  }
+  function pjaxRadius(el) {
+    var cs = getComputedStyle(el);
+    if (cs.borderRadius && cs.borderRadius !== "0px") return cs.borderRadius;
+    var p = el.parentElement;                     // the radius usually sits on the wrapper
+    return p ? getComputedStyle(p).borderRadius : "0px";
+  }
+  function pjaxGhost(el) {
+    if (!el || reduce) return null;
+    var r = el.getBoundingClientRect();
+    var vh = window.innerHeight || 0, vw = window.innerWidth || 0;
+    if (r.width < 8 || r.height < 8) return null;
+    if (r.bottom <= 0 || r.top >= vh || r.right <= 0 || r.left >= vw) return null;  // not on screen
+    var src = pjaxStillOf(el);
+    if (!src) return null;
+    var g = document.createElement("img");
+    g.src = src;
+    g.className = "pjax-ghost";
+    g.setAttribute("aria-hidden", "true");
+    g.style.left = r.left + "px"; g.style.top = r.top + "px";
+    g.style.width = r.width + "px"; g.style.height = r.height + "px";
+    g.style.borderRadius = pjaxRadius(el);
+    g.style.objectFit = getComputedStyle(el).objectFit || "cover";
+    document.body.appendChild(g);
+    return g;
+  }
+  /* Fly the ghost onto its destination, then hand over. The real media stays hidden until
+     the ghost has both landed AND finished loading, so the hand-off is a swap of two
+     identical rectangles — invisible — rather than a flicker. */
+  function pjaxLand(ghost, dest, r) {
+    if (!ghost) return;
+    var finish = function () {
+      if (!ghost.parentNode) return;
+      if (dest) dest.style.visibility = "";
+      ghost.parentNode.removeChild(ghost);
+    };
+    if (!dest || !r) {                             // nowhere to go: dissolve where it is
+      ghost.classList.add("is-done");
+      setTimeout(finish, 420);
+      return;
+    }
+    if (r.width < 8 || r.height < 8) { finish(); return; }
+    dest.style.visibility = "hidden";
+    ghost.classList.add("is-flying");
+    void ghost.offsetWidth;                        // commit the start frame before moving
+    ghost.style.left = r.left + "px"; ghost.style.top = r.top + "px";
+    ghost.style.width = r.width + "px"; ghost.style.height = r.height + "px";
+    ghost.style.borderRadius = pjaxRadius(dest);
+    var done = false;
+    var settle = function () {
+      if (done) return; done = true;
+      // don't uncover a hero that has not painted yet
+      var img = dest.tagName === "IMG" ? dest : null;
+      if (img && !(img.complete && img.naturalWidth > 0)) {
+        var t = setTimeout(finish, 500);
+        img.addEventListener("load", function () { clearTimeout(t); finish(); }, { once: true });
+        img.addEventListener("error", function () { clearTimeout(t); finish(); }, { once: true });
+        return;
+      }
+      finish();
+    };
+    ghost.addEventListener("transitionend", settle, { once: true });
+    setTimeout(settle, 900);                       // never strand the ghost on screen
+  }
+
   function pjaxHead(doc) {
     if (doc.title) document.title = doc.title;
     [['meta[name="description"]', "content"], ['link[rel="canonical"]', "href"]]
@@ -1337,7 +1442,7 @@
       });
   }
 
-  function pjaxSwap(html, u, push, dir, state) {
+  function pjaxSwap(html, u, push, dir, state, ghost, from) {
     var doc = new DOMParser().parseFromString(html, "text/html");
     var incoming = doc.querySelector("main");
     var outgoing = document.querySelector("main");
@@ -1388,9 +1493,25 @@
     }
     headerFlipResolve();
 
+    /* Where the flying image is headed: the hero of a case study, or — coming back — the
+       card belonging to the page we just left. Hidden before the page is revealed, so the
+       real one is never seen sitting there waiting to be flown onto. */
+    var dest = ghost ? (pjaxHeroMedia() || pjaxCardMedia(from)) : null;
+    var destRect = null;
+    if (dest) {
+      dest.style.visibility = "hidden";
+      /* Measured NOW, before the entrance animation is applied. `page-in` translates and
+         scales the whole page, so a rect read after it starts describes where the hero is
+         passing through, not where it comes to rest — the ghost would land 30px off and
+         the hand-off would jump. visibility:hidden still occupies layout, so this is the
+         true settled position. */
+      destRect = dest.getBoundingClientRect();
+    }
+
     return pjaxPainted(incoming).then(function () {
       incoming.classList.remove("page-hold");
       incoming.classList.add("page-in");
+      pjaxLand(ghost, dest, destRect);
       // Focus moves with the page, or keyboard users would be stranded at the top of a
       // document that changed under them. preventScroll keeps the landing exact, and a
       // pointer-driven focus draws no ring (:focus-visible does not match).
@@ -1422,6 +1543,18 @@
     var root = document.documentElement;
     var main = document.querySelector("main");
     var html = pjaxFetch(u.href);                 // in flight during the exit animation
+    /* The page we are leaving — the one whose card the hero flies back into. NOT
+       location.href: on a Back traversal popstate fires after the URL has already
+       changed, so reading it there names the destination and the return flight had
+       nothing to aim at. pjax.at still holds the page being left in both cases. */
+    var from = pjax.at || location.href;
+
+    /* Lift the subject of this navigation out of the page BEFORE anything moves: on the
+       home page that is the card art for wherever we are going, on a case study it is the
+       hero. It then stays on screen, above everything, for the whole swap. */
+    // Try each candidate rather than committing to whichever merely EXISTS: a hero that
+    // is scrolled out of view yields no ghost, and the card should still get its turn.
+    var ghost = pjaxGhost(pjaxHeroMedia()) || pjaxGhost(pjaxCardMedia(u.href));
 
     if (push) pjaxRemember();                     // record where we are leaving from
     closeMenu();
@@ -1431,7 +1564,7 @@
     var exited = new Promise(function (res) { setTimeout(res, reduce ? 0 : OUT_MS); });
 
     Promise.all([html, exited])
-      .then(function (v) { return pjaxSwap(v[0], u, push, dir, state); })
+      .then(function (v) { return pjaxSwap(v[0], u, push, dir, state, ghost, from); })
       .then(function () {
         pjax.busy = false;
         root.classList.remove("nav-busy", "nav-in", "nav-out");

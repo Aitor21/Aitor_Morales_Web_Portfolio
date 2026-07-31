@@ -788,6 +788,20 @@ html.vt-arrive img[loading="lazy"].is-loaded{animation:none!important;opacity:1!
 .js.nav-out main.page-in{animation-name:pageInDown}
 /* The swap must never leave a gap in the scrollbar or a jump in page height mid-flight. */
 .js.nav-busy{overflow-anchor:none}
+
+/* The flying image. Sits above the content and the dot rail so it passes cleanly over
+   them, but under the grain (so it keeps the same film texture as everything else) and
+   under the header, which stays the fixed frame the whole move happens inside. */
+.pjax-ghost{position:fixed;z-index:75;margin:0;display:block;pointer-events:none;
+  box-shadow:0 34px 90px rgba(2,8,20,.55);will-change:left,top,width,height}
+/* Animating the box rather than transforming it: the card and the hero crop differently,
+   and with object-fit:cover letting the frame resize re-crops the image continuously
+   instead of stretching it — the same thing v1 did by animating width/height. */
+.pjax-ghost.is-flying{transition:left .62s var(--ease),top .62s var(--ease),
+  width .62s var(--ease),height .62s var(--ease),border-radius .62s var(--ease)}
+.pjax-ghost.is-done{transition:opacity .4s var(--ease-out),transform .4s var(--ease-out);
+  opacity:0;transform:scale(.97)}
+@media (prefers-reduced-motion:reduce){.pjax-ghost{display:none}}
 @media (prefers-reduced-motion:reduce){
   .js main.page-out,.js main.page-in{animation-duration:.001ms!important}
 }
