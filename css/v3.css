@@ -55,7 +55,13 @@
 
 /* ---------- Reset ---------- */
 *,*::before,*::after{box-sizing:border-box}
-html{font-size:62.5%;-webkit-text-size-adjust:100%;scroll-behavior:smooth;overflow-x:hidden;overflow-x:clip}
+/* No grey/blue tap flash on touch: it outlines the hit box on every tap, which reads as
+   a debug overlay rather than feedback. Buttons and cards give their own :active and
+   hover feedback instead, and :focus-visible is untouched for keyboard users. */
+html{font-size:62.5%;-webkit-text-size-adjust:100%;scroll-behavior:smooth;overflow-x:hidden;overflow-x:clip;
+  -webkit-tap-highlight-color:transparent}
+a,button,summary,[role="button"],.more-card,.work-media,.gimica-card,.about-portrait,
+.hunt-pigeon,.slide-dot,.press-card,.press-hero{-webkit-tap-highlight-color:transparent}
 @media (max-width:420px){html{font-size:56.25%}}   /* 9px base — stops runaway vw sizing */
 body{
   margin:0;font-family:var(--font);font-weight:400;font-size:1.7rem;line-height:1.6;
@@ -736,10 +742,14 @@ html.vt-arrive img[loading="lazy"].is-loaded{animation:none!important;opacity:1!
 /* Content only (the chrome is excluded above), so it can afford real movement:
    the outgoing page lifts and fades, the incoming page rises into place. A pure
    cross-fade at .28s was what read as a "pop". */
-@keyframes vtContentOut{to{opacity:0;transform:translateY(-9px) scale(.996)}}
+/* The outgoing page HOLDS at full opacity for most of the transition and only fades at
+   the end, while the incoming one fades in over the top of it. Fading the old page out
+   quickly left a window where neither was opaque — which is the blank frame with no text
+   or image. There is now always something solid on screen. */
+@keyframes vtContentOut{0%{opacity:1;transform:none}62%{opacity:1}100%{opacity:0;transform:translateY(-9px) scale(.996)}}
 @keyframes vtContentIn{from{opacity:0;transform:translateY(15px) scale(.993)}}
-::view-transition-old(root){animation:vtContentOut .22s var(--ease) both}
-::view-transition-new(root){animation:vtContentIn .60s var(--ease-out) both;animation-delay:.05s}
+::view-transition-old(root){animation:vtContentOut .46s var(--ease-out) both}
+::view-transition-new(root){animation:vtContentIn .60s var(--ease-out) both;animation-delay:.04s}
 
 /* ---- Directional travel ----------------------------------------------------
    A navigation that goes DEEPER (home -> case study) and one that comes BACK
@@ -753,11 +763,12 @@ html.vt-arrive img[loading="lazy"].is-loaded{animation:none!important;opacity:1!
    so there is never a frame of empty screen between them. */
 @keyframes vtInFromBelow{from{opacity:0;transform:translateY(16px) scale(.992)}}
 @keyframes vtInFromAbove{from{opacity:0;transform:translateY(-13px) scale(.995)}}
-@keyframes vtOutUp{to{opacity:0;transform:translateY(-10px) scale(.995)}}
-@keyframes vtOutDown{to{opacity:0;transform:translateY(8px) scale(.997)}}
-html.vt-in::view-transition-old(root){animation:vtOutUp .22s var(--ease) both}
-html.vt-in::view-transition-new(root){animation:vtInFromBelow .62s var(--ease-out) both;animation-delay:.05s}
-html.vt-out::view-transition-old(root){animation:vtOutDown .20s var(--ease) both}
+/* same hold-then-fade as the neutral case: never let both sides be transparent at once */
+@keyframes vtOutUp{0%{opacity:1;transform:none}62%{opacity:1}100%{opacity:0;transform:translateY(-10px) scale(.995)}}
+@keyframes vtOutDown{0%{opacity:1;transform:none}62%{opacity:1}100%{opacity:0;transform:translateY(8px) scale(.997)}}
+html.vt-in::view-transition-old(root){animation:vtOutUp .48s var(--ease-out) both}
+html.vt-in::view-transition-new(root){animation:vtInFromBelow .62s var(--ease-out) both;animation-delay:.04s}
+html.vt-out::view-transition-old(root){animation:vtOutDown .44s var(--ease-out) both}
 html.vt-out::view-transition-new(root){animation:vtInFromAbove .58s var(--ease-out) both;animation-delay:.04s}
 ::view-transition-group(vt-hero){animation-duration:.62s;animation-timing-function:cubic-bezier(0.22,1,0.36,1);z-index:20}
 /* Case-study chrome that exists on BOTH sides of a study -> study jump, so the copy
