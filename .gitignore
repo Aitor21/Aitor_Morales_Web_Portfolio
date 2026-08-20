@@ -1,3 +1,7 @@
 # local tooling scratch
 node_modules/
 *.log
+
+# i18n tooling
+tools/i18n/__pycache__/
+_resume_print.html

@@ -1019,6 +1019,48 @@ html.vt-out::view-transition-new(root){animation:vtInFromAbove .58s var(--ease-o
 }
 
 /* =====================================================================
+   Language
+   ===================================================================== */
+/* The switcher lives in the menu rather than the header: the header is already
+   at its limit on a phone, and a language control is a "once, then never again"
+   affordance — it should be findable, not prominent. */
+.lang-switch{margin-bottom:2.4rem;padding-bottom:2rem;border-bottom:1px solid rgba(255,255,255,.1)}
+.lang-label{display:block;font-family:var(--mono);font-size:1.05rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--faint);margin-bottom:1rem}
+.lang-list{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem}
+.lang-list a{font-size:1.4rem;color:var(--muted);transition:color .35s var(--ease-out);
+  padding:.4rem 0;position:relative}
+.lang-list a:hover{color:var(--white)}
+.lang-list a.is-current{color:var(--white)}
+.lang-list a.is-current::before{content:"";position:absolute;left:0;right:0;bottom:.1rem;
+  height:1px;background:var(--violet-bright)}
+
+/* The undo offer. Deliberately quiet and self-dismissing in one tap: it exists
+   for the visitor the language guess got wrong, and must not nag the many it
+   got right. */
+.lang-bar{position:fixed;left:50%;bottom:2rem;z-index:900;transform:translate(-50%,140%);
+  display:flex;align-items:center;gap:1.6rem;max-width:calc(100vw - 3rem);
+  padding:1.1rem 1.2rem 1.1rem 1.8rem;border-radius:40px;
+  background:rgba(8,16,34,.92);border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 20px 50px rgba(2,8,20,.55);
+  font-size:1.35rem;color:var(--muted);opacity:0;
+  transition:transform .55s var(--ease-spring),opacity .4s var(--ease-out)}
+.lang-bar.is-in{transform:translate(-50%,0);opacity:1}
+.lang-bar-go{color:var(--white);text-decoration:underline;text-underline-offset:3px;
+  white-space:nowrap}
+.lang-bar-go:hover{color:var(--violet-bright)}
+.lang-bar-x{flex:none;width:3.2rem;height:3.2rem;border:0;border-radius:50%;cursor:pointer;
+  background:rgba(255,255,255,.07);color:var(--white);font-size:1.8rem;line-height:1;
+  transition:background .3s var(--ease-out)}
+.lang-bar-x:hover{background:rgba(255,255,255,.16)}
+@media (max-width:520px){
+  .lang-bar{left:1.2rem;right:1.2rem;bottom:1.2rem;transform:translateY(140%);
+    max-width:none;padding:1.1rem 1rem 1.1rem 1.5rem;gap:1rem;font-size:1.25rem}
+  .lang-bar.is-in{transform:translateY(0)}
+}
+@media print{.lang-switch,.lang-bar{display:none!important}}
+
+/* =====================================================================
    Touch devices — stop paying for effects that cost the most where they
    show the least. Keyed on pointer capability, not width, so a narrow
    desktop window keeps the full treatment.

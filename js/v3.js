@@ -661,7 +661,9 @@
     bird.className = "hunt-pigeon";
     bird.setAttribute("aria-label", "A pigeon is hiding on this page. Activate to flush it out.");
     var im = document.createElement("img");
-    im.src = (deep ? "../" : "./") + "assets/img/hero/pigeon.webp";
+    // Root-absolute: relative guesswork breaks under a language prefix, where
+    // /es/projects/x would resolve "../assets" to /es/assets and 404.
+    im.src = "/assets/img/hero/pigeon.webp";
     im.alt = ""; im.setAttribute("aria-hidden", "true");
     bird.appendChild(im);
     // edge perches only — left/right gutters and the lower band, never centre stage
@@ -1264,6 +1266,110 @@
     });
   }
 
+  /* ===================== Language ===================== */
+  /* The routing decision happens in lang.js, before first paint. This is only the
+     UI around it: a switcher in the menu, and — when the visitor was moved
+     automatically — one dismissible offer to go back to the language they arrived
+     in. Auto-translating someone and giving them no way out is the failure mode
+     worth avoiding; a device language is a good guess, not a fact. */
+  var LANGS_UI = {
+    en: { label: "English",    note: "Shown in your language.",        menu: "Language" },
+    es: { label: "Español",    note: "Mostrado en tu idioma.",         menu: "Idioma" },
+    fr: { label: "Français",   note: "Affiché dans votre langue.",    menu: "Langue" },
+    de: { label: "Deutsch",    note: "In Ihrer Sprache angezeigt.",     menu: "Sprache" },
+    it: { label: "Italiano",   note: "Mostrato nella tua lingua.",      menu: "Lingua" },
+    pt: { label: "Português", note: "Exibido no seu idioma.",         menu: "Idioma" }
+  };
+  var LANG_PREFIX = /^\/(es|fr|de|it|pt)(?=\/|$)/;
+
+  function currentLang() {
+    var m = location.pathname.match(LANG_PREFIX);
+    return m ? m[1] : "en";
+  }
+  function langHref(to) {
+    var rest = location.pathname.replace(LANG_PREFIX, "") || "/";
+    return (to === "en" ? "" : "/" + to) + rest + location.search + location.hash;
+  }
+  function rememberLang(code) {
+    try { localStorage.setItem("am-lang", code); } catch (_) {}
+    try { sessionStorage.removeItem("am-auto"); } catch (_) {}
+  }
+
+  /* Which languages exist is read off the hreflang tags the build wrote into this
+     page, so the switcher can never offer a translation that was not generated. */
+  function availableLangs() {
+    var out = [];
+    document.querySelectorAll('link[rel="alternate"][hreflang]').forEach(function (l) {
+      var c = l.getAttribute("hreflang");
+      if (c && c !== "x-default" && LANGS_UI[c] && out.indexOf(c) < 0) out.push(c);
+    });
+    return out.length > 1 ? out : [];
+  }
+
+  function initLangUI() {
+    var here = currentLang();
+    var available = availableLangs();
+    if (!available.length) return;               // single-language site, no UI needed
+    var drawer = document.querySelector(".drawer-foot");
+    if (drawer && !drawer.querySelector(".lang-switch")) {
+      var box = document.createElement("div");
+      box.className = "lang-switch";
+      var lbl = document.createElement("span");
+      lbl.className = "lang-label";
+      lbl.textContent = (LANGS_UI[here] || LANGS_UI.en).menu;
+      box.appendChild(lbl);
+      var list = document.createElement("div");
+      list.className = "lang-list";
+      available.forEach(function (code) {
+        var a = document.createElement("a");
+        a.href = langHref(code);
+        a.textContent = LANGS_UI[code].label;
+        a.lang = code;
+        /* A language change must be a real navigation, not a content swap: the
+           document's lang attribute has to change with it, or assistive tech and
+           the browser's own translator keep reading the page as the old language. */
+        a.setAttribute("rel", "external");
+        if (code === here) { a.className = "is-current"; a.setAttribute("aria-current", "true"); }
+        a.addEventListener("click", function () { rememberLang(code); });
+        list.appendChild(a);
+      });
+      box.appendChild(list);
+      drawer.insertBefore(box, drawer.firstChild);
+    }
+
+    var cameFrom = null;
+    try { cameFrom = sessionStorage.getItem("am-auto"); } catch (_) {}
+    if (!cameFrom || cameFrom === here || !LANGS_UI[cameFrom]) return;
+    if (document.querySelector(".lang-bar")) return;
+
+    var bar = document.createElement("div");
+    bar.className = "lang-bar";
+    bar.setAttribute("role", "status");
+    var note = document.createElement("span");
+    note.textContent = (LANGS_UI[here] || LANGS_UI.en).note;
+    var back = document.createElement("a");
+    back.href = langHref(cameFrom);
+    back.lang = cameFrom;
+    back.setAttribute("rel", "external");
+    back.className = "lang-bar-go";
+    back.textContent = LANGS_UI[cameFrom].label;
+    back.addEventListener("click", function () { rememberLang(cameFrom); });
+    var close = document.createElement("button");
+    close.type = "button";
+    close.className = "lang-bar-x";
+    close.setAttribute("aria-label", "Dismiss");
+    close.textContent = "×";
+    close.addEventListener("click", function () {
+      rememberLang(here);                 // staying is a choice too — remember it
+      bar.classList.remove("is-in");
+      setTimeout(function () { if (bar.parentNode) bar.parentNode.removeChild(bar); }, 400);
+    });
+    bar.appendChild(note); bar.appendChild(back); bar.appendChild(close);
+    document.body.appendChild(bar);
+    void bar.offsetWidth;                 // commit the start frame, then slide in
+    bar.classList.add("is-in");
+  }
+
   /* ===================== Owned navigation =====================
      The site swaps pages itself instead of letting the browser load them.
 
@@ -1770,6 +1876,7 @@
        can't run (no fetch / no DOMParser) does the old cross-document Back handling take
        over, so that path is never left unmanned. */
     if (!initPjax()) initBackReturn();
+    initLangUI();
     mountContent(); headerFlipResolve();
     // Everything that INJECTS new chrome waits for the page morph to land. Injecting
     // mid-transition is what makes an element appear out of nowhere a beat after the
