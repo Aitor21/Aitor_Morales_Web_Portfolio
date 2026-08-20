@@ -5,6 +5,18 @@
 [build]
   publish = "."
 
+# Netlify's "pretty URLs" post-processing rewrites every internal href from
+# ./about.html to /about. Combined with the forced 301s below (which send /about
+# straight back to /about.html) that made every English navigation pay a redirect,
+# while the localized pages did not, because those rules only cover English. Two
+# URL spellings for one page is also what broke the back button once already.
+#
+# Off, so links are emitted exactly as authored and match the canonical, the
+# sitemap and the hreflang tags. The 301s stay as the safety net for extensionless
+# URLs that are already indexed or bookmarked.
+[build.processing.html]
+  pretty_urls = false
+
 # ---------------------------------------------------------------------------
 # Old v1 URLs. /about.html still exists in v3, but the projects page is gone,
 # so anything pointing at it (links, bookmarks, search results) is sent to the
