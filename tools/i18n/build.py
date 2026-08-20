@@ -24,10 +24,12 @@ PAGES = ["index.html", "about.html", "resume.html", "404.html"] + [
     for p in sorted(glob.glob(os.path.join(ROOT, "projects", "*.html")))]
 
 # Files shared by every language — one directory deeper means one more "../".
+# `poster` matters as much as src: the video posters are shared assets too, and
+# leaving them out sent every localized page looking for /it/assets/... (404).
 # The résumé PDF is treated as a shared asset: localized copies live at the repo
 # root next to the English one, never inside a generated language folder (which
 # is deleted and rebuilt on every run, and must contain no binaries).
-SHARED = re.compile(r'((?:href|src)=")((?:\.\./|\./)*)((?:css|js|assets)/|favicon\.png|apple-touch-icon\.png|Aitor_Morales_Resume\.pdf)')
+SHARED = re.compile(r'((?:href|src|poster)=")((?:\.\./|\./)*)((?:css|js|assets)/|favicon\.png|apple-touch-icon\.png|Aitor_Morales_Resume\.pdf)')
 SRCSET = re.compile(r'(srcset=")((?:\.\./|\./)*)(assets/)')
 
 

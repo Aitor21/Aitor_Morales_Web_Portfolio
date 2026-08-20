@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html data-lang="pt" lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <script src="../../js/lang.js?v=66"></script>
+  <title>Birds of a Feather · Aitor Morales</title>
+  <meta name="description" content="Birds of a Feather, um jogo de voo 3D e combate de multidões desenvolvido a solo para a Level Up Game Jam 2024. Design, código, conteúdo e lançamento de Aitor Morales.">
+  <link rel="canonical" href="https://aitormorales.com/pt/projects/birds-of-a-feather.html">
+  <link rel="alternate" hreflang="en" href="https://aitormorales.com/projects/birds-of-a-feather.html">
+  <link rel="alternate" hreflang="es" href="https://aitormorales.com/es/projects/birds-of-a-feather.html">
+  <link rel="alternate" hreflang="fr" href="https://aitormorales.com/fr/projects/birds-of-a-feather.html">
+  <link rel="alternate" hreflang="de" href="https://aitormorales.com/de/projects/birds-of-a-feather.html">
+  <link rel="alternate" hreflang="it" href="https://aitormorales.com/it/projects/birds-of-a-feather.html">
+  <link rel="alternate" hreflang="pt" href="https://aitormorales.com/pt/projects/birds-of-a-feather.html">
+  <link rel="alternate" hreflang="x-default" href="https://aitormorales.com/projects/birds-of-a-feather.html">
+  <meta name="theme-color" content="#020b16">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Birds of a Feather · Aitor Morales">
+  <meta property="og:description" content="Um pombo lendário. Um programador. O jogo inteiro.">
+  <meta property="og:url" content="https://aitormorales.com/pt/projects/birds-of-a-feather.html">
+  <meta property="og:site_name" content="Aitor Morales · Portfolio">
+  <meta property="og:image" content="https://aitormorales.com/assets/img/og/birds-of-a-feather.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Arte principal de Birds of a Feather — um jogo de ação 3D feito a solo">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:locale" content="en_US">
+  <link rel="shortcut icon" href="../../favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+  <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Dem.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Med.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Boo.woff2" crossorigin>
+  <link rel="stylesheet" href="../../css/v3.css?v=66">
+  <link rel="expect" href="#main-content" blocking="render">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"VideoGame","name":"Birds of a Feather","genre":"Action Adventure","gamePlatform":["PC","Windows","macOS"],"author":{"@type":"Person","name":"Aitor Morales"},"url":"https://aitormorales.itch.io/birds-of-a-feather"}
+  </script>
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Aitor Morales", "item": "https://aitormorales.com/"}, {"@type": "ListItem", "position": 2, "name": "Birds of a Feather"}]}
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Saltar para o conteúdo</a>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="bg-glow" aria-hidden="true"></div>
+  <canvas class="bg-stars" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="site-header" data-theme="dark">
+    <a class="name" href="../index.html">Aitor Morales</a>
+    <nav class="nav" aria-label="Principal">
+      <a href="../index.html#work">Projetos</a>
+      <a href="../about.html">Sobre mim</a>
+      <a href="../resume.html">CV</a>
+      <a class="nav-cta" href="../index.html#contact">Contacto</a>
+    </nav>
+    <button class="menu-btn" aria-label="Abrir menu" aria-expanded="false"><i></i><i></i></button>
+  </header>
+
+  <div class="drawer-backdrop" aria-hidden="true"></div>
+  <aside class="drawer" role="dialog" aria-modal="true" aria-label="Menu">
+    <nav class="drawer-nav" aria-label="Menu">
+      <a href="../index.html"><span class="idx">01</span> Início</a>
+      <a href="../index.html#work"><span class="idx">02</span> Projetos</a>
+      <a href="../about.html"><span class="idx">03</span> Sobre mim</a>
+      <a href="../resume.html"><span class="idx">04</span> CV</a>
+      <a href="mailto:aitormorales@honeybungames.com"><span class="idx">05</span> Contacto</a>
+    </nav>
+    <div class="drawer-foot">
+      <div class="drawer-social">
+        <a href="https://aitormorales.itch.io/" target="_blank" rel="noopener">itch.io</a>
+        <a href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://www.instagram.com/aitor_21m/" target="_blank" rel="noopener">Instagram</a>
+      </div>
+      <a class="drawer-email" href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a>
+    </div>
+  </aside>
+
+  <a class="back-link" href="../index.html#more" aria-label="Voltar">
+    <svg viewBox="0 0 67 34" fill="none" aria-hidden="true"><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 17h63"/><polyline points="17.5 1 2 17 17.5 33"/></g></svg>
+    Voltar
+  </a>
+
+  <main id="main-content" tabindex="-1">
+    <section class="project-hero" data-theme="dark">
+      <div class="project-copy">
+        <span class="eyebrow">Level Up Game Jam 2024 · A solo</span>
+        <h1 class="display">Birds of<br>a Feather</h1>
+        <div class="work-meta"><span>Programador a solo</span><span>Ação 3D</span><span>Design · código · conteúdo</span></div>
+        <p class="lead">Um pombo lendário. Um programador. O jogo inteiro. Voa pela cidade, conquista as aves dispersas e transforma um bando num exército.</p>
+        <div class="btn-row"><a class="btn" href="https://aitormorales.itch.io/birds-of-a-feather" target="_blank" rel="noopener">Jogar no itch.io <span class="arrow">→</span></a></div>
+      </div>
+      <div class="project-shot">
+        <picture><source srcset="../../assets/img/projects/birds-of-a-feather/cover.webp" type="image/webp"><img src="../../assets/img/projects/birds-of-a-feather/cover.png" alt="Birds of a Feather, um jogo 3D de voo de pombos e combate de multidões" style="view-transition-name:vt-hero" fetchpriority="high" decoding="sync"></picture>
+      </div>
+    </section>
+
+    <div class="project-body">
+      <dl class="meta-row">
+        <div><dt>Função</dt><dd>Programador a solo: design, código, conteúdo</dd></div>
+        <div><dt>Jam</dt><dd>Level Up Game Jam 2024</dd></div>
+        <div><dt>Ano</dt><dd>Jul 2024</dd></div>
+        <div><dt>Plataforma</dt><dd>PC · Windows &amp; Mac</dd></div>
+        <div><dt>Ligações</dt><dd><a href="https://aitormorales.itch.io/birds-of-a-feather" target="_blank" rel="noopener">itch.io</a></dd></div>
+      </dl>
+
+      <section class="proj-sec">
+        <span class="num">01</span>
+        <div>
+          <h2>O jogo</h2>
+          <p class="prose">Houve um tempo em que o mundo era simpático para os pombos: heróis de guerra, mensageiros de paz, companheiros. Agora são pragas. Voa pela cidade como o pombo escolhido, conquista as aves dispersas e faz crescer um bando grande o suficiente para enfrentar os líderes inimigos que mantêm a espécie em baixo. Metade exploração 3D, metade combate de multidões, onde os teus seguidores são ao mesmo tempo a tua barra de vida, o teu exército e a tua responsabilidade.</p>
+        </div>
+      </section>
+
+      <section class="proj-sec">
+        <span class="num">02</span>
+        <div>
+          <h2>Porque é que importa</h2>
+          <p class="prose">Tudo o que está na build é meu: conceito, sistemas, IA de bando dos seguidores, líderes inimigos, layout dos níveis, UI, diálogos e a própria build, tudo definido e entregue dentro dos prazos da jam. É a prova mais clara de amplitude que tenho: <strong>consigo desenhar um jogo e depois fazê-lo existir de verdade</strong>.</p>
+        </div>
+      </section>
+
+      <section class="proj-sec">
+        <span class="num">03</span>
+        <div>
+          <h2>Notas de design</h2>
+          <ul>
+            <li>Os seguidores como recurso: recrutar aves é progressão, poder de combate e risco, tudo num único número.</li>
+            <li>O voo como verbo: a deslocação é o ciclo de recompensa, por isso a cidade está desenhada em saltos de poleiro em poleiro com navegação por pontos de referência.</li>
+            <li>Imperfeição honesta: a página do itch documenta abertamente os bugs conhecidos. Numa build de jam, entregar e ser transparente vale mais do que o teatro do polimento.</li>
+          </ul>
+        </div>
+      </section>
+
+      <nav class="proj-foot-nav" aria-label="Mais">
+        <a href="../index.html#work"><span class="dir">← Voltar</span>Todos os projetos</a>
+        <a href="../projects/r4d10head.html" style="text-align:right"><span class="dir">Seguinte →</span>R4D10HEAD</a>
+      </nav>
+    </div>
+  </main>
+
+  <script src="../../js/v3.js?v=66"></script>
+</body>
+</html>

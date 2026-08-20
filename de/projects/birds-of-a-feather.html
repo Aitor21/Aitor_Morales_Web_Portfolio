@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html data-lang="de" lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <script src="../../js/lang.js?v=66"></script>
+  <title>Birds of a Feather · Aitor Morales</title>
+  <meta name="description" content="Birds of a Feather, ein im Alleingang entwickeltes 3D-Flug- und Massenkampfspiel für die Level Up Game Jam 2024. Design, Code, Content und Veröffentlichung von Aitor Morales.">
+  <link rel="canonical" href="https://aitormorales.com/de/projects/birds-of-a-feather.html">
+  <link rel="alternate" hreflang="en" href="https://aitormorales.com/projects/birds-of-a-feather.html">
+  <link rel="alternate" hreflang="es" href="https://aitormorales.com/es/projects/birds-of-a-feather.html">
+  <link rel="alternate" hreflang="fr" href="https://aitormorales.com/fr/projects/birds-of-a-feather.html">
+  <link rel="alternate" hreflang="de" href="https://aitormorales.com/de/projects/birds-of-a-feather.html">
+  <link rel="alternate" hreflang="it" href="https://aitormorales.com/it/projects/birds-of-a-feather.html">
+  <link rel="alternate" hreflang="pt" href="https://aitormorales.com/pt/projects/birds-of-a-feather.html">
+  <link rel="alternate" hreflang="x-default" href="https://aitormorales.com/projects/birds-of-a-feather.html">
+  <meta name="theme-color" content="#020b16">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Birds of a Feather · Aitor Morales">
+  <meta property="og:description" content="Eine legendäre Taube. Ein Entwickler. Das ganze Spiel.">
+  <meta property="og:url" content="https://aitormorales.com/de/projects/birds-of-a-feather.html">
+  <meta property="og:site_name" content="Aitor Morales · Portfolio">
+  <meta property="og:image" content="https://aitormorales.com/assets/img/og/birds-of-a-feather.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Key Art von Birds of a Feather – ein im Alleingang gebautes 3D-Actionspiel">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:locale" content="en_US">
+  <link rel="shortcut icon" href="../../favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+  <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Dem.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Med.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Boo.woff2" crossorigin>
+  <link rel="stylesheet" href="../../css/v3.css?v=66">
+  <link rel="expect" href="#main-content" blocking="render">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"VideoGame","name":"Birds of a Feather","genre":"Action Adventure","gamePlatform":["PC","Windows","macOS"],"author":{"@type":"Person","name":"Aitor Morales"},"url":"https://aitormorales.itch.io/birds-of-a-feather"}
+  </script>
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Aitor Morales", "item": "https://aitormorales.com/"}, {"@type": "ListItem", "position": 2, "name": "Birds of a Feather"}]}
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="bg-glow" aria-hidden="true"></div>
+  <canvas class="bg-stars" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="site-header" data-theme="dark">
+    <a class="name" href="../index.html">Aitor Morales</a>
+    <nav class="nav" aria-label="Hauptnavigation">
+      <a href="../index.html#work">Projekte</a>
+      <a href="../about.html">Über mich</a>
+      <a href="../resume.html">Lebenslauf</a>
+      <a class="nav-cta" href="../index.html#contact">Kontakt</a>
+    </nav>
+    <button class="menu-btn" aria-label="Menü öffnen" aria-expanded="false"><i></i><i></i></button>
+  </header>
+
+  <div class="drawer-backdrop" aria-hidden="true"></div>
+  <aside class="drawer" role="dialog" aria-modal="true" aria-label="Menü">
+    <nav class="drawer-nav" aria-label="Menü">
+      <a href="../index.html"><span class="idx">01</span> Startseite</a>
+      <a href="../index.html#work"><span class="idx">02</span> Projekte</a>
+      <a href="../about.html"><span class="idx">03</span> Über mich</a>
+      <a href="../resume.html"><span class="idx">04</span> Lebenslauf</a>
+      <a href="mailto:aitormorales@honeybungames.com"><span class="idx">05</span> Kontakt</a>
+    </nav>
+    <div class="drawer-foot">
+      <div class="drawer-social">
+        <a href="https://aitormorales.itch.io/" target="_blank" rel="noopener">itch.io</a>
+        <a href="https://www.linkedin.com/in/aitor-morales-7a5b93146/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://www.instagram.com/aitor_21m/" target="_blank" rel="noopener">Instagram</a>
+      </div>
+      <a class="drawer-email" href="mailto:aitormorales@honeybungames.com">aitormorales@honeybungames.com</a>
+    </div>
+  </aside>
+
+  <a class="back-link" href="../index.html#more" aria-label="Zurück">
+    <svg viewBox="0 0 67 34" fill="none" aria-hidden="true"><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 17h63"/><polyline points="17.5 1 2 17 17.5 33"/></g></svg>
+    Zurück
+  </a>
+
+  <main id="main-content" tabindex="-1">
+    <section class="project-hero" data-theme="dark">
+      <div class="project-copy">
+        <span class="eyebrow">Level Up Game Jam 2024 · Solo</span>
+        <h1 class="display">Birds of<br>a Feather</h1>
+        <div class="work-meta"><span>Solo-Entwickler</span><span>3D-Action</span><span>Design · Code · Content</span></div>
+        <p class="lead">Eine legendäre Taube. Ein Entwickler. Das ganze Spiel. Flieg durch die Stadt, gewinne verstreute Vögel für dich und mach aus einem Schwarm eine Armee.</p>
+        <div class="btn-row"><a class="btn" href="https://aitormorales.itch.io/birds-of-a-feather" target="_blank" rel="noopener">Auf itch.io spielen <span class="arrow">→</span></a></div>
+      </div>
+      <div class="project-shot">
+        <picture><source srcset="../../assets/img/projects/birds-of-a-feather/cover.webp" type="image/webp"><img src="../../assets/img/projects/birds-of-a-feather/cover.png" alt="Birds of a Feather, ein 3D-Spiel über Taubenflug und Massenkampf" style="view-transition-name:vt-hero" fetchpriority="high" decoding="sync"></picture>
+      </div>
+    </section>
+
+    <div class="project-body">
+      <dl class="meta-row">
+        <div><dt>Rolle</dt><dd>Solo-Entwickler: Design, Code, Content</dd></div>
+        <div><dt>Jam</dt><dd>Level Up Game Jam 2024</dd></div>
+        <div><dt>Jahr</dt><dd>Juli 2024</dd></div>
+        <div><dt>Plattform</dt><dd>PC · Windows &amp; Mac</dd></div>
+        <div><dt>Links</dt><dd><a href="https://aitormorales.itch.io/birds-of-a-feather" target="_blank" rel="noopener">itch.io</a></dd></div>
+      </dl>
+
+      <section class="proj-sec">
+        <span class="num">01</span>
+        <div>
+          <h2>Das Spiel</h2>
+          <p class="prose">Früher war die Welt gut zu Tauben: Kriegshelden, Friedensbringer, Weggefährten. Heute sind sie Ungeziefer. Flieg als auserwählte Taube durch die Stadt, gewinne verstreute Vögel für dich und lass einen Schwarm wachsen, der groß genug ist, um es mit den feindlichen Anführern aufzunehmen, die die Tauben unten halten. Halb 3D-Erkundung, halb Massenkampf – deine Gefolgschaft ist zugleich deine Lebensleiste, deine Armee und deine Verantwortung.</p>
+        </div>
+      </section>
+
+      <section class="proj-sec">
+        <span class="num">02</span>
+        <div>
+          <h2>Warum es zählt</h2>
+          <p class="prose">Alles im Build stammt von mir: Konzept, Systeme, Schwarm-KI der Gefolgschaft, feindliche Anführer, Level-Layout, UI, Dialoge und der Build selbst – alles innerhalb der Jam-Fristen zugeschnitten und ausgeliefert. Es ist der klarste Beleg für meine Bandbreite: <strong>Ich kann ein Spiel entwerfen und es dann tatsächlich existieren lassen</strong>.</p>
+        </div>
+      </section>
+
+      <section class="proj-sec">
+        <span class="num">03</span>
+        <div>
+          <h2>Design-Notizen</h2>
+          <ul>
+            <li>Gefolgschaft als Ressource: Vögel zu rekrutieren ist Progression, Kampfkraft und Risiko – alles in einer Zahl.</li>
+            <li>Fliegen als Verb: Fortbewegung ist der Reward-Loop, deshalb ist die Stadt um Sprünge von Sitzplatz zu Sitzplatz mit Orientierung an Landmarken herum gebaut.</li>
+            <li>Ehrliche Ecken und Kanten: Die itch-Seite dokumentiert bekannte Bugs offen. In einem Jam-Build schlagen Ausliefern und Transparenz das Polier-Theater.</li>
+          </ul>
+        </div>
+      </section>
+
+      <nav class="proj-foot-nav" aria-label="Mehr">
+        <a href="../index.html#work"><span class="dir">← Zurück</span>Alle Projekte</a>
+        <a href="../projects/r4d10head.html" style="text-align:right"><span class="dir">Weiter →</span>R4D10HEAD</a>
+      </nav>
+    </div>
+  </main>
+
+  <script src="../../js/v3.js?v=66"></script>
+</body>
+</html>
