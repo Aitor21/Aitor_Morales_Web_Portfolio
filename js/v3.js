@@ -1306,10 +1306,65 @@
     return out.length > 1 ? out : [];
   }
 
+  /* The header control. The drawer list stays as well: on a phone the menu is where
+     people look for settings, and this is the one they will find without opening it. */
+  function buildLangButton(here, available) {
+    var host = document.querySelector(".header-right");
+    if (!host || host.querySelector(".lang-btn")) return;
+
+    var wrap = document.createElement("div");
+    wrap.style.position = "relative";
+
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "lang-btn";
+    btn.setAttribute("aria-expanded", "false");
+    btn.setAttribute("aria-haspopup", "true");
+    btn.setAttribute("aria-label", (LANGS_UI[here] || LANGS_UI.en).menu);
+    btn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true">' +
+      '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18"/>' +
+      "</svg><span>" + here.toUpperCase() + "</span>";
+
+    var pop = document.createElement("div");
+    pop.className = "lang-pop";
+    available.forEach(function (code) {
+      var a = document.createElement("a");
+      a.href = langHref(code);
+      a.lang = code;
+      a.setAttribute("rel", "external");        // a language change must reload the document
+      if (code === here) a.setAttribute("aria-current", "true");
+      a.innerHTML = "<span>" + LANGS_UI[code].label + '</span><span class="code">' +
+                    code.toUpperCase() + "</span>";
+      a.addEventListener("click", function () { rememberLang(code); });
+      pop.appendChild(a);
+    });
+
+    var close = function (refocus) {
+      pop.classList.remove("is-open");
+      btn.setAttribute("aria-expanded", "false");
+      if (refocus) btn.focus();
+    };
+    btn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      var open = pop.classList.toggle("is-open");
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+      if (open) { var f = pop.querySelector("a"); if (f) f.focus(); }
+    });
+    pop.addEventListener("click", function (e) { e.stopPropagation(); });
+    document.addEventListener("click", function () { close(false); });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && pop.classList.contains("is-open")) close(true);
+    });
+
+    wrap.appendChild(btn); wrap.appendChild(pop);
+    host.insertBefore(wrap, host.querySelector(".menu-btn"));
+  }
+
   function initLangUI() {
     var here = currentLang();
     var available = availableLangs();
     if (!available.length) return;               // single-language site, no UI needed
+    buildLangButton(here, available);
     var drawer = document.querySelector(".drawer-foot");
     if (drawer && !drawer.querySelector(".lang-switch")) {
       var box = document.createElement("div");

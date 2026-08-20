@@ -1021,6 +1021,40 @@ html.vt-out::view-transition-new(root){animation:vtInFromAbove .58s var(--ease-o
 /* =====================================================================
    Language
    ===================================================================== */
+/* The right-hand side of the header is grouped so the bar keeps its two-slot
+   space-between layout. A third direct child would re-centre the nav. */
+.header-right{display:flex;align-items:center;gap:3rem}
+@media (max-width:900px){.header-right{gap:1.6rem}}
+
+/* Language control. Compact by design: it is a "once, then never again" affordance,
+   so it should be findable at a glance without competing with the nav. */
+.lang-btn{position:relative;display:flex;align-items:center;gap:.6rem;padding:.5rem .2rem;
+  border:0;background:none;cursor:pointer;color:currentColor;font-family:var(--mono);
+  font-size:1.3rem;letter-spacing:.16em;text-transform:uppercase;opacity:.75;
+  transition:opacity .3s var(--ease-out)}
+.lang-btn:hover,.lang-btn[aria-expanded="true"]{opacity:1}
+.lang-btn svg{width:1.5rem;height:1.5rem;flex:none;stroke:currentColor;fill:none;stroke-width:1.5}
+.lang-btn::after{content:"";position:absolute;inset:-10px -12px}   /* finger-sized target */
+
+.lang-pop{position:absolute;top:calc(100% + 1.2rem);right:0;z-index:1002;min-width:16rem;
+  padding:.8rem;border-radius:12px;background:rgba(8,16,34,.97);
+  border:1px solid rgba(255,255,255,.12);box-shadow:0 24px 60px rgba(2,8,20,.6);
+  display:flex;flex-direction:column;gap:.1rem;
+  opacity:0;visibility:hidden;transform:translateY(-8px);
+  transition:opacity .28s var(--ease-out),transform .28s var(--ease-out),visibility .28s}
+.lang-pop.is-open{opacity:1;visibility:visible;transform:translateY(0)}
+.lang-pop a{display:flex;align-items:center;justify-content:space-between;gap:1.6rem;
+  padding:.9rem 1.1rem;border-radius:8px;font-size:1.45rem;color:var(--muted);
+  text-transform:none;letter-spacing:0;font-family:var(--font);
+  transition:background .25s var(--ease-out),color .25s var(--ease-out)}
+.lang-pop a:hover,.lang-pop a:focus-visible{background:rgba(255,255,255,.07);color:var(--white)}
+.lang-pop a[aria-current="true"]{color:var(--white)}
+.lang-pop a[aria-current="true"]::after{content:"";width:6px;height:6px;border-radius:50%;
+  background:var(--violet-bright);flex:none}
+.lang-pop .code{font-family:var(--mono);font-size:1.1rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--faint)}
+@media print{.header-right .lang-btn,.lang-pop{display:none!important}}
+
 /* The switcher lives in the menu rather than the header: the header is already
    at its limit on a phone, and a language control is a "once, then never again"
    affordance — it should be findable, not prominent. */

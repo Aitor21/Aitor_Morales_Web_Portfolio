@@ -86,7 +86,9 @@ def ld_json_urls(src, lang):
         return src
 
     def fix(m):
-        return re.sub(r'(https://aitormorales\.com)/(?!assets/)',
+        # Not fragment-only refs either: the Person @id must stay one entity across
+        # every language, or each translation declares a different human.
+        return re.sub(r'(https://aitormorales\.com)/(?![#]|assets/)',
                       lambda x: x.group(1) + "/" + lang + "/", m.group(0))
 
     return re.sub(r'<script type="application/ld\+json">.*?</script>', fix, src, flags=re.S)
