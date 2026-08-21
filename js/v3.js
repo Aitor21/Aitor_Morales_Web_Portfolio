@@ -1675,11 +1675,37 @@
 
   function pjaxHead(doc) {
     if (doc.title) document.title = doc.title;
-    [['meta[name="description"]', "content"], ['link[rel="canonical"]', "href"]]
+
+    /* Metadata that lives in an attribute: same element, new value. */
+    [['meta[name="description"]', "content"],
+     ['link[rel="canonical"]', "href"],
+     ['meta[property="og:title"]', "content"],
+     ['meta[property="og:description"]', "content"],
+     ['meta[property="og:url"]', "content"],
+     ['meta[property="og:type"]', "content"],
+     ['meta[property="og:image"]', "content"],
+     ['meta[property="og:image:alt"]', "content"]]
       .forEach(function (pair) {
         var from = doc.querySelector(pair[0]), to = document.querySelector(pair[0]);
         if (from && to) to.setAttribute(pair[1], from.getAttribute(pair[1]) || "");
       });
+
+    /* Metadata that is a whole node, and differs page to page: the structured data
+       and the hreflang set. Without this a swapped page keeps describing the one the
+       visitor arrived from — a case study still advertising the home page's schema.
+       Crawlers fetch each URL directly and never see the swapped state, so this is
+       not an SEO fix; it is the document not lying about what it currently is, which
+       matters for anything reading the live DOM. */
+    var swapNodes = function (sel) {
+      document.querySelectorAll("head " + sel).forEach(function (n) {
+        if (n.parentNode) n.parentNode.removeChild(n);
+      });
+      doc.querySelectorAll("head " + sel).forEach(function (n) {
+        document.head.appendChild(document.importNode(n, true));
+      });
+    };
+    swapNodes('script[type="application/ld+json"]');
+    swapNodes('link[rel="alternate"][hreflang]');
   }
 
   function pjaxSwap(html, u, push, dir, state, ghost, from, isBack) {
