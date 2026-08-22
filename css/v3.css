@@ -35,6 +35,12 @@
      earlier #7e90b8 was verified against the bare gradient only and was 4.06:1 there. */
   --white:#f4f7ff; --ink:#0a1a30; --muted:#9fb0d4; --faint:#8e9dc4;
   --line:rgba(140,160,210,.14); --line-2:rgba(140,160,210,.28);
+  /* --line-2 is a divider weight: fine for a rule, too faint for the OUTLINE of a
+     control. At .28 the ghost button and the status pill measured 1.6:1 against the
+     page background — under the 3:1 WCAG 1.4.11 asks for a UI component boundary,
+     and the reason the Get in touch button read as barely there. .6 is the lightest
+     value that clears 3:1 on both the page background and the scrimmed artwork. */
+  --line-ui:rgba(140,160,210,.6);
 
   --grad-nav:linear-gradient(135deg,#0a1f3d 0%,#3a2a6e 46%,#8c2b7a 100%);
   --grad-sky:linear-gradient(175deg,#08203f 0%,#061c37 30%,#07182b 58%,#050f1e 80%,#020a13 100%);
@@ -258,7 +264,7 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
 .accent-bars span:first-child{width:72px}.accent-bars span:last-child{width:36px;margin-left:44px}
 
 .pill{display:inline-flex;align-items:center;gap:.9rem;font-family:var(--mono);font-size:1.25rem;letter-spacing:.14em;text-transform:uppercase;
-  border:1px solid var(--line-2);border-radius:50px;padding:.8rem 1.6rem;color:var(--muted)}
+  border:1px solid var(--line-ui);border-radius:50px;padding:.8rem 1.6rem;color:var(--muted)}
 .pill .dot{width:8px;height:8px;border-radius:50%;background:#4fd1a1;box-shadow:0 0 10px #4fd1a1;animation:pulse 2.4s var(--ease-out) infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
@@ -271,7 +277,7 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
 .btn:hover{background:var(--violet-bright);box-shadow:0 22px 46px -16px rgba(95,108,230,.9)}
 .btn .arrow{transition:transform .3s var(--ease-out)}
 .btn:hover .arrow{transform:translateX(5px)}
-.btn--ghost{background:transparent;color:currentColor;border:1px solid var(--line-2);box-shadow:none}
+.btn--ghost{background:transparent;color:currentColor;border:1px solid var(--line-ui);box-shadow:none}
 .btn--ghost:hover{background:rgba(139,150,255,.1)}
 /* press feedback via filter — the magnetic effect owns the inline transform */
 .btn:active{filter:brightness(1.15)}
@@ -299,6 +305,30 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
 @keyframes ticker{to{transform:translateX(-50%)}}
 .ticker:hover .ticker-track{animation-play-state:paused}
 @media (max-width:760px){.ticker{bottom:2rem}}
+
+/* Legibility scrim behind the hero copy.
+
+   The copy already sits above the moon (z-index 5 vs 1) — the problem was never
+   stacking, it was contrast: pale text and a hairline-bordered button over bright
+   yellow artwork. On a tall phone the two never meet, but browser chrome eats
+   ~140px of height, and on the shorter viewport that leaves the centred copy lands
+   right on top of the moon. Reported on a phone showing ~412x700.
+
+   A soft radial wash fixes it at ANY height instead of tuning breakpoints: over the
+   dark background it is invisible (same colour), and it only reads as vignetting
+   where the bright art actually sits behind the text.
+
+   Absolutely positioned so it is not a flex item — .hero-copy is a flex column with
+   a gap, and an in-flow ::before would add a phantom row. z-index:-1 keeps it behind
+   the copy's own text while staying inside .hero-copy's stacking context, which is
+   wholly above the scene. */
+@media (max-width:900px){
+  .hero-copy::before{content:"";position:absolute;inset:-3rem -2.4rem -4.5rem;z-index:-1;
+    pointer-events:none;
+    background:radial-gradient(125% 96% at 30% 46%,
+      rgba(3,12,24,.94) 0%,rgba(3,12,24,.92) 55%,
+      rgba(3,12,24,.70) 78%,rgba(3,12,24,0) 100%)}
+}
 
 /* moon scene */
 .moon-scene{position:absolute;inset:0;z-index:1;pointer-events:none}
@@ -408,12 +438,20 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
 /* pointer-events:none on the rail itself — at 320px (i.e. 400% zoom) the fixed rail
    overlaps the text column and was intercepting taps meant for card links and the
    contact email. The dots themselves stay clickable. */
-.slide-nav{position:fixed;left:2.2rem;top:50%;transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;align-items:center;gap:1.3rem;pointer-events:none}
+.slide-nav{position:fixed;left:2.2rem;top:50%;transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;align-items:center;gap:1.7rem;pointer-events:none}
 /* The rail is built by JS, so on arrival it would blink into existence next to a page
    that is still moving. It drifts in from the left instead, like everything else. */
 @keyframes railIn{from{opacity:0;transform:translateY(-50%) translateX(-14px)}}
 .js .slide-nav{animation:railIn .7s var(--ease-out) both;animation-delay:.12s}
 .slide-dot{pointer-events:auto}
+/* The dot's own hit area, at every size — not only on touch. It used to live in the
+   coarse/narrow block, so above 760px on a mouse each dot was a raw 9px target. The
+   rail gap sets the PITCH, and neighbours cannibalise each other's expansion: two dots
+   13px apart can never each own 24px however far the ::after reaches. So the gap is
+   what actually had to change (1.5rem here, 1.8rem on the mobile rail) to give every
+   dot a full 24px without the circles colliding. */
+.slide-dot{position:relative}
+.slide-dot::after{content:"";position:absolute;inset:-10px -11px}
 .slide-dot{width:9px;height:9px;border-radius:50%;border:1px solid rgba(255,255,255,.45);background:transparent;padding:0;cursor:pointer;
   transition:transform .4s var(--ease-out),background .4s,border-color .4s,box-shadow .4s,height .4s var(--ease-out)}
 .slide-dot:hover{border-color:#fff;transform:scale(1.25)}
@@ -422,7 +460,7 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
 
 /* mobile: right-hand rail — dots elongate into a pill, plus a live "02/06" counter */
 @media (max-width:900px){
-  .slide-nav{left:auto;right:1.2rem;gap:.7rem;padding:1rem .7rem;border-radius:50px;
+  .slide-nav{left:auto;right:1.2rem;gap:2rem;padding:1.2rem .7rem;border-radius:50px;
     background:rgba(4,12,26,.42);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.1)}
   .slide-dot{width:6px;height:6px;border-radius:6px;border-color:rgba(255,255,255,.4)}
   .slide-dot:hover{transform:none}
@@ -902,7 +940,7 @@ html.vt-out::view-transition-new(root){animation:vtInFromAbove .58s var(--ease-o
    so the address is always one click from the clipboard as well
    ===================================================================== */
 .copy-mail{display:inline-flex;align-items:center;gap:.8rem;align-self:flex-start;font-family:var(--mono);font-size:1.2rem;
-  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line-2);border-radius:40px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line-ui);border-radius:40px;
   padding:.8rem 1.6rem;transition:color .3s,border-color .3s,background .3s}
 .copy-mail:hover{color:#fff;border-color:var(--violet-bright);background:rgba(95,108,230,.12)}
 .copy-mail.copied{color:#4fd1a1;border-color:rgba(79,209,161,.6)}
@@ -930,11 +968,6 @@ html.vt-out::view-transition-new(root){animation:vtInFromAbove .58s var(--ease-o
   .contact .social a,.drawer-social a{padding:.9rem .2rem}
   .copy-mail,.foot-links a,.foot-links .copy-mail{min-height:4.2rem}
   .ve-alt a{display:inline-block;padding:.8rem 0}
-  /* The dot rail is the ONLY random-access nav on touch (the JS controller is off for
-     coarse pointers), but the dots are 6px. Keep the 6px visual, grow the hit area —
-     7 dots in a ~128px rail caps the honest maximum at ~26px, a 4x improvement. */
-  .slide-dot{position:relative}
-  .slide-dot::after{content:"";position:absolute;inset:-9px -10px}
   /* hover-revealed plates never appear on touch, leaving the largest images with no
      visible affordance — show them outright */
   .work-media .plate,.about-portrait .plate{opacity:1;transform:none}
