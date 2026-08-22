@@ -306,30 +306,6 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
 .ticker:hover .ticker-track{animation-play-state:paused}
 @media (max-width:760px){.ticker{bottom:2rem}}
 
-/* Legibility scrim behind the hero copy.
-
-   The copy already sits above the moon (z-index 5 vs 1) — the problem was never
-   stacking, it was contrast: pale text and a hairline-bordered button over bright
-   yellow artwork. On a tall phone the two never meet, but browser chrome eats
-   ~140px of height, and on the shorter viewport that leaves the centred copy lands
-   right on top of the moon. Reported on a phone showing ~412x700.
-
-   A soft radial wash fixes it at ANY height instead of tuning breakpoints: over the
-   dark background it is invisible (same colour), and it only reads as vignetting
-   where the bright art actually sits behind the text.
-
-   Absolutely positioned so it is not a flex item — .hero-copy is a flex column with
-   a gap, and an in-flow ::before would add a phantom row. z-index:-1 keeps it behind
-   the copy's own text while staying inside .hero-copy's stacking context, which is
-   wholly above the scene. */
-@media (max-width:900px){
-  .hero-copy::before{content:"";position:absolute;inset:-3rem -2.4rem -4.5rem;z-index:-1;
-    pointer-events:none;
-    background:radial-gradient(125% 96% at 30% 46%,
-      rgba(3,12,24,.94) 0%,rgba(3,12,24,.92) 55%,
-      rgba(3,12,24,.70) 78%,rgba(3,12,24,0) 100%)}
-}
-
 /* moon scene */
 .moon-scene{position:absolute;inset:0;z-index:1;pointer-events:none}
 .ms-layer{position:absolute;top:50%;left:50%;width:0;height:0;will-change:transform}
@@ -476,8 +452,33 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
   .hero-copy{gap:1.5rem;max-width:none}
   .hero-cta{margin-top:.2rem}
   .hero-cta .btn{padding:1.3rem 2.2rem;font-size:1.3rem}
-  /* mobile: the scene sits BELOW the copy, so centre it instead of offsetting right */
-  .moon-scene{top:auto;bottom:-4vh;left:0;right:0;height:60vh}
+  /* mobile: the scene sits BELOW the copy — and now it MEANS it.
+
+     It used to be absolutely positioned, claiming a fixed 60vh up from the bottom
+     while the copy was laid out from the top. On a tall phone those never meet, but
+     browser chrome eats ~140px and on the viewport that leaves, 60vh reached up into
+     the copy and put a bright yellow moon behind the CTA.
+
+     Now it is simply the second flex item: the copy takes the height it needs, the
+     scene takes what is left. No fixed height to collide, no magic number to keep in
+     sync with the copy, and it holds for any viewport and any language — German and
+     French wrap longer than English and would have broken a hard-coded reserve.
+     Negative margins bleed it back out through the panel's padding so the art still
+     runs edge to edge and off the bottom. */
+  .hero-copy{order:1}
+  .moon-scene{order:2;position:relative;inset:auto;height:auto;
+    /* align-self, because .hero is align-items:flex-start and every child of the
+       scene is absolutely positioned — left to itself the box measures zero wide and
+       the art centres on a point instead of the screen. */
+    align-self:stretch;width:auto;
+    /* min-height sized to the ART, not to a fraction of the viewport. The layers are
+       centred on this box, so if the box is shorter than the moon the excess spills
+       out of BOTH ends — upward into the copy. Guaranteeing the box can hold the moon
+       (64vmin wide, ~75vmin tall) means the only direction left to overflow is down,
+       off the bottom, where the crop was always intended. Taller viewports never see
+       this: the leftover space is already bigger. */
+    flex:1 1 auto;min-height:88vmin;
+    margin:0 calc(var(--pad) * -1) calc(-7rem - 4vh)}
   .ms-moon{width:64vmin}
   .ms-glow2{width:92vmin;opacity:.7}
   .ms-ast1{width:16vmin}.ms-ast2{width:12vmin}.ms-ast3{width:9vmin}.ms-ast4{width:7vmin}
