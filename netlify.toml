@@ -18,20 +18,12 @@
   pretty_urls = false
 
 # ---------------------------------------------------------------------------
-# One host. The site is also reachable at its netlify.app address, and a second
-# Netlify project (aitormoralescom) builds this same repo to its own netlify.app
-# address: two full copies of the portfolio under other names. Both go to the
-# real domain. Deploy previews and permalinks (<id>--…netlify.app) are other
-# hosts and keep working.
+# One host. The site is also reachable at its netlify.app address, a full copy
+# of the portfolio under another name; it goes to the real domain. Deploy
+# previews and permalinks (<id>--…netlify.app) are other hosts and keep working.
 # ---------------------------------------------------------------------------
 [[redirects]]
   from = "https://aitormorales.netlify.app/*"
-  to = "https://aitormorales.com/:splat"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "https://aitormoralescom.netlify.app/*"
   to = "https://aitormorales.com/:splat"
   status = 301
   force = true

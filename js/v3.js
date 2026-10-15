@@ -453,6 +453,35 @@
     setTimeout(function () { if (!fired) showAll(); }, 3000);
   }
 
+  /* ===================== Stat count-up (per mount) =====================
+     The Gimica numbers (50+, 25M+, 500K+) count up from zero as their slide arrives.
+     The DOM holds the real figure until the moment the stats are on screen, so a
+     crawler snapshot or a screen reader never meets "0+". Each figure's final width
+     is pinned first: Georgia numerals are proportional, and a growing number would
+     otherwise shove its neighbours sideways on every frame. */
+  function initCountUp() {
+    if (reduce || !("IntersectionObserver" in window)) return;
+    document.querySelectorAll(".work-stats .st b").forEach(function (b) {
+      if (b._count) return; b._count = true;
+      var final = b.textContent, m = final.trim().match(/^(\d+)(.*)$/);
+      if (!m) return;
+      var end = +m[1], suffix = m[2];
+      var io = new IntersectionObserver(function (en) {
+        if (!en[0].isIntersecting) return;
+        io.disconnect();
+        b.style.minWidth = b.getBoundingClientRect().width + "px";
+        var t0 = 0;
+        requestAnimationFrame(function step(t) {
+          if (!t0) t0 = t;
+          var k = Math.min(1, (t - t0) / 1400), e = 1 - Math.pow(1 - k, 3);   // ease-out cubic
+          b.textContent = k < 1 ? Math.round(end * e) + suffix : final;
+          if (k < 1) requestAnimationFrame(step);
+        });
+      }, { threshold: 0.6 });
+      io.observe(b);
+    });
+  }
+
   /* ===================== Menu (persistent chrome) =====================
      The drawer is a modal surface: opening it moves focus to its first link, Tab cycles
      through the drawer links plus the toggle button (so it can be closed by keyboard),
@@ -1927,6 +1956,7 @@
   function mountContent() {
     setupSlides();
     initReveals();
+    initCountUp();
     initMagnetic();
     initCardParallax();
     initPigeon();
