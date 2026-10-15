@@ -145,9 +145,11 @@
 # itch.io playable-game embed (itch.io, which serves the build from itch.zone).
 # style 'unsafe-inline' is required by the style="--i:n" stagger attributes;
 # scripts stay 'self'-only. The grain texture is a data: SVG, hence img-src data:.
+# GoatCounter (cookieless analytics, see v3.js) receives its hits as a beacon
+# (connect-src) or, on old browsers, an image request (img-src). No script loads from it.
 # ---------------------------------------------------------------------------
 [[headers]]
   for = "/*"
   [headers.values]
-    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; media-src 'self'; frame-src https://www.youtube-nocookie.com https://itch.io https://*.itch.zone; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.goatcounter.com; font-src 'self'; media-src 'self'; frame-src https://www.youtube-nocookie.com https://itch.io https://*.itch.zone; connect-src 'self' https://*.goatcounter.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
     X-Frame-Options = "SAMEORIGIN"

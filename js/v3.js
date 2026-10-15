@@ -1736,6 +1736,7 @@
 
     if (push) { try { history.pushState({ am: 1, y: 0, snap: 0 }, "", u.href); } catch (_) {} }
     pjax.at = pageKey(u);
+    trackView(false);
 
     document.body.classList.remove("slides-js", "scrolled");
     mountContent();                              // rebuilds the deck, reveals, embeds…
@@ -1938,6 +1939,42 @@
     if (hero) requestAnimationFrame(function () { hero.classList.add("is-in"); });
   }
 
+  /* ===================== Analytics (GoatCounter: cookieless, no consent banner) =====
+     Counted here, not with GoatCounter's own count.js: that script only sees the first
+     page of a visit, and every later page on this site arrives through pjaxSwap without
+     a document load. Each swap reports itself, and so do the clicks that answer "did a
+     recruiter act on this": the résumé download, the email, and links out to itch.io,
+     Steam and LinkedIn. Silent anywhere but the live domain (localhost, Netlify deploy
+     previews) and when the code below is empty. */
+  var GOATCOUNTER = "aitormorales";   // the site code registered at goatcounter.com
+  function trackSend(q) {
+    if (!GOATCOUNTER || !/(^|\.)aitormorales\.com$/.test(location.hostname)) return;
+    var url = "https://" + GOATCOUNTER + ".goatcounter.com/count?" + q + "&rnd=" + Math.random().toString(36).slice(2);
+    try { if (navigator.sendBeacon && navigator.sendBeacon(url)) return; } catch (_) {}
+    new Image().src = url;
+  }
+  function trackView(first) {
+    // ./index.html and / are one page; count them as one path
+    var path = location.pathname.replace(/index\.html$/, "");
+    trackSend("p=" + encodeURIComponent(path) + "&t=" + encodeURIComponent(document.title) +
+      "&s=" + encodeURIComponent(screen.width + "," + screen.height + "," + (devicePixelRatio || 1)) +
+      (first && document.referrer ? "&r=" + encodeURIComponent(document.referrer) : ""));
+  }
+  function trackEvent(name) {
+    trackSend("e=true&p=" + encodeURIComponent(name) + "&t=" + encodeURIComponent(location.pathname));
+  }
+  function initTrackClicks() {
+    document.addEventListener("click", function (e) {
+      var el = e.target && e.target.closest && e.target.closest("a[href],[data-copy]");
+      if (!el) return;
+      if (el.hasAttribute("data-copy")) return trackEvent("email-copy");
+      var h = el.getAttribute("href") || "";
+      if (/\.pdf$/i.test(h)) return trackEvent("resume-pdf" + (h.match(/_([A-Z]{2})\.pdf$/) || ["", ""])[1].replace(/^(.)/, "-$1").toLowerCase());
+      if (h.indexOf("mailto:") === 0) return trackEvent("email-click");
+      if (/^https?:/i.test(h) && el.hostname !== location.hostname) trackEvent("out-" + el.hostname.replace(/^www\./, ""));
+    }, true);
+  }
+
   /* ===================== Boot ===================== */
   function boot() {
     // Only take scroll restoration into our own hands on the page that owns a custom
@@ -1958,6 +1995,7 @@
        over, so that path is never left unmanned. */
     if (!initPjax()) initBackReturn();
     initLangUI();
+    trackView(true); initTrackClicks();
     mountContent(); headerFlipResolve();
     // Everything that INJECTS new chrome waits for the page morph to land. Injecting
     // mid-transition is what makes an element appear out of nowhere a beat after the
