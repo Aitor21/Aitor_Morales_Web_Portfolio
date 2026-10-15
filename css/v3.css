@@ -94,6 +94,15 @@ a,button,summary,[role="button"],.more-card,.work-media,.gimica-card,.about-port
 .proj-foot-nav a,.case-link,.hero-tags span,.tags span,.branch-glyph
 {user-select:none;-webkit-user-select:none}
 @media (max-width:420px){html{font-size:56.25%}}   /* 9px base — stops runaway vw sizing */
+/* Big screens (1440p, 4K at 150%): the layout was drawn for 1920x1080 and every cap
+   below is in rem, so past that point it stopped growing and a 2560 screen got a 1300px
+   island in the middle. Grow the root instead, so the whole design scales as one.
+   It follows the SMALLER of the two ratios: a 2560x1080 ultrawide must not scale up,
+   or panels sized to fit one viewport would spill out of it. Additive to 62.5%, so a
+   reader's own larger default font size is still honoured. */
+@media (min-width:1921px) and (min-height:1001px){
+  html{font-size:calc(62.5% + max(0px,min(100vw / 192 - 10px,100vh / 100 - 10px)))}
+}
 body{
   margin:0;font-family:var(--font);font-weight:400;font-size:1.7rem;line-height:1.6;
   color:var(--white);background:var(--void);overflow-x:hidden;overflow-x:clip;-webkit-font-smoothing:antialiased;
@@ -492,11 +501,12 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
    WORK
    ===================================================================== */
 .work{overflow:hidden}
-.work-inner{display:grid;grid-template-columns:1.05fr 1fr;align-items:center;gap:clamp(3rem,6vw,7rem);width:100%;max-width:1300px;margin:0 auto}
+.work-inner{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);align-items:center;gap:clamp(3rem,6vw,8rem);width:100%;max-width:150rem;margin:0 auto}
 @media (max-width:900px){.work-inner{grid-template-columns:1fr;gap:2.6rem}}
 .work-index{font-family:var(--mono);font-size:1.3rem;letter-spacing:.2em;color:var(--violet-bright);margin-bottom:.4rem}
 .work-copy{position:relative;z-index:3;display:flex;flex-direction:column;gap:2rem}
 .work-copy .display{font-size:clamp(3.8rem,7vw,7.4rem)}
+@media (min-width:901px){.work-copy .lead{max-width:40ch}}
 .work-meta{display:flex;flex-wrap:wrap;gap:.8rem 1rem}
 .work-meta span{font-family:var(--mono);font-size:1.15rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
   border:1px solid var(--line);border-radius:40px;padding:.5rem 1.1rem}
@@ -511,6 +521,8 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
 @media (hover:hover) and (pointer:fine){
   body .work-media,body .gimica-card,body .about-portrait{transition:transform .35s var(--ease-out)}
 }
+.work-media,.gimica-card{width:100%;max-width:calc((100vh - var(--header-h) - 12rem) * 4 / 3);justify-self:end}
+@media (max-width:900px){.work-media,.gimica-card{max-width:none;justify-self:stretch}}
 .work-media{position:relative;aspect-ratio:4/3;border-radius:6px;overflow:hidden;box-shadow:var(--shadow-img);cursor:pointer}
 .work-media img{width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease-out)}
 .work-media:hover img{transform:scale(1.05)}
@@ -537,7 +549,7 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
 /* =====================================================================
    MORE WORK (jam / solo builds)
    ===================================================================== */
-.more-inner{width:100%;max-width:1300px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(2.4rem,4vh,4.4rem)}
+.more-inner{width:100%;max-width:150rem;margin:0 auto;display:flex;flex-direction:column;gap:clamp(2.4rem,4vh,4.4rem)}
 .more-head{display:flex;flex-direction:column;gap:1.4rem}
 .more-head .display{font-size:clamp(3.4rem,6vw,6.4rem)}
 .more-head .lead{max-width:46ch}
@@ -575,13 +587,15 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
    image this collapsed to a 0x0 box — a focusable link with nothing to click and no
    room for a focus ring. max-width still caps it exactly where it lands today. */
 .about-portrait{position:relative;display:block;border-radius:8px;overflow:hidden;box-shadow:var(--shadow-img);
-  aspect-ratio:4/5;width:100%;max-width:42rem;margin-left:auto;cursor:pointer}
+  aspect-ratio:4/5;width:100%;max-width:min(42rem,calc((100vh - var(--header-h) - 12rem) * 4 / 5));margin-inline:auto;cursor:pointer}
 .about-portrait img{width:100%;height:100%;object-fit:cover;object-position:center 22%;transition:transform .9s var(--ease-out)}
 .about-portrait:hover img{transform:scale(1.05)}
 .about-portrait .plate{position:absolute;left:1.4rem;bottom:1.4rem;font-family:var(--mono);font-size:1.1rem;letter-spacing:.16em;text-transform:uppercase;
   color:#fff;background:rgba(6,12,26,.5);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:.6rem 1.1rem;border-radius:30px;
   opacity:0;transform:translateY(8px);transition:opacity .4s var(--ease-out),transform .4s var(--ease-out)}
 .about-portrait:hover .plate{opacity:1;transform:translateY(0)}
+/* the portrait is narrow, so on this slide the copy keeps the wider column */
+@media (min-width:901px){.about-slide .work-inner{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr)}}
 @media (max-width:900px){.about-portrait{max-width:none;aspect-ratio:16/11;margin:0}}
 @media (max-width:760px){
   .about-slide .work-inner{gap:1.6rem}
@@ -596,7 +610,7 @@ body.menu-open .drawer{visibility:visible;transform:translateX(0);transition:tra
    CONTACT
    ===================================================================== */
 .contact{flex-direction:column;justify-content:center}
-.contact-inner{width:100%;max-width:1300px;margin:0 auto;display:flex;flex-direction:column;gap:2.4rem}
+.contact-inner{width:100%;max-width:150rem;margin:0 auto;display:flex;flex-direction:column;gap:2.4rem}
 .contact .big-mail{font-size:clamp(2.2rem,5vw,5.4rem);font-weight:500;letter-spacing:.01em;transition:color .3s;word-break:break-word}
 .contact .big-mail:hover{color:var(--violet-bright)}
 .contact .social{display:flex;gap:1.4rem 2.6rem;flex-wrap:wrap;font-family:var(--mono);font-size:1.35rem;letter-spacing:.14em;text-transform:uppercase;margin-top:1rem}
@@ -655,7 +669,7 @@ html.vt-arrive img[loading="lazy"].is-loaded{animation:none!important;opacity:1!
 .section-block[data-theme="dark"]{background:transparent;color:var(--white)}
 .section-block[data-theme="light"] .prose{color:#41506a}
 .section-block[data-theme="dark"] .prose{color:var(--muted)}
-.block-inner{width:100%;max-width:1200px;margin:0 auto}
+.block-inner{width:100%;max-width:120rem;margin:0 auto}
 .heading-num{font-family:var(--num);font-size:3.4rem;color:var(--violet);position:relative;padding-left:5.4rem;display:inline-block}
 .heading-num::before{content:"";position:absolute;left:0;top:50%;width:4rem;height:2px;background:currentColor;transform:translateY(-50%)}
 .block-heading{font-size:clamp(2.6rem,4vw,4rem);letter-spacing:.1em;text-transform:uppercase;margin:1.2rem 0 3rem}
@@ -694,7 +708,7 @@ html.vt-arrive img[loading="lazy"].is-loaded{animation:none!important;opacity:1!
 /* contact footer: the one place the About page asks for a reply, so it holds the
    contact details on their own instead of hanging off the hobbies section */
 .site-footer{background:var(--grad-accent);padding:clamp(6rem,11vh,11rem) var(--pad);scroll-snap-align:none}
-.foot-inner{max-width:1200px;margin:0 auto;display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.6rem}
+.foot-inner{max-width:120rem;margin:0 auto;display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.6rem}
 .foot-eyebrow{font-family:var(--mono);font-size:1.2rem;letter-spacing:.32em;text-transform:uppercase;color:rgba(255,255,255,.7)}
 .foot-mail{font-size:clamp(2rem,4.4vw,4.2rem);font-weight:500;letter-spacing:.01em;color:#fff;line-height:1.15;
   word-break:break-word;position:relative;transition:opacity .3s}
@@ -721,7 +735,7 @@ html.vt-arrive img[loading="lazy"].is-loaded{animation:none!important;opacity:1!
    ("R4D10HEAD" at 130px) forces its column open on min-content and squeezes the hero
    image ~24% narrower than on every other case study. */
 .project-hero{min-height:100vh;min-height:100dvh;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:clamp(3rem,6vw,7rem);
-  padding:calc(var(--header-h) + 3rem) var(--pad) 6rem;max-width:1400px;margin:0 auto}
+  padding:calc(var(--header-h) + 3rem) var(--pad) 6rem;max-width:140rem;margin:0 auto}
 @media (max-width:900px){.project-hero{grid-template-columns:1fr;gap:2.6rem}}
 .project-copy{display:flex;flex-direction:column;gap:2rem;min-width:0}
 /* A title is one unbreakable word until proven otherwise, and at 11vw a long one walks
@@ -730,7 +744,7 @@ html.vt-arrive img[loading="lazy"].is-loaded{animation:none!important;opacity:1!
 .project-copy .display{overflow-wrap:break-word;word-break:normal}
 .project-shot{border-radius:8px;overflow:hidden;box-shadow:var(--shadow-img);aspect-ratio:4/3}
 .project-shot img,.project-shot video{width:100%;height:100%;object-fit:cover}
-.project-body{max-width:900px;margin:0 auto;padding:1rem var(--pad) clamp(8rem,14vh,16rem)}
+.project-body{max-width:90rem;margin:0 auto;padding:1rem var(--pad) clamp(8rem,14vh,16rem)}
 /* 3 fixed columns: auto-fit resolved to 4 at this content width, so every page ended on
    a ragged 4+1 or 4+2 orphan row. 3 gives a clean 3+3 for six fields and 3+2 for five. */
 .meta-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8rem 2.4rem;
@@ -1184,7 +1198,7 @@ html.vt-out::view-transition-new(root){animation:vtInFromAbove .58s var(--ease-o
 /* =====================================================================
    RÉSUMÉ page  (kept in the shared sheet so it survives SPA swaps)
    ===================================================================== */
-.resume-page{padding:calc(var(--header-h) + 4rem) var(--pad) 8rem;max-width:1120px;margin:0 auto}
+.resume-page{padding:calc(var(--header-h) + 4rem) var(--pad) 8rem;max-width:112rem;margin:0 auto}
 .resume-actions{display:flex;flex-wrap:wrap;gap:1.2rem;justify-content:flex-end;margin-bottom:2.6rem}
 .resume-head{display:flex;flex-wrap:wrap;align-items:center;gap:1.8rem 2.8rem;padding-bottom:2.4rem;border-bottom:1px solid var(--line-2)}
 .resume-photo{width:clamp(8.4rem,9vw,11rem);aspect-ratio:1;border-radius:18px;object-fit:cover;object-position:center top;flex:none;
