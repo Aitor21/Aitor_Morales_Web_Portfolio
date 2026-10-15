@@ -542,25 +542,28 @@
     }
     startRing();
 
+    /* The state is read from whatever is under the pointer, never from mouseover/
+       mouseout PAIRS. Pairs left "View" stuck on: clicking a card swaps the page and
+       removes that card, and a removed node never fires its mouseout. The same when a
+       slide scrolls a card out from under a still pointer. */
     var inside = function (el, sel) { return el && el.closest && el.closest(sel); };
-    document.addEventListener("mouseover", function (e) {
-      var media = inside(e.target, "[data-cursor]");
-      if (media) {
-        document.body.classList.add("cursor-media");
-        document.body.classList.remove("cursor-hover");
-        label.textContent = media.dataset.cursor || "";
-        return;
-      }
-      if (inside(e.target, "a,button")) document.body.classList.add("cursor-hover");
-    });
-    document.addEventListener("mouseout", function (e) {
-      var to = e.relatedTarget;
-      if (inside(e.target, "[data-cursor]") && !inside(to, "[data-cursor]")) {
-        document.body.classList.remove("cursor-media"); label.textContent = "";
-      }
-      if (inside(e.target, "a,button") && !inside(to, "a,button")) document.body.classList.remove("cursor-hover");
-    });
+    var setState = function (el) {
+      var media = inside(el, "[data-cursor]");
+      document.body.classList.toggle("cursor-media", !!media);
+      document.body.classList.toggle("cursor-hover", !media && !!inside(el, "a,button"));
+      if (media) label.textContent = media.dataset.cursor || "";
+    };
+    document.addEventListener("mouseover", function (e) { setState(e.target); });
+    var queued = false;
+    cursorResync = function () {
+      if (!on || queued) return;
+      queued = true;
+      requestAnimationFrame(function () { queued = false; setState(document.elementFromPoint(mx, my)); });
+    };
+    // capture: the deck scrolls .snap, and scroll does not bubble up to the document
+    document.addEventListener("scroll", cursorResync, { capture: true, passive: true });
   }
+  var cursorResync = function () {};
 
   /* ===================== Card hover parallax (per mount) =====================
      The big work cards answer the cursor the way the hero scene does: the image
@@ -1935,6 +1938,8 @@
     initCopyMail();
     initImgFade();
     initIdleAnimations();
+    tagCursorTargets();   // a swapped-in page brings untagged cards
+    cursorResync();       // and the card that was clicked is gone from under the pointer
     var hero = document.querySelector(".hero, .about-hero, .project-hero");
     if (hero) requestAnimationFrame(function () { hero.classList.add("is-in"); });
   }
