@@ -105,6 +105,14 @@ def build_page(page, lang, catalog):
     out = localize_paths(out)
     out = out.replace('<html lang="en"', f'<html lang="{lang}"', 1)
 
+    # The 404 page is served at whatever URL was missing, at any depth, so its
+    # source uses root-absolute paths (localize_paths leaves those alone). Only the
+    # links to other PAGES need the language folder, so a Spanish 404 leads back
+    # into the Spanish site.
+    if page == "404.html":
+        out = re.sub(r'(href=")/((?:index|about|resume)\.html|projects/)',
+                     lambda m: m.group(1) + f"/{lang}/" + m.group(2), out)
+
     # canonical / og:url point at THIS language's copy
     def prefix(m):
         return m.group(1) + f"{SITE}/{lang}" + (m.group(2) or "/")

@@ -18,6 +18,25 @@
   pretty_urls = false
 
 # ---------------------------------------------------------------------------
+# One host. The site is also reachable at its netlify.app address, and a second
+# Netlify project (aitormoralescom) builds this same repo to its own netlify.app
+# address: two full copies of the portfolio under other names. Both go to the
+# real domain. Deploy previews and permalinks (<id>--…netlify.app) are other
+# hosts and keep working.
+# ---------------------------------------------------------------------------
+[[redirects]]
+  from = "https://aitormorales.netlify.app/*"
+  to = "https://aitormorales.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://aitormoralescom.netlify.app/*"
+  to = "https://aitormorales.com/:splat"
+  status = 301
+  force = true
+
+# ---------------------------------------------------------------------------
 # Old v1 URLs. /about.html still exists in v3, but the projects page is gone,
 # so anything pointing at it (links, bookmarks, search results) is sent to the
 # case study that replaced it rather than dying on a 404.
@@ -153,3 +172,33 @@
   [headers.values]
     Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.goatcounter.com; font-src 'self'; media-src 'self'; frame-src https://www.youtube-nocookie.com https://itch.io https://*.itch.zone; connect-src 'self' https://*.goatcounter.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
     X-Frame-Options = "SAMEORIGIN"
+
+# ---------------------------------------------------------------------------
+# Localized 404s. Netlify only ever serves /404.html on its own, so a broken
+# link inside /es/ showed the English page. These rules are not forced, so they
+# only apply when no file exists at the requested path.
+# ---------------------------------------------------------------------------
+[[redirects]]
+  from = "/es/*"
+  to = "/es/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/fr/*"
+  to = "/fr/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/de/*"
+  to = "/de/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/it/*"
+  to = "/it/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/pt/*"
+  to = "/pt/404.html"
+  status = 404
