@@ -1952,8 +1952,21 @@
      Steam and LinkedIn. Silent anywhere but the live domain (localhost, Netlify deploy
      previews) and when the code below is empty. */
   var GOATCOUNTER = "aitormorales";   // the site code registered at goatcounter.com
+  /* "Disable for this browser" in GoatCounter's settings opens the site with
+     #toggle-goatcounter and expects the page to flip localStorage.skipgc, which is
+     count.js's job. This site does its own counting, so it honours the same switch. */
+  function trackSkipped() { try { return localStorage.getItem("skipgc") === "t"; } catch (_) { return false; } }
+  function trackToggle() {
+    if (location.hash !== "#toggle-goatcounter") return;
+    try {
+      var off = !trackSkipped();
+      if (off) localStorage.setItem("skipgc", "t"); else localStorage.removeItem("skipgc");
+      alert("GoatCounter tracking is now " + (off ? "DISABLED" : "ENABLED") + " in this browser.");
+    } catch (_) {}
+    try { history.replaceState(history.state, "", location.pathname + location.search); } catch (_) {}
+  }
   function trackSend(q) {
-    if (!GOATCOUNTER || !/(^|\.)aitormorales\.com$/.test(location.hostname)) return;
+    if (!GOATCOUNTER || !/(^|\.)aitormorales\.com$/.test(location.hostname) || trackSkipped()) return;
     var url = "https://" + GOATCOUNTER + ".goatcounter.com/count?" + q + "&rnd=" + Math.random().toString(36).slice(2);
     try { if (navigator.sendBeacon && navigator.sendBeacon(url)) return; } catch (_) {}
     new Image().src = url;
@@ -2000,6 +2013,7 @@
        over, so that path is never left unmanned. */
     if (!initPjax()) initBackReturn();
     initLangUI();
+    trackToggle(); addEventListener("hashchange", trackToggle);
     trackView(true); initTrackClicks();
     mountContent(); headerFlipResolve();
     // Everything that INJECTS new chrome waits for the page morph to land. Injecting
