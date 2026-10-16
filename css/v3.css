@@ -1713,6 +1713,7 @@ a.proj-line:hover b{color:var(--violet-bright)}
 @media (prefers-reduced-motion:reduce){.toy *,.toy *::before,.toy *::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
 /* "Playable" tags on the home cards: these case studies carry a toy (see PLAYABLE TOYS) */
+.tag-play[hidden],.mc-play[hidden]{display:none}
 .work-meta .tag-play{color:#7ef0c2;border-color:rgba(79,209,161,.55);background:rgba(79,209,161,.08)}
 .tag-play i,.mc-play i{font-style:normal;font-size:.85em}
 .mc-shot{position:relative}

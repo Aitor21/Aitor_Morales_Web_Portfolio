@@ -493,7 +493,8 @@
      loader has to live here. Same ?v= as this file, so a deploy busts both. */
   var toysQueue = null;
   function initToys() {
-    var els = document.querySelectorAll("[data-toy]");
+    // a toy marked hidden is parked: not shown, and toys.js is not even fetched for it
+    var els = document.querySelectorAll("[data-toy]:not([hidden])");
     if (!els.length) return;
     var run = function () { els.forEach(function (el) { window.AMToys.mount(el); }); };
     if (window.AMToys) return run();
