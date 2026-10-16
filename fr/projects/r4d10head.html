@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <script src="../../js/lang.js?v=86"></script>
+  <script src="../../js/lang.js?v=87"></script>
   <title>R4D10HEAD · Aitor Morales</title>
   <meta name="description" content="R4D10HEAD, un jeu d'infiltration inversée : bouger vous rend assourdissant, rester immobile vous rend aveugle. Game et level design par Aitor Morales.">
   <link rel="canonical" href="https://aitormorales.com/fr/projects/r4d10head.html">
@@ -36,7 +36,7 @@
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Dem.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Med.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Boo.woff2" crossorigin>
-  <link rel="stylesheet" href="../../css/v3.css?v=86">
+  <link rel="stylesheet" href="../../css/v3.css?v=87">
   <link rel="expect" href="#main-content" blocking="render">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"VideoGame","name":"R4D10HEAD","genre":"Stealth","gamePlatform":["PC","Windows","macOS"],"author":{"@type":"Person","name":"Aitor Morales"},"url":"https://aitormorales.itch.io/r4d10-head"}
@@ -140,6 +140,37 @@
         </div>
       </section>
 
+      <section class="toy toy--radio" data-toy="radio" aria-labelledby="toy-title">
+        <div class="toy__head">
+          <p class="toy__eyebrow"><i aria-hidden="true"></i>Jouable · la mécanique centrale</p>
+          <h2 class="toy__title" id="toy-title">Bruyant quand vous bougez, aveugle quand vous vous arrêtez</h2>
+          <p class="toy__lead">Menez le robot jusqu’à la sortie. Tant que vous bougez, vous voyez, mais chaque garde à portée d’oreille vous entend et vient voir. Arrêtez-vous, et vous êtes silencieux mais aveugle. Les murs étouffent le bruit. Tout l’art est de choisir quand faire du bruit.</p>
+        </div>
+        <div class="toy__stage" data-toy-focus tabindex="0" aria-label="Jeu d’infiltration. Flèches ou ZQSD pour bouger ; sur écran tactile, maintenez le doigt là où vous voulez aller.">
+          <canvas width="800" height="480" aria-hidden="true"></canvas>
+        <div class="toy__start" data-toy-start>
+          <button class="btn" type="button" data-toy-go>Jouer <span class="arrow">→</span></button>
+          <p class="toy__keys">Flèches ou ZQSD, ou maintenez le doigt là où vous voulez aller. Le mouvement, c’est tout ou rien.</p>
+        </div>
+        <div class="toy__end" data-toy-end hidden>
+          <p class="toy__end-k" data-end-k></p>
+          <p class="toy__end-t" data-end-t></p>
+          <div class="btn-row"><button class="btn btn--ghost" type="button" data-toy-again>Rejouer</button></div>
+        </div>
+        </div>
+        <div class="toy__bar"><span>Bruit<span class="radio-meter" data-h-noise><i></i></span></span><span>État<b data-h-state>Silencieux</b></span></div>
+        <p class="sr-only" role="status" aria-live="polite" data-toy-live></p>
+        <div hidden>
+          <span data-msg="state-loud">Bruyant</span>
+          <span data-msg="state-quiet">Silencieux</span>
+          <span data-msg="state-blind">Aveugle</span>
+          <span data-msg="win-k">Vous êtes sorti</span>
+          <span data-msg="win-t">Évadé en {s} secondes. La CORPORATION ne vous a jamais vu partir.</span>
+          <span data-msg="lose-k">Attrapé</span>
+          <span data-msg="lose-t">Un garde est allé droit vers le bruit. Bougez quand ils sont loin, puis restez immobile.</span>
+        </div>
+      </section>
+
       <nav class="proj-foot-nav" aria-label="Plus">
         <a href="../index.html#work"><span class="dir">← Retour</span>Tous les projets</a>
         <a href="../projects/viktors-mayhem.html" style="text-align:right"><span class="dir">Suivant →</span>Viktor's Mayhem</a>
@@ -147,6 +178,6 @@
     </div>
   </main>
 
-  <script src="../../js/v3.js?v=86"></script>
+  <script src="../../js/v3.js?v=87"></script>
 </body>
 </html>

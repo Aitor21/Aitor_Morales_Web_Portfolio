@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <script src="../../js/lang.js?v=86"></script>
+  <script src="../../js/lang.js?v=87"></script>
   <title>Birds of a Feather · Aitor Morales</title>
   <meta name="description" content="Birds of a Feather, gioco 3D di volo e combattimento di massa fatto in solitaria per la Level Up Game Jam 2024. Design e codice di Aitor Morales.">
   <link rel="canonical" href="https://aitormorales.com/it/projects/birds-of-a-feather.html">
@@ -36,7 +36,7 @@
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Dem.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Med.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Boo.woff2" crossorigin>
-  <link rel="stylesheet" href="../../css/v3.css?v=86">
+  <link rel="stylesheet" href="../../css/v3.css?v=87">
   <link rel="expect" href="#main-content" blocking="render">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"VideoGame","name":"Birds of a Feather","genre":"Action Adventure","gamePlatform":["PC","Windows","macOS"],"author":{"@type":"Person","name":"Aitor Morales"},"url":"https://aitormorales.itch.io/birds-of-a-feather"}
@@ -140,6 +140,40 @@
         </div>
       </section>
 
+      <section class="toy toy--flock" data-toy="flock" aria-labelledby="toy-title">
+        <div class="toy__head">
+          <p class="toy__eyebrow"><i aria-hidden="true"></i>Giocabile · la meccanica principale</p>
+          <h2 class="toy__title" id="toy-title">I tuoi seguaci sono il tuo esercito</h2>
+          <p class="toy__lead">Sei il piccione con l’anello bianco. Vola tra gli uccelli dispersi per conquistarli, e il tuo stormo ti seguirà ovunque. I corvi derubano uno stormo piccolo e perdono contro uno grande. Poi arriva il Boss Corvo, e solo uno stormo di quindici può cacciarlo.</p>
+        </div>
+        <div class="toy__stage" data-toy-focus tabindex="0" aria-label="Gioco dello stormo. Guida con il mouse, un dito o le frecce.">
+          <canvas width="800" height="480" aria-hidden="true"></canvas>
+        <div class="toy__start" data-toy-start>
+          <button class="btn" type="button" data-toy-go>Gioca <span class="arrow">→</span></button>
+          <p class="toy__keys">Guida con il mouse, un dito o le frecce</p>
+        </div>
+        <div class="toy__end" data-toy-end hidden>
+          <p class="toy__end-k" data-end-k></p>
+          <p class="toy__end-t" data-end-t></p>
+          <div class="btn-row"><button class="btn btn--ghost" type="button" data-toy-again>Gioca ancora</button></div>
+        </div>
+        </div>
+        <div class="toy__bar"><span>Stormo<b data-h-flock>0</b></span><span>Tempo<b data-h-time>60</b></span><span><b data-h-goal></b></span></div>
+        <p class="sr-only" role="status" aria-live="polite" data-toy-live></p>
+        <div hidden>
+          <span data-msg="goal-grow">Boss tra {s} s</span>
+          <span data-msg="goal-boss">Il boss richiede uno stormo di {n}</span>
+          <span data-msg="boss-in">Il Boss Corvo!</span>
+          <span data-msg="bonk">Bonk!</span>
+          <span data-msg="win-k">Vince lo stormo</span>
+          <span data-msg="win-t">{n} piccioni hanno cacciato il Boss Corvo.</span>
+          <span data-msg="lose-k">In minoranza</span>
+          <span data-msg="lose-t">Il Boss Corvo perde solo contro uno stormo di {n}. Recluta di più prima di affrontarlo.</span>
+          <span data-msg="time-k">Tempo scaduto</span>
+          <span data-msg="time-t">Il Boss Corvo è scappato. Raduna più uccelli e affrontalo prima.</span>
+        </div>
+      </section>
+
       <nav class="proj-foot-nav" aria-label="Altro">
         <a href="../index.html#work"><span class="dir">← Indietro</span>Tutti i progetti</a>
         <a href="../projects/r4d10head.html" style="text-align:right"><span class="dir">Successivo →</span>R4D10HEAD</a>
@@ -147,6 +181,6 @@
     </div>
   </main>
 
-  <script src="../../js/v3.js?v=86"></script>
+  <script src="../../js/v3.js?v=87"></script>
 </body>
 </html>

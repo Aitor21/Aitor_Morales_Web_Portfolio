@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <script src="../../js/lang.js?v=86"></script>
+  <script src="../../js/lang.js?v=87"></script>
   <title>Birds of a Feather · Aitor Morales</title>
   <meta name="description" content="Birds of a Feather, ein solo entwickeltes 3D-Flug- und Massenkampfspiel für die Level Up Game Jam 2024. Design, Code und Content von Aitor Morales.">
   <link rel="canonical" href="https://aitormorales.com/de/projects/birds-of-a-feather.html">
@@ -36,7 +36,7 @@
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Dem.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Med.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Boo.woff2" crossorigin>
-  <link rel="stylesheet" href="../../css/v3.css?v=86">
+  <link rel="stylesheet" href="../../css/v3.css?v=87">
   <link rel="expect" href="#main-content" blocking="render">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"VideoGame","name":"Birds of a Feather","genre":"Action Adventure","gamePlatform":["PC","Windows","macOS"],"author":{"@type":"Person","name":"Aitor Morales"},"url":"https://aitormorales.itch.io/birds-of-a-feather"}
@@ -140,6 +140,40 @@
         </div>
       </section>
 
+      <section class="toy toy--flock" data-toy="flock" aria-labelledby="toy-title">
+        <div class="toy__head">
+          <p class="toy__eyebrow"><i aria-hidden="true"></i>Spielbar · die Kernmechanik</p>
+          <h2 class="toy__title" id="toy-title">Deine Anhänger sind deine Armee</h2>
+          <p class="toy__lead">Du bist die Taube mit dem weißen Ring. Flieg durch verirrte Vögel, um sie für dich zu gewinnen, und dein Schwarm folgt dir überallhin. Krähen bestehlen einen kleinen Schwarm und verlieren gegen einen großen. Dann kommt der Krähenboss, und nur ein Schwarm von fünfzehn kann ihn verjagen.</p>
+        </div>
+        <div class="toy__stage" data-toy-focus tabindex="0" aria-label="Schwarm-Spiel. Steuere mit der Maus, einem Finger oder den Pfeiltasten.">
+          <canvas width="800" height="480" aria-hidden="true"></canvas>
+        <div class="toy__start" data-toy-start>
+          <button class="btn" type="button" data-toy-go>Spielen <span class="arrow">→</span></button>
+          <p class="toy__keys">Steuere mit der Maus, einem Finger oder den Pfeiltasten</p>
+        </div>
+        <div class="toy__end" data-toy-end hidden>
+          <p class="toy__end-k" data-end-k></p>
+          <p class="toy__end-t" data-end-t></p>
+          <div class="btn-row"><button class="btn btn--ghost" type="button" data-toy-again>Nochmal spielen</button></div>
+        </div>
+        </div>
+        <div class="toy__bar"><span>Schwarm<b data-h-flock>0</b></span><span>Zeit<b data-h-time>60</b></span><span><b data-h-goal></b></span></div>
+        <p class="sr-only" role="status" aria-live="polite" data-toy-live></p>
+        <div hidden>
+          <span data-msg="goal-grow">Boss in {s} s</span>
+          <span data-msg="goal-boss">Der Boss verlangt einen Schwarm von {n}</span>
+          <span data-msg="boss-in">Der Krähenboss!</span>
+          <span data-msg="bonk">Bonk!</span>
+          <span data-msg="win-k">Der Schwarm siegt</span>
+          <span data-msg="win-t">{n} Tauben haben den Krähenboss verjagt.</span>
+          <span data-msg="lose-k">In der Unterzahl</span>
+          <span data-msg="lose-t">Der Krähenboss verliert nur gegen einen Schwarm von {n}. Rekrutiere mehr, bevor du ihn stellst.</span>
+          <span data-msg="time-k">Zeit abgelaufen</span>
+          <span data-msg="time-t">Der Krähenboss ist entkommen. Sammle mehr Vögel und stell ihn früher.</span>
+        </div>
+      </section>
+
       <nav class="proj-foot-nav" aria-label="Mehr">
         <a href="../index.html#work"><span class="dir">← Zurück</span>Alle Projekte</a>
         <a href="../projects/r4d10head.html" style="text-align:right"><span class="dir">Weiter →</span>R4D10HEAD</a>
@@ -147,6 +181,6 @@
     </div>
   </main>
 
-  <script src="../../js/v3.js?v=86"></script>
+  <script src="../../js/v3.js?v=87"></script>
 </body>
 </html>

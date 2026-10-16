@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <script src="../../js/lang.js?v=86"></script>
+  <script src="../../js/lang.js?v=87"></script>
   <title>Viktor's Mayhem · Aitor Morales</title>
   <meta name="description" content="Viktor's Mayhem (La Ruleta del Infortunio): um concurso onde uma slot machine escolhe a tua maldição e com ela enfrentas a arena. De Aitor Morales.">
   <link rel="canonical" href="https://aitormorales.com/pt/projects/viktors-mayhem.html">
@@ -36,7 +36,7 @@
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Dem.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Med.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Boo.woff2" crossorigin>
-  <link rel="stylesheet" href="../../css/v3.css?v=86">
+  <link rel="stylesheet" href="../../css/v3.css?v=87">
   <link rel="expect" href="#main-content" blocking="render">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"VideoGame","name":"Viktor's Mayhem","alternateName":"La Ruleta del Infortunio","genre":"Action","gamePlatform":["PC","Windows","macOS"],"author":{"@type":"Person","name":"Aitor Morales"},"url":"https://teresa-costas.itch.io/la-ruleta-del-infortunio"}
@@ -141,6 +141,63 @@
         </div>
       </section>
 
+      <section class="toy toy--slots" data-toy="slots" aria-labelledby="toy-title">
+        <div class="toy__head">
+          <p class="toy__eyebrow"><i aria-hidden="true"></i>Jogável · a mecânica central</p>
+          <h2 class="toy__title" id="toy-title">Puxa a alavanca. Aceita a tua maldição.</h2>
+          <p class="toy__lead">A slot machine escolhe uma desgraça e depois sobrevives quinze segundos ao público do estúdio a atirar tomates. Cada maldição muda a forma como tens de jogar, não só um número. Dá um sprint pelos tomates quando for preciso.</p>
+        </div>
+        <div class="toy__stage" data-toy-focus tabindex="0" aria-label="Concurso. Puxa a alavanca, depois mexe-te com as setas ou WASD e dá um sprint com Espaço.">
+          <div class="slot" data-slot>
+            <div class="slot__body">
+              <div class="slot__frame" aria-hidden="true"><div class="reel" data-reel></div><div class="reel" data-reel></div><div class="reel" data-reel></div></div>
+              <button class="lever" type="button" data-lever aria-label="Puxar a alavanca"></button>
+            </div>
+            <div class="curse" data-curse hidden>
+              <span class="curse__icon" data-curse-icon aria-hidden="true"></span>
+              <div><p class="curse__name" data-curse-name></p><p class="curse__rule" data-curse-rule></p><p class="curse__quip" data-curse-quip></p></div>
+              <button class="btn" type="button" data-fight>Entrar na arena <span class="arrow">→</span></button>
+            </div>
+          </div>
+          <div class="arena" data-arena hidden><canvas width="800" height="480" aria-hidden="true"></canvas><button class="toy-btn" type="button" data-dash>Sprint</button></div>
+        <div class="toy__start" data-toy-start>
+          <button class="btn" type="button" data-toy-go>Puxar a alavanca <span class="arrow">→</span></button>
+          <p class="toy__keys">Depois mexe-te com as setas, WASD ou o dedo · Espaço ou o botão Sprint para fugir</p>
+        </div>
+        <div class="toy__end" data-toy-end hidden>
+          <p class="toy__end-k" data-end-k></p>
+          <p class="toy__end-t" data-end-t></p>
+          <div class="btn-row"><button class="btn btn--ghost" type="button" data-toy-again>Puxar outra vez</button></div>
+        </div>
+        </div>
+        <div class="toy__bar"><span>Vida<b data-h-hearts>❤❤❤</b></span><span>Tempo<b data-h-time>15</b></span><span>Maldição<b data-h-curse>–</b></span></div>
+        <p class="sr-only" role="status" aria-live="polite" data-toy-live></p>
+        <div hidden>
+          <span data-msg="c-mirror">Espelho meu</span>
+          <span data-msg="r-mirror">Os teus controlos estão invertidos.</span>
+          <span data-msg="q-mirror">A esquerda é direita e a direita está errada. Tal como as tuas escolhas de vida!</span>
+          <span data-msg="c-big">Ossos largos</span>
+          <span data-msg="r-big">A tua hitbox tem o dobro do tamanho.</span>
+          <span data-msg="q-big">Mais de ti para amar. E para acertar!</span>
+          <span data-msg="c-butter">Chão de manteiga</span>
+          <span data-msg="r-butter">Escorregas. Parar é só uma sugestão.</span>
+          <span data-msg="q-butter">Os nossos patrocinadores ofereceram a cera do chão. Com generosidade.</span>
+          <span data-msg="c-dark">Apagão</span>
+          <span data-msg="r-dark">Só vês a uns passos de ti.</span>
+          <span data-msg="q-dark">Esquecemo-nos de pagar a luz. O público pagou os tomates.</span>
+          <span data-msg="c-coffee">Café a mais</span>
+          <span data-msg="r-coffee">Moves-te quase ao dobro da velocidade. Boa sorte a guiar.</span>
+          <span data-msg="q-coffee">Sétimo expresso! O teu coração está ótimo. Provavelmente.</span>
+          <span data-msg="c-glass">Ossos de vidro</span>
+          <span data-msg="r-glass">Um golpe e estás fora, mas o sprint recarrega ao dobro da velocidade.</span>
+          <span data-msg="q-glass">Manusear com cuidado. O nosso público não vai!</span>
+          <span data-msg="win-k">Sobreviveste</span>
+          <span data-msg="win-t">O Viktor está desiludido. O público exige desforra.</span>
+          <span data-msg="lose-k">Splat</span>
+          <span data-msg="lose-t">Fora ao fim de {s} segundos. O Viktor está encantado. Puxas outra vez?</span>
+        </div>
+      </section>
+
       <nav class="proj-foot-nav" aria-label="Mais">
         <a href="../index.html#work"><span class="dir">← Voltar</span>Todos os projetos</a>
         <a href="../projects/gimica.html" style="text-align:right"><span class="dir">Seguinte →</span>Gimica</a>
@@ -148,6 +205,6 @@
     </div>
   </main>
 
-  <script src="../../js/v3.js?v=86"></script>
+  <script src="../../js/v3.js?v=87"></script>
 </body>
 </html>

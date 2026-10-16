@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <script src="../../js/lang.js?v=86"></script>
+  <script src="../../js/lang.js?v=87"></script>
   <title>Viktor's Mayhem · Aitor Morales</title>
   <meta name="description" content="Viktor's Mayhem (La Ruleta del Infortunio): eine Spielshow, in der ein Spielautomat deinen Fluch wählt – und du kämpfst damit. Game Design: Aitor Morales.">
   <link rel="canonical" href="https://aitormorales.com/de/projects/viktors-mayhem.html">
@@ -36,7 +36,7 @@
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Dem.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Med.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Boo.woff2" crossorigin>
-  <link rel="stylesheet" href="../../css/v3.css?v=86">
+  <link rel="stylesheet" href="../../css/v3.css?v=87">
   <link rel="expect" href="#main-content" blocking="render">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"VideoGame","name":"Viktor's Mayhem","alternateName":"La Ruleta del Infortunio","genre":"Action","gamePlatform":["PC","Windows","macOS"],"author":{"@type":"Person","name":"Aitor Morales"},"url":"https://teresa-costas.itch.io/la-ruleta-del-infortunio"}
@@ -141,6 +141,63 @@
         </div>
       </section>
 
+      <section class="toy toy--slots" data-toy="slots" aria-labelledby="toy-title">
+        <div class="toy__head">
+          <p class="toy__eyebrow"><i aria-hidden="true"></i>Spielbar · die Kernmechanik</p>
+          <h2 class="toy__title" id="toy-title">Zieh den Hebel. Nimm deinen Fluch.</h2>
+          <p class="toy__lead">Der Spielautomat wählt ein Missgeschick, dann überlebst du fünfzehn Sekunden Tomatenbeschuss vom Studiopublikum. Jeder Fluch ändert, wie du spielen musst, nicht nur eine Zahl. Dash durch die Tomaten, wenn es sein muss.</p>
+        </div>
+        <div class="toy__stage" data-toy-focus tabindex="0" aria-label="Spielshow. Zieh den Hebel, dann beweg dich mit den Pfeiltasten oder WASD und dashe mit der Leertaste.">
+          <div class="slot" data-slot>
+            <div class="slot__body">
+              <div class="slot__frame" aria-hidden="true"><div class="reel" data-reel></div><div class="reel" data-reel></div><div class="reel" data-reel></div></div>
+              <button class="lever" type="button" data-lever aria-label="Hebel ziehen"></button>
+            </div>
+            <div class="curse" data-curse hidden>
+              <span class="curse__icon" data-curse-icon aria-hidden="true"></span>
+              <div><p class="curse__name" data-curse-name></p><p class="curse__rule" data-curse-rule></p><p class="curse__quip" data-curse-quip></p></div>
+              <button class="btn" type="button" data-fight>Ab in die Arena <span class="arrow">→</span></button>
+            </div>
+          </div>
+          <div class="arena" data-arena hidden><canvas width="800" height="480" aria-hidden="true"></canvas><button class="toy-btn" type="button" data-dash>Dash</button></div>
+        <div class="toy__start" data-toy-start>
+          <button class="btn" type="button" data-toy-go>Hebel ziehen <span class="arrow">→</span></button>
+          <p class="toy__keys">Dann beweg dich mit Pfeiltasten, WASD oder dem Finger · Leertaste oder Dash-Knopf zum Dashen</p>
+        </div>
+        <div class="toy__end" data-toy-end hidden>
+          <p class="toy__end-k" data-end-k></p>
+          <p class="toy__end-t" data-end-t></p>
+          <div class="btn-row"><button class="btn btn--ghost" type="button" data-toy-again>Nochmal ziehen</button></div>
+        </div>
+        </div>
+        <div class="toy__bar"><span>Leben<b data-h-hearts>❤❤❤</b></span><span>Zeit<b data-h-time>15</b></span><span>Fluch<b data-h-curse>–</b></span></div>
+        <p class="sr-only" role="status" aria-live="polite" data-toy-live></p>
+        <div hidden>
+          <span data-msg="c-mirror">Spieglein, Spieglein</span>
+          <span data-msg="r-mirror">Deine Steuerung ist vertauscht.</span>
+          <span data-msg="q-mirror">Links ist rechts und rechts ist falsch. Genau wie deine Lebensentscheidungen!</span>
+          <span data-msg="c-big">Schwere Knochen</span>
+          <span data-msg="r-big">Deine Hitbox ist doppelt so groß.</span>
+          <span data-msg="q-big">Mehr von dir zum Liebhaben. Und zum Treffen!</span>
+          <span data-msg="c-butter">Butterboden</span>
+          <span data-msg="r-butter">Du rutschst. Anhalten ist nur ein Vorschlag.</span>
+          <span data-msg="q-butter">Unsere Sponsoren haben das Bohnerwachs gestellt. Großzügig.</span>
+          <span data-msg="c-dark">Licht aus</span>
+          <span data-msg="r-dark">Du siehst nur ein paar Schritte weit.</span>
+          <span data-msg="q-dark">Wir haben die Stromrechnung vergessen. Das Publikum hat für Tomaten bezahlt.</span>
+          <span data-msg="c-coffee">Zu viel Kaffee</span>
+          <span data-msg="r-coffee">Du bist fast doppelt so schnell. Viel Glück beim Lenken.</span>
+          <span data-msg="q-coffee">Espresso Nummer sieben! Deinem Herz geht es gut. Wahrscheinlich.</span>
+          <span data-msg="c-glass">Gläserne Knochen</span>
+          <span data-msg="r-glass">Ein Treffer und du bist raus, aber dein Dash lädt doppelt so schnell.</span>
+          <span data-msg="q-glass">Vorsicht, zerbrechlich. Unser Publikum kennt keine Vorsicht!</span>
+          <span data-msg="win-k">Du hast überlebt</span>
+          <span data-msg="win-t">Viktor ist enttäuscht. Das Publikum verlangt eine Revanche.</span>
+          <span data-msg="lose-k">Platsch</span>
+          <span data-msg="lose-t">Raus nach {s} Sekunden. Viktor ist begeistert. Nochmal ziehen?</span>
+        </div>
+      </section>
+
       <nav class="proj-foot-nav" aria-label="Mehr">
         <a href="../index.html#work"><span class="dir">← Zurück</span>Alle Projekte</a>
         <a href="../projects/gimica.html" style="text-align:right"><span class="dir">Weiter →</span>Gimica</a>
@@ -148,6 +205,6 @@
     </div>
   </main>
 
-  <script src="../../js/v3.js?v=86"></script>
+  <script src="../../js/v3.js?v=87"></script>
 </body>
 </html>

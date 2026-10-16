@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <script src="../../js/lang.js?v=86"></script>
+  <script src="../../js/lang.js?v=87"></script>
   <title>Viktor's Mayhem · Aitor Morales</title>
   <meta name="description" content="Viktor's Mayhem (La Ruleta del Infortunio) : un jeu télévisé où une machine à sous choisit votre malédiction pour une arène. Game design : Aitor Morales.">
   <link rel="canonical" href="https://aitormorales.com/fr/projects/viktors-mayhem.html">
@@ -36,7 +36,7 @@
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Dem.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Med.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Boo.woff2" crossorigin>
-  <link rel="stylesheet" href="../../css/v3.css?v=86">
+  <link rel="stylesheet" href="../../css/v3.css?v=87">
   <link rel="expect" href="#main-content" blocking="render">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"VideoGame","name":"Viktor's Mayhem","alternateName":"La Ruleta del Infortunio","genre":"Action","gamePlatform":["PC","Windows","macOS"],"author":{"@type":"Person","name":"Aitor Morales"},"url":"https://teresa-costas.itch.io/la-ruleta-del-infortunio"}
@@ -141,6 +141,63 @@
         </div>
       </section>
 
+      <section class="toy toy--slots" data-toy="slots" aria-labelledby="toy-title">
+        <div class="toy__head">
+          <p class="toy__eyebrow"><i aria-hidden="true"></i>Jouable · la mécanique centrale</p>
+          <h2 class="toy__title" id="toy-title">Tirez le levier. Acceptez votre malédiction.</h2>
+          <p class="toy__lead">La machine à sous choisit une infortune, puis vous survivez quinze secondes aux tomates du public du plateau. Chaque malédiction change votre façon de jouer, pas juste un chiffre. Foncez à travers les tomates quand il le faut.</p>
+        </div>
+        <div class="toy__stage" data-toy-focus tabindex="0" aria-label="Jeu télévisé. Tirez le levier, puis bougez avec les flèches ou ZQSD et foncez avec Espace.">
+          <div class="slot" data-slot>
+            <div class="slot__body">
+              <div class="slot__frame" aria-hidden="true"><div class="reel" data-reel></div><div class="reel" data-reel></div><div class="reel" data-reel></div></div>
+              <button class="lever" type="button" data-lever aria-label="Tirer le levier"></button>
+            </div>
+            <div class="curse" data-curse hidden>
+              <span class="curse__icon" data-curse-icon aria-hidden="true"></span>
+              <div><p class="curse__name" data-curse-name></p><p class="curse__rule" data-curse-rule></p><p class="curse__quip" data-curse-quip></p></div>
+              <button class="btn" type="button" data-fight>Entrer dans l’arène <span class="arrow">→</span></button>
+            </div>
+          </div>
+          <div class="arena" data-arena hidden><canvas width="800" height="480" aria-hidden="true"></canvas><button class="toy-btn" type="button" data-dash>Foncer</button></div>
+        <div class="toy__start" data-toy-start>
+          <button class="btn" type="button" data-toy-go>Tirer le levier <span class="arrow">→</span></button>
+          <p class="toy__keys">Puis bougez avec les flèches, ZQSD ou le doigt · Espace ou le bouton Foncer pour foncer</p>
+        </div>
+        <div class="toy__end" data-toy-end hidden>
+          <p class="toy__end-k" data-end-k></p>
+          <p class="toy__end-t" data-end-t></p>
+          <div class="btn-row"><button class="btn btn--ghost" type="button" data-toy-again>Retirer le levier</button></div>
+        </div>
+        </div>
+        <div class="toy__bar"><span>Vie<b data-h-hearts>❤❤❤</b></span><span>Temps<b data-h-time>15</b></span><span>Malédiction<b data-h-curse>–</b></span></div>
+        <p class="sr-only" role="status" aria-live="polite" data-toy-live></p>
+        <div hidden>
+          <span data-msg="c-mirror">Miroir, miroir</span>
+          <span data-msg="r-mirror">Vos commandes sont inversées.</span>
+          <span data-msg="q-mirror">La gauche est à droite et la droite est à côté. Comme vos choix de vie !</span>
+          <span data-msg="c-big">Gros os</span>
+          <span data-msg="r-big">Votre hitbox est deux fois plus grande.</span>
+          <span data-msg="q-big">Plus de vous à aimer. Et à toucher !</span>
+          <span data-msg="c-butter">Sol au beurre</span>
+          <span data-msg="r-butter">Vous glissez. S’arrêter n’est qu’une suggestion.</span>
+          <span data-msg="q-butter">Nos sponsors ont fourni la cire. Généreusement.</span>
+          <span data-msg="c-dark">Lumières éteintes</span>
+          <span data-msg="r-dark">Vous ne voyez qu’à quelques pas autour de vous.</span>
+          <span data-msg="q-dark">On a oublié de payer l’électricité. Le public, lui, a payé les tomates.</span>
+          <span data-msg="c-coffee">Trop de café</span>
+          <span data-msg="r-coffee">Vous allez presque deux fois plus vite. Bonne chance pour diriger.</span>
+          <span data-msg="q-coffee">Septième espresso ! Votre cœur va bien. Sans doute.</span>
+          <span data-msg="c-glass">Os de verre</span>
+          <span data-msg="r-glass">Un seul coup et c’est fini, mais « Foncer » se recharge deux fois plus vite.</span>
+          <span data-msg="q-glass">Fragile. Notre public s’en fiche !</span>
+          <span data-msg="win-k">Vous avez survécu</span>
+          <span data-msg="win-t">Viktor est déçu. Le public exige une revanche.</span>
+          <span data-msg="lose-k">Splatch</span>
+          <span data-msg="lose-t">Éliminé après {s} secondes. Viktor est ravi. On retire ?</span>
+        </div>
+      </section>
+
       <nav class="proj-foot-nav" aria-label="Plus">
         <a href="../index.html#work"><span class="dir">← Retour</span>Tous les projets</a>
         <a href="../projects/gimica.html" style="text-align:right"><span class="dir">Suivant →</span>Gimica</a>
@@ -148,6 +205,6 @@
     </div>
   </main>
 
-  <script src="../../js/v3.js?v=86"></script>
+  <script src="../../js/v3.js?v=87"></script>
 </body>
 </html>
