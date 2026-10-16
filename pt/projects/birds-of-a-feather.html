@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <script src="../../js/lang.js?v=86"></script>
+  <script src="../../js/lang.js?v=87"></script>
   <title>Birds of a Feather · Aitor Morales</title>
   <meta name="description" content="Birds of a Feather, um jogo 3D de voo e combate de multidões feito a solo para a Level Up Game Jam 2024. Design, código e conteúdo de Aitor Morales.">
   <link rel="canonical" href="https://aitormorales.com/pt/projects/birds-of-a-feather.html">
@@ -36,7 +36,7 @@
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Dem.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Med.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Boo.woff2" crossorigin>
-  <link rel="stylesheet" href="../../css/v3.css?v=86">
+  <link rel="stylesheet" href="../../css/v3.css?v=87">
   <link rel="expect" href="#main-content" blocking="render">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"VideoGame","name":"Birds of a Feather","genre":"Action Adventure","gamePlatform":["PC","Windows","macOS"],"author":{"@type":"Person","name":"Aitor Morales"},"url":"https://aitormorales.itch.io/birds-of-a-feather"}
@@ -140,6 +140,40 @@
         </div>
       </section>
 
+      <section class="toy toy--flock" data-toy="flock" aria-labelledby="toy-title">
+        <div class="toy__head">
+          <p class="toy__eyebrow"><i aria-hidden="true"></i>Jogável · a mecânica central</p>
+          <h2 class="toy__title" id="toy-title">Os teus seguidores são o teu exército</h2>
+          <p class="toy__lead">És o pombo do anel branco. Voa entre as aves perdidas para as conquistar, e o teu bando segue-te para todo o lado. Os corvos roubam um bando pequeno e perdem contra um grande. Depois chega o Chefe Corvo, e só um bando de quinze o consegue pôr a andar.</p>
+        </div>
+        <div class="toy__stage" data-toy-focus tabindex="0" aria-label="Jogo do bando. Guia com o rato, um dedo ou as setas.">
+          <canvas width="800" height="480" aria-hidden="true"></canvas>
+        <div class="toy__start" data-toy-start>
+          <button class="btn" type="button" data-toy-go>Jogar <span class="arrow">→</span></button>
+          <p class="toy__keys">Guia com o rato, um dedo ou as setas</p>
+        </div>
+        <div class="toy__end" data-toy-end hidden>
+          <p class="toy__end-k" data-end-k></p>
+          <p class="toy__end-t" data-end-t></p>
+          <div class="btn-row"><button class="btn btn--ghost" type="button" data-toy-again>Jogar outra vez</button></div>
+        </div>
+        </div>
+        <div class="toy__bar"><span>Bando<b data-h-flock>0</b></span><span>Tempo<b data-h-time>60</b></span><span><b data-h-goal></b></span></div>
+        <p class="sr-only" role="status" aria-live="polite" data-toy-live></p>
+        <div hidden>
+          <span data-msg="goal-grow">Chefe em {s} s</span>
+          <span data-msg="goal-boss">O chefe exige um bando de {n}</span>
+          <span data-msg="boss-in">O Chefe Corvo!</span>
+          <span data-msg="bonk">Bonk!</span>
+          <span data-msg="win-k">O bando vence</span>
+          <span data-msg="win-t">{n} pombos puseram o Chefe Corvo a andar.</span>
+          <span data-msg="lose-k">Em minoria</span>
+          <span data-msg="lose-t">O Chefe Corvo só perde contra um bando de {n}. Recruta mais antes de o enfrentares.</span>
+          <span data-msg="time-k">Acabou o tempo</span>
+          <span data-msg="time-t">O Chefe Corvo fugiu. Junta mais aves e vai atrás dele mais cedo.</span>
+        </div>
+      </section>
+
       <nav class="proj-foot-nav" aria-label="Mais">
         <a href="../index.html#work"><span class="dir">← Voltar</span>Todos os projetos</a>
         <a href="../projects/r4d10head.html" style="text-align:right"><span class="dir">Seguinte →</span>R4D10HEAD</a>
@@ -147,6 +181,6 @@
     </div>
   </main>
 
-  <script src="../../js/v3.js?v=86"></script>
+  <script src="../../js/v3.js?v=87"></script>
 </body>
 </html>

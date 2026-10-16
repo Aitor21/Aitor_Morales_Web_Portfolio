@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <script src="../../js/lang.js?v=86"></script>
+  <script src="../../js/lang.js?v=87"></script>
   <title>R4D10HEAD · Aitor Morales</title>
   <meta name="description" content="R4D10HEAD, ein Stealth-Spiel mit Umkehr: Bewegung macht dich ohrenbetäubend laut, Stillstand macht dich blind. Game und Level Design von Aitor Morales.">
   <link rel="canonical" href="https://aitormorales.com/de/projects/r4d10head.html">
@@ -36,7 +36,7 @@
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Dem.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Med.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Boo.woff2" crossorigin>
-  <link rel="stylesheet" href="../../css/v3.css?v=86">
+  <link rel="stylesheet" href="../../css/v3.css?v=87">
   <link rel="expect" href="#main-content" blocking="render">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"VideoGame","name":"R4D10HEAD","genre":"Stealth","gamePlatform":["PC","Windows","macOS"],"author":{"@type":"Person","name":"Aitor Morales"},"url":"https://aitormorales.itch.io/r4d10-head"}
@@ -140,6 +140,37 @@
         </div>
       </section>
 
+      <section class="toy toy--radio" data-toy="radio" aria-labelledby="toy-title">
+        <div class="toy__head">
+          <p class="toy__eyebrow"><i aria-hidden="true"></i>Spielbar · die Kernmechanik</p>
+          <h2 class="toy__title" id="toy-title">Laut, wenn du dich bewegst, blind, wenn du stehst</h2>
+          <p class="toy__lead">Bring den Roboter zum Ausgang. Solange du dich bewegst, siehst du etwas, aber jede Wache in Hörweite hört dich und kommt nachsehen. Bleib stehen, und du bist leise, aber blind. Wände dämpfen den Lärm. Die Kunst ist, zu entscheiden, wann du laut bist.</p>
+        </div>
+        <div class="toy__stage" data-toy-focus tabindex="0" aria-label="Stealth-Spiel. Pfeiltasten oder WASD bewegen; auf Touch einen Finger dort halten, wo du hinwillst.">
+          <canvas width="800" height="480" aria-hidden="true"></canvas>
+        <div class="toy__start" data-toy-start>
+          <button class="btn" type="button" data-toy-go>Spielen <span class="arrow">→</span></button>
+          <p class="toy__keys">Pfeiltasten oder WASD, oder halte einen Finger dort, wo du hinwillst. Bewegung ist alles oder nichts.</p>
+        </div>
+        <div class="toy__end" data-toy-end hidden>
+          <p class="toy__end-k" data-end-k></p>
+          <p class="toy__end-t" data-end-t></p>
+          <div class="btn-row"><button class="btn btn--ghost" type="button" data-toy-again>Nochmal spielen</button></div>
+        </div>
+        </div>
+        <div class="toy__bar"><span>Lärm<span class="radio-meter" data-h-noise><i></i></span></span><span>Status<b data-h-state>Leise</b></span></div>
+        <p class="sr-only" role="status" aria-live="polite" data-toy-live></p>
+        <div hidden>
+          <span data-msg="state-loud">Laut</span>
+          <span data-msg="state-quiet">Leise</span>
+          <span data-msg="state-blind">Blind</span>
+          <span data-msg="win-k">Du bist raus</span>
+          <span data-msg="win-t">Entkommen in {s} Sekunden. Die CORPORATION hat dich nie gehen sehen.</span>
+          <span data-msg="lose-k">Erwischt</span>
+          <span data-msg="lose-t">Eine Wache ging direkt zum Lärm. Beweg dich, wenn sie weit weg sind, und bleib dann still.</span>
+        </div>
+      </section>
+
       <nav class="proj-foot-nav" aria-label="Mehr">
         <a href="../index.html#work"><span class="dir">← Zurück</span>Alle Projekte</a>
         <a href="../projects/viktors-mayhem.html" style="text-align:right"><span class="dir">Weiter →</span>Viktor's Mayhem</a>
@@ -147,6 +178,6 @@
     </div>
   </main>
 
-  <script src="../../js/v3.js?v=86"></script>
+  <script src="../../js/v3.js?v=87"></script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <script src="../js/lang.js?v=86"></script>
+  <script src="../js/lang.js?v=87"></script>
   <title>Love at First Bite · Aitor Morales</title>
   <meta name="description" content="Love at First Bite, a vampire dating sim by Honey Bun Games. Design by Aitor Morales: swipe, match, savor. Play the demo on itch.io or wishlist on Steam.">
   <link rel="canonical" href="https://aitormorales.com/projects/love-at-first-bite.html">
@@ -36,7 +36,7 @@
   <link rel="preload" as="font" type="font/woff2" href="../assets/font/Futura-Dem.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../assets/font/Futura-Med.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../assets/font/Futura-Boo.woff2" crossorigin>
-  <link rel="stylesheet" href="../css/v3.css?v=86">
+  <link rel="stylesheet" href="../css/v3.css?v=87">
   <link rel="expect" href="#main-content" blocking="render">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"VideoGame","name":"Love at First Bite","genre":["Dating Sim","Visual Novel","Indie"],"gamePlatform":["PC","Windows","macOS","Android","iOS"],"author":{"@type":"Person","name":"Aitor Morales"},"publisher":{"@type":"Organization","name":"Honey Bun Games","url":"https://honeybungames.com/"},"url":"https://store.steampowered.com/app/3206530/Love_at_first_Bite/"}
@@ -105,7 +105,7 @@
         </div>
       </div>
       <div class="project-shot">
-        <picture><source srcset="../assets/img/projects/love-at-first-bite/cover.webp" type="image/webp"><img src="../assets/img/projects/love-at-first-bite/cover.png" alt="Love at First Bite key art" style="view-transition-name:vt-hero" fetchpriority="high" decoding="sync"></picture>
+        <picture><source srcset="../assets/img/projects/love-at-first-bite/cover-hd.webp" type="image/webp"><img src="../assets/img/projects/love-at-first-bite/cover-hd.png" alt="Love at First Bite key art" style="view-transition-name:vt-hero" fetchpriority="high" decoding="sync"></picture>
       </div>
     </section>
 
@@ -128,7 +128,7 @@
       <!-- The demo itself, playable in place: the strongest artifact a case study can
            show. Loads the itch.io web build only when the visitor presses play. -->
       <div class="game-embed" data-upload="11929999" data-w="1280" data-h="740" data-page="https://honeybun-games.itch.io/love-at-first-bite" data-title="Love at First Bite — playable demo">
-        <picture><source srcset="../assets/img/projects/love-at-first-bite/cover.webp" type="image/webp"><img class="ve-poster" src="../assets/img/projects/love-at-first-bite/cover.png" alt="Play the Love at First Bite demo" width="1280" height="740" loading="lazy"></picture>
+        <picture><source srcset="../assets/img/projects/love-at-first-bite/cover-hd.webp" type="image/webp"><img class="ve-poster" src="../assets/img/projects/love-at-first-bite/cover-hd.png" alt="Play the Love at First Bite demo" width="1280" height="740" loading="lazy"></picture>
         <span class="ve-label">Playable demo</span>
         <button class="ve-play" type="button" aria-label="Play the Love at First Bite demo in your browser"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button>
       </div>
@@ -162,6 +162,97 @@
         </div>
       </section>
 
+      <section class="toy toy--swipe" data-toy="swipe" aria-labelledby="toy-title">
+        <div class="toy__head">
+          <p class="toy__eyebrow"><i aria-hidden="true"></i>Playable · the core mechanic</p>
+          <h2 class="toy__title" id="toy-title">Who’s on the menu tonight?</h2>
+          <p class="toy__lead">The quick version of the demo above, ported from the Honey Bun Games site. You are a vampire on a dating app: swipe right on humans to quench your thirst, and left on anyone who seems a little too… immortal. Drag the card, tap Yum or Yuck, or use the arrow keys.</p>
+        </div>
+        <div class="toy__stage">
+          <div class="phone">
+            <div class="phone__screen">
+              <div class="app-top">
+                <p class="app-night">Night <b>1</b></p>
+                <span class="app-home" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#lb-home"/></svg></span>
+                <div class="app-thirst">
+                  <svg class="app-thirst__drop" viewBox="0 0 24 24" aria-hidden="true"><use href="#lb-drop"/></svg>
+                  <div class="app-thirst__bar" role="meter" aria-label="Thirst" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" data-thirst><span></span></div>
+                </div>
+                <div class="app-queue" aria-hidden="true" data-queue></div>
+              </div>
+              <div class="deck" data-deck tabindex="0" aria-label="Dating profiles. Press the right arrow to swipe right, the left arrow to swipe left.">
+              <article class="pcard" data-human="false">
+                <div class="pcard__photo"><picture><source type="image/avif" srcset="../assets/img/toys/swipe/damian.avif"><img src="../assets/img/toys/swipe/damian.webp" width="600" height="750" alt="Damian’s profile photo" loading="lazy" decoding="async" draggable="false"></picture></div>
+                <span class="stamp stamp--yum" aria-hidden="true">♥ Yum! ♥</span><span class="stamp stamp--yuck" aria-hidden="true">✕ Yuck ✕</span>
+                <div class="pcard__info"><h3 class="pcard__name">Damian, 27<span class="pcard__ish">-ish</span></h3><p class="pcard__pro">He/Him</p><p class="pcard__about">About</p><p class="pcard__bio">Wine connoisseur and certified night owl. Allergic to garlic bread, mirrors and mornings. Let’s grab a drink. You bring yourself.</p></div>
+              </article>
+              <article class="pcard" data-human="true">
+                <div class="pcard__photo"><picture><source type="image/avif" srcset="../assets/img/toys/swipe/william.avif"><img src="../assets/img/toys/swipe/william.webp" width="536" height="670" alt="William’s profile photo" loading="lazy" decoding="async" draggable="false"></picture></div>
+                <span class="stamp stamp--yum" aria-hidden="true">♥ Yum! ♥</span><span class="stamp stamp--yuck" aria-hidden="true">✕ Yuck ✕</span>
+                <div class="pcard__info"><h3 class="pcard__name">William</h3><p class="pcard__pro">He/Him</p><p class="pcard__about">About</p><p class="pcard__bio">I have a playlist for every occasion and a love for discovering new sounds. Let’s find our favorite tracks and dance the night away.</p></div>
+              </article>
+              <article class="pcard" data-human="false">
+                <div class="pcard__photo"><picture><source type="image/avif" srcset="../assets/img/toys/swipe/viktor.avif"><img src="../assets/img/toys/swipe/viktor.webp" width="524" height="656" alt="Viktor’s profile photo" loading="lazy" decoding="async" draggable="false"></picture></div>
+                <span class="stamp stamp--yum" aria-hidden="true">♥ Yum! ♥</span><span class="stamp stamp--yuck" aria-hidden="true">✕ Yuck ✕</span>
+                <div class="pcard__info"><h3 class="pcard__name">Viktor, 26</h3><p class="pcard__pro">He/Him</p><p class="pcard__about">About</p><p class="pcard__bio">Looking for someone who doesn’t mind the occasional late-night bite. Let’s skip the small talk and dive right into the main course.</p></div>
+              </article>
+              <article class="pcard" data-human="true">
+                <div class="pcard__photo"><picture><source type="image/avif" srcset="../assets/img/toys/swipe/rowan.avif"><img src="../assets/img/toys/swipe/rowan.webp" width="600" height="750" alt="Rowan’s profile photo" loading="lazy" decoding="async" draggable="false"></picture></div>
+                <span class="stamp stamp--yum" aria-hidden="true">♥ Yum! ♥</span><span class="stamp stamp--yuck" aria-hidden="true">✕ Yuck ✕</span>
+                <div class="pcard__info"><h3 class="pcard__name">Rowan, 24</h3><p class="pcard__pro">He/Him</p><p class="pcard__about">About</p><p class="pcard__bio">Florist, sunshine enthusiast and garlic-knot lover. I’ll bring the flowers if you bring the conversation. Picnic date?</p></div>
+              </article>
+              </div>
+              <div class="app-actions">
+                <button class="chip chip--yuck" type="button" data-swipe-btn="left"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#lb-x"/></svg>Yuck</button>
+                <button class="chip chip--yum" type="button" data-swipe-btn="right"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#lb-heart"/></svg>Yum!</button>
+              </div>
+              <div class="app-result" data-result hidden>
+                <div class="app-result__card">
+                  <img class="app-result__fangs" src="../assets/img/toys/swipe/fangs.webp" width="480" height="209" alt="" loading="lazy" decoding="async" data-result-fangs>
+                  <p class="app-result__kicker" data-result-kicker></p>
+                  <p class="app-result__title" data-result-title></p>
+                  <p class="app-result__sub" data-result-sub></p>
+                  <div class="app-result__actions" data-result-actions hidden>
+                    <button class="chip chip--yum" type="button" data-swipe-restart>Play again</button>
+                    <a class="chip chip--steam" href="https://store.steampowered.com/app/3206530/Love_at_first_Bite/" target="_blank" rel="noopener">Wishlist on Steam</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="toy__bar"><span>Art and UI from the game · demo built for honeybungames.com</span></div>
+        <p class="sr-only" role="status" aria-live="polite" data-toy-live></p>
+        <div hidden>
+          <span data-msg="yy-k">You got lucky…</span>
+          <span data-msg="yy-t">What a great catch!</span>
+          <span data-msg="yy-s">You’ve replenished your strength.</span>
+          <span data-msg="yv-k">And so…</span>
+          <span data-msg="yv-t">they were both vampires</span>
+          <span data-msg="yv-s">No blood was sucked tonight.</span>
+          <span data-msg="nv-k">Good instincts…</span>
+          <span data-msg="nv-t">that one bites back</span>
+          <span data-msg="nv-s">Nobody got bitten. Your thirst still grows.</span>
+          <span data-msg="nh-k">Hmm…</span>
+          <span data-msg="nh-t">dinner got away</span>
+          <span data-msg="nh-s">They were human. Your thirst grows.</span>
+          <span data-msg="over-k">You died of thirst…</span>
+          <span data-msg="over-t">GAME OVER</span>
+          <span data-msg="over-s">Do you want to retry?</span>
+          <span data-msg="dawn-k">The sun is rising…</span>
+          <span data-msg="dawn-t">Night 1 survived!</span>
+          <span data-msg="dawn-s">You caught {n} of {of} humans. The full game has many more nights (and teeth).</span>
+          <span data-msg="new-night">New night. Four profiles to go.</span>
+        </div>
+        <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+          <symbol id="lb-user" viewBox="0 0 24 24"><circle cx="12" cy="7.5" r="4.5"/><path d="M3.5 21a8.5 8.5 0 0 1 17 0Z"/></symbol>
+          <symbol id="lb-drop" viewBox="0 0 24 24"><path d="M12 2.5c3.6 4.4 6.5 8.2 6.5 11.6A6.5 6.5 0 0 1 5.5 14.1C5.5 10.7 8.4 6.9 12 2.5Z"/></symbol>
+          <symbol id="lb-home" viewBox="0 0 24 24"><path d="M12 3 2.5 11h2.7v9.5h5.3v-6h3v6h5.3V11h2.7Z"/></symbol>
+          <symbol id="lb-x" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" d="m6 6 12 12M18 6 6 18"/></symbol>
+          <symbol id="lb-heart" viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2.2 0 3.7 1.3 4.6 2.6.3.4 1 .4 1.3 0 .9-1.3 2.4-2.6 4.6-2.6 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21Z"/></symbol>
+        </svg>
+      </section>
+
       <div class="gallery">
         <figure><picture><source srcset="../assets/img/projects/love-at-first-bite/shot-1.webp" type="image/webp"><img src="../assets/img/projects/love-at-first-bite/shot-1.png" alt="Love at First Bite gameplay" loading="lazy"></picture></figure>
         <figure><picture><source srcset="../assets/img/projects/love-at-first-bite/shot-2.webp" type="image/webp"><img src="../assets/img/projects/love-at-first-bite/shot-2.png" alt="Swiping through profiles in Love at First Bite" loading="lazy"></picture></figure>
@@ -175,6 +266,6 @@
     </div>
   </main>
 
-  <script src="../js/v3.js?v=86"></script>
+  <script src="../js/v3.js?v=87"></script>
 </body>
 </html>

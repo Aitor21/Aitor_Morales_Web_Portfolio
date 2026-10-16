@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <script src="../../js/lang.js?v=86"></script>
+  <script src="../../js/lang.js?v=87"></script>
   <title>R4D10HEAD · Aitor Morales</title>
   <meta name="description" content="R4D10HEAD, uno stealth invertito dove muoversi ti rende assordante e restare fermo ti rende cieco. Game design e level design di Aitor Morales.">
   <link rel="canonical" href="https://aitormorales.com/it/projects/r4d10head.html">
@@ -36,7 +36,7 @@
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Dem.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Med.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Boo.woff2" crossorigin>
-  <link rel="stylesheet" href="../../css/v3.css?v=86">
+  <link rel="stylesheet" href="../../css/v3.css?v=87">
   <link rel="expect" href="#main-content" blocking="render">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"VideoGame","name":"R4D10HEAD","genre":"Stealth","gamePlatform":["PC","Windows","macOS"],"author":{"@type":"Person","name":"Aitor Morales"},"url":"https://aitormorales.itch.io/r4d10-head"}
@@ -140,6 +140,37 @@
         </div>
       </section>
 
+      <section class="toy toy--radio" data-toy="radio" aria-labelledby="toy-title">
+        <div class="toy__head">
+          <p class="toy__eyebrow"><i aria-hidden="true"></i>Giocabile · la meccanica principale</p>
+          <h2 class="toy__title" id="toy-title">Rumoroso se ti muovi, cieco se ti fermi</h2>
+          <p class="toy__lead">Porta il robot all’uscita. Mentre ti muovi ci vedi, ma ogni guardia a portata d’orecchio ti sente e viene a controllare. Fermati, e sarai silenzioso ma cieco. I muri attutiscono il rumore. L’abilità sta nello scegliere quando fare rumore.</p>
+        </div>
+        <div class="toy__stage" data-toy-focus tabindex="0" aria-label="Gioco stealth. Frecce o WASD per muoverti; sul touch, tieni il dito dove vuoi andare.">
+          <canvas width="800" height="480" aria-hidden="true"></canvas>
+        <div class="toy__start" data-toy-start>
+          <button class="btn" type="button" data-toy-go>Gioca <span class="arrow">→</span></button>
+          <p class="toy__keys">Frecce o WASD, oppure tieni il dito dove vuoi andare. Il movimento è tutto o niente.</p>
+        </div>
+        <div class="toy__end" data-toy-end hidden>
+          <p class="toy__end-k" data-end-k></p>
+          <p class="toy__end-t" data-end-t></p>
+          <div class="btn-row"><button class="btn btn--ghost" type="button" data-toy-again>Gioca ancora</button></div>
+        </div>
+        </div>
+        <div class="toy__bar"><span>Rumore<span class="radio-meter" data-h-noise><i></i></span></span><span>Stato<b data-h-state>Silenzioso</b></span></div>
+        <p class="sr-only" role="status" aria-live="polite" data-toy-live></p>
+        <div hidden>
+          <span data-msg="state-loud">Rumoroso</span>
+          <span data-msg="state-quiet">Silenzioso</span>
+          <span data-msg="state-blind">Cieco</span>
+          <span data-msg="win-k">Sei uscito</span>
+          <span data-msg="win-t">Fuga in {s} secondi. La CORPORAZIONE non ti ha mai visto uscire.</span>
+          <span data-msg="lose-k">Preso</span>
+          <span data-msg="lose-t">Una guardia è andata dritta verso il rumore. Muoviti quando sono lontane, poi stai fermo.</span>
+        </div>
+      </section>
+
       <nav class="proj-foot-nav" aria-label="Altro">
         <a href="../index.html#work"><span class="dir">← Indietro</span>Tutti i progetti</a>
         <a href="../projects/viktors-mayhem.html" style="text-align:right"><span class="dir">Successivo →</span>Viktor's Mayhem</a>
@@ -147,6 +178,6 @@
     </div>
   </main>
 
-  <script src="../../js/v3.js?v=86"></script>
+  <script src="../../js/v3.js?v=87"></script>
 </body>
 </html>

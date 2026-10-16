@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <script src="../js/lang.js?v=86"></script>
+  <script src="../js/lang.js?v=87"></script>
   <title>R4D10HEAD · Aitor Morales</title>
   <meta name="description" content="R4D10HEAD, an inverted-stealth game where moving makes you deafeningly loud and standing still makes you blind. Game and level design by Aitor Morales.">
   <link rel="canonical" href="https://aitormorales.com/projects/r4d10head.html">
@@ -36,7 +36,7 @@
   <link rel="preload" as="font" type="font/woff2" href="../assets/font/Futura-Dem.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../assets/font/Futura-Med.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../assets/font/Futura-Boo.woff2" crossorigin>
-  <link rel="stylesheet" href="../css/v3.css?v=86">
+  <link rel="stylesheet" href="../css/v3.css?v=87">
   <link rel="expect" href="#main-content" blocking="render">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"VideoGame","name":"R4D10HEAD","genre":"Stealth","gamePlatform":["PC","Windows","macOS"],"author":{"@type":"Person","name":"Aitor Morales"},"url":"https://aitormorales.itch.io/r4d10-head"}
@@ -140,6 +140,37 @@
         </div>
       </section>
 
+      <section class="toy toy--radio" data-toy="radio" aria-labelledby="toy-title">
+        <div class="toy__head">
+          <p class="toy__eyebrow"><i aria-hidden="true"></i>Playable · the core mechanic</p>
+          <h2 class="toy__title" id="toy-title">Loud when you move, blind when you stop</h2>
+          <p class="toy__lead">Get the robot to the exit. While you move you can see, but every guard in earshot hears you and comes to look. Stop, and you are silent but blind. Walls muffle the noise. The skill is choosing when to be loud.</p>
+        </div>
+        <div class="toy__stage" data-toy-focus tabindex="0" aria-label="Stealth game. Arrow keys or WASD move; on touch, hold a finger where you want to go.">
+          <canvas width="800" height="480" aria-hidden="true"></canvas>
+        <div class="toy__start" data-toy-start>
+          <button class="btn" type="button" data-toy-go>Play <span class="arrow">→</span></button>
+          <p class="toy__keys">Arrow keys or WASD, or hold a finger where you want to go. Movement is all or nothing.</p>
+        </div>
+        <div class="toy__end" data-toy-end hidden>
+          <p class="toy__end-k" data-end-k></p>
+          <p class="toy__end-t" data-end-t></p>
+          <div class="btn-row"><button class="btn btn--ghost" type="button" data-toy-again>Play again</button></div>
+        </div>
+        </div>
+        <div class="toy__bar"><span>Noise<span class="radio-meter" data-h-noise><i></i></span></span><span>Status<b data-h-state>Quiet</b></span></div>
+        <p class="sr-only" role="status" aria-live="polite" data-toy-live></p>
+        <div hidden>
+          <span data-msg="state-loud">Loud</span>
+          <span data-msg="state-quiet">Quiet</span>
+          <span data-msg="state-blind">Blind</span>
+          <span data-msg="win-k">You got out</span>
+          <span data-msg="win-t">Escaped in {s} seconds. The CORPORATION never saw you leave.</span>
+          <span data-msg="lose-k">Caught</span>
+          <span data-msg="lose-t">A guard walked straight to the noise. Move while they are far away, then go still.</span>
+        </div>
+      </section>
+
       <nav class="proj-foot-nav" aria-label="More">
         <a href="../index.html#work"><span class="dir">← Back</span>All work</a>
         <a href="../projects/viktors-mayhem.html" style="text-align:right"><span class="dir">Next →</span>Viktor's Mayhem</a>
@@ -147,6 +178,6 @@
     </div>
   </main>
 
-  <script src="../js/v3.js?v=86"></script>
+  <script src="../js/v3.js?v=87"></script>
 </body>
 </html>

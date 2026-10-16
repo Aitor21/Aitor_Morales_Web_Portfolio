@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <script src="../../js/lang.js?v=86"></script>
+  <script src="../../js/lang.js?v=87"></script>
   <title>Birds of a Feather · Aitor Morales</title>
   <meta name="description" content="Birds of a Feather, juego 3D de vuelo y combate de masas hecho en solitario para la Level Up Game Jam 2024. Diseño, código y contenido de Aitor Morales.">
   <link rel="canonical" href="https://aitormorales.com/es/projects/birds-of-a-feather.html">
@@ -36,7 +36,7 @@
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Dem.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Med.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Boo.woff2" crossorigin>
-  <link rel="stylesheet" href="../../css/v3.css?v=86">
+  <link rel="stylesheet" href="../../css/v3.css?v=87">
   <link rel="expect" href="#main-content" blocking="render">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"VideoGame","name":"Birds of a Feather","genre":"Action Adventure","gamePlatform":["PC","Windows","macOS"],"author":{"@type":"Person","name":"Aitor Morales"},"url":"https://aitormorales.itch.io/birds-of-a-feather"}
@@ -140,6 +140,40 @@
         </div>
       </section>
 
+      <section class="toy toy--flock" data-toy="flock" aria-labelledby="toy-title">
+        <div class="toy__head">
+          <p class="toy__eyebrow"><i aria-hidden="true"></i>Jugable · la mecánica central</p>
+          <h2 class="toy__title" id="toy-title">Tus seguidores son tu ejército</h2>
+          <p class="toy__lead">Eres la paloma del anillo blanco. Vuela entre las aves perdidas para ganártelas y tu bandada te seguirá a todas partes. Los cuervos roban a una bandada pequeña y pierden contra una grande. Luego llega el Jefe Cuervo, y solo una bandada de quince puede echarlo.</p>
+        </div>
+        <div class="toy__stage" data-toy-focus tabindex="0" aria-label="Juego de bandada. Dirige con el ratón, un dedo o las flechas.">
+          <canvas width="800" height="480" aria-hidden="true"></canvas>
+        <div class="toy__start" data-toy-start>
+          <button class="btn" type="button" data-toy-go>Jugar <span class="arrow">→</span></button>
+          <p class="toy__keys">Dirige con el ratón, un dedo o las flechas</p>
+        </div>
+        <div class="toy__end" data-toy-end hidden>
+          <p class="toy__end-k" data-end-k></p>
+          <p class="toy__end-t" data-end-t></p>
+          <div class="btn-row"><button class="btn btn--ghost" type="button" data-toy-again>Jugar otra vez</button></div>
+        </div>
+        </div>
+        <div class="toy__bar"><span>Bandada<b data-h-flock>0</b></span><span>Tiempo<b data-h-time>60</b></span><span><b data-h-goal></b></span></div>
+        <p class="sr-only" role="status" aria-live="polite" data-toy-live></p>
+        <div hidden>
+          <span data-msg="goal-grow">Jefe en {s} s</span>
+          <span data-msg="goal-boss">El jefe pide una bandada de {n}</span>
+          <span data-msg="boss-in">¡El Jefe Cuervo!</span>
+          <span data-msg="bonk">¡Bonk!</span>
+          <span data-msg="win-k">Gana la bandada</span>
+          <span data-msg="win-t">{n} palomas han echado al Jefe Cuervo.</span>
+          <span data-msg="lose-k">Superado en número</span>
+          <span data-msg="lose-t">El Jefe Cuervo solo pierde contra una bandada de {n}. Recluta más antes de enfrentarte a él.</span>
+          <span data-msg="time-k">Se acabó el tiempo</span>
+          <span data-msg="time-t">El Jefe Cuervo se ha escapado. Reúne más aves y ve a por él antes.</span>
+        </div>
+      </section>
+
       <nav class="proj-foot-nav" aria-label="Más">
         <a href="../index.html#work"><span class="dir">← Volver</span>Todos los proyectos</a>
         <a href="../projects/r4d10head.html" style="text-align:right"><span class="dir">Siguiente →</span>R4D10HEAD</a>
@@ -147,6 +181,6 @@
     </div>
   </main>
 
-  <script src="../../js/v3.js?v=86"></script>
+  <script src="../../js/v3.js?v=87"></script>
 </body>
 </html>

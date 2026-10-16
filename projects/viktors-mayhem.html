@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <script src="../js/lang.js?v=86"></script>
+  <script src="../js/lang.js?v=87"></script>
   <title>Viktor's Mayhem · Aitor Morales</title>
   <meta name="description" content="Viktor's Mayhem (La Ruleta del Infortunio): a game show where a slot machine picks your curse and you fight an arena with it. Game design by Aitor Morales.">
   <link rel="canonical" href="https://aitormorales.com/projects/viktors-mayhem.html">
@@ -36,7 +36,7 @@
   <link rel="preload" as="font" type="font/woff2" href="../assets/font/Futura-Dem.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../assets/font/Futura-Med.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../assets/font/Futura-Boo.woff2" crossorigin>
-  <link rel="stylesheet" href="../css/v3.css?v=86">
+  <link rel="stylesheet" href="../css/v3.css?v=87">
   <link rel="expect" href="#main-content" blocking="render">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"VideoGame","name":"Viktor's Mayhem","alternateName":"La Ruleta del Infortunio","genre":"Action","gamePlatform":["PC","Windows","macOS"],"author":{"@type":"Person","name":"Aitor Morales"},"url":"https://teresa-costas.itch.io/la-ruleta-del-infortunio"}
@@ -141,6 +141,63 @@
         </div>
       </section>
 
+      <section class="toy toy--slots" data-toy="slots" aria-labelledby="toy-title">
+        <div class="toy__head">
+          <p class="toy__eyebrow"><i aria-hidden="true"></i>Playable · the core mechanic</p>
+          <h2 class="toy__title" id="toy-title">Pull the lever. Take your curse.</h2>
+          <p class="toy__lead">The slot machine picks a misfortune, then you survive fifteen seconds of the studio audience throwing tomatoes. Every curse changes how you have to play, not just a number. Dash through the tomatoes when you have to.</p>
+        </div>
+        <div class="toy__stage" data-toy-focus tabindex="0" aria-label="Game show. Pull the lever, then move with the arrow keys or WASD and dash with Space.">
+          <div class="slot" data-slot>
+            <div class="slot__body">
+              <div class="slot__frame" aria-hidden="true"><div class="reel" data-reel></div><div class="reel" data-reel></div><div class="reel" data-reel></div></div>
+              <button class="lever" type="button" data-lever aria-label="Pull the lever"></button>
+            </div>
+            <div class="curse" data-curse hidden>
+              <span class="curse__icon" data-curse-icon aria-hidden="true"></span>
+              <div><p class="curse__name" data-curse-name></p><p class="curse__rule" data-curse-rule></p><p class="curse__quip" data-curse-quip></p></div>
+              <button class="btn" type="button" data-fight>Enter the arena <span class="arrow">→</span></button>
+            </div>
+          </div>
+          <div class="arena" data-arena hidden><canvas width="800" height="480" aria-hidden="true"></canvas><button class="toy-btn" type="button" data-dash>Dash</button></div>
+        <div class="toy__start" data-toy-start>
+          <button class="btn" type="button" data-toy-go>Pull the lever <span class="arrow">→</span></button>
+          <p class="toy__keys">Then move with the arrow keys, WASD or a finger · Space or the Dash button to dash</p>
+        </div>
+        <div class="toy__end" data-toy-end hidden>
+          <p class="toy__end-k" data-end-k></p>
+          <p class="toy__end-t" data-end-t></p>
+          <div class="btn-row"><button class="btn btn--ghost" type="button" data-toy-again>Pull again</button></div>
+        </div>
+        </div>
+        <div class="toy__bar"><span>Health<b data-h-hearts>❤❤❤</b></span><span>Time<b data-h-time>15</b></span><span>Curse<b data-h-curse>–</b></span></div>
+        <p class="sr-only" role="status" aria-live="polite" data-toy-live></p>
+        <div hidden>
+          <span data-msg="c-mirror">Mirror, mirror</span>
+          <span data-msg="r-mirror">Your controls are reversed.</span>
+          <span data-msg="q-mirror">Left is right and right is wrong. Just like your life choices!</span>
+          <span data-msg="c-big">Big boned</span>
+          <span data-msg="r-big">Your hitbox is twice the size.</span>
+          <span data-msg="q-big">More of you to love. And more of you to hit!</span>
+          <span data-msg="c-butter">Butter floor</span>
+          <span data-msg="r-butter">You slide. Stopping is only a suggestion.</span>
+          <span data-msg="q-butter">Our sponsors provided the floor wax. Generously.</span>
+          <span data-msg="c-dark">Lights out</span>
+          <span data-msg="r-dark">You can only see a few steps around you.</span>
+          <span data-msg="q-dark">We forgot to pay the electricity bill. The audience paid for tomatoes.</span>
+          <span data-msg="c-coffee">Too much coffee</span>
+          <span data-msg="r-coffee">You move almost twice as fast. Good luck steering.</span>
+          <span data-msg="q-coffee">Espresso number seven! Your heart is fine. Probably.</span>
+          <span data-msg="c-glass">Glass bones</span>
+          <span data-msg="r-glass">One hit and you are out, but your dash recharges twice as fast.</span>
+          <span data-msg="q-glass">Handle with care. Our audience won’t!</span>
+          <span data-msg="win-k">You survived</span>
+          <span data-msg="win-t">Viktor is disappointed. The audience demands a rematch.</span>
+          <span data-msg="lose-k">Splat</span>
+          <span data-msg="lose-t">Out after {s} seconds. Viktor is delighted. Pull again?</span>
+        </div>
+      </section>
+
       <nav class="proj-foot-nav" aria-label="More">
         <a href="../index.html#work"><span class="dir">← Back</span>All work</a>
         <a href="../projects/gimica.html" style="text-align:right"><span class="dir">Next →</span>Gimica</a>
@@ -148,6 +205,6 @@
     </div>
   </main>
 
-  <script src="../js/v3.js?v=86"></script>
+  <script src="../js/v3.js?v=87"></script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <script src="../../js/lang.js?v=86"></script>
+  <script src="../../js/lang.js?v=87"></script>
   <title>Viktor's Mayhem · Aitor Morales</title>
   <meta name="description" content="Viktor's Mayhem (La Ruleta del Infortunio): un quiz dove una slot machine sceglie la tua maledizione e con quella affronti l'arena. Di Aitor Morales.">
   <link rel="canonical" href="https://aitormorales.com/it/projects/viktors-mayhem.html">
@@ -36,7 +36,7 @@
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Dem.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Med.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Boo.woff2" crossorigin>
-  <link rel="stylesheet" href="../../css/v3.css?v=86">
+  <link rel="stylesheet" href="../../css/v3.css?v=87">
   <link rel="expect" href="#main-content" blocking="render">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"VideoGame","name":"Viktor's Mayhem","alternateName":"La Ruleta del Infortunio","genre":"Action","gamePlatform":["PC","Windows","macOS"],"author":{"@type":"Person","name":"Aitor Morales"},"url":"https://teresa-costas.itch.io/la-ruleta-del-infortunio"}
@@ -141,6 +141,63 @@
         </div>
       </section>
 
+      <section class="toy toy--slots" data-toy="slots" aria-labelledby="toy-title">
+        <div class="toy__head">
+          <p class="toy__eyebrow"><i aria-hidden="true"></i>Giocabile · la meccanica principale</p>
+          <h2 class="toy__title" id="toy-title">Tira la leva. Prenditi la maledizione.</h2>
+          <p class="toy__lead">La slot machine sceglie una sventura, poi sopravvivi quindici secondi al pubblico in studio che lancia pomodori. Ogni maledizione cambia il modo in cui devi giocare, non solo un numero. Scatta tra i pomodori quando serve.</p>
+        </div>
+        <div class="toy__stage" data-toy-focus tabindex="0" aria-label="Quiz televisivo. Tira la leva, poi muoviti con le frecce o WASD e scatta con Spazio.">
+          <div class="slot" data-slot>
+            <div class="slot__body">
+              <div class="slot__frame" aria-hidden="true"><div class="reel" data-reel></div><div class="reel" data-reel></div><div class="reel" data-reel></div></div>
+              <button class="lever" type="button" data-lever aria-label="Tira la leva"></button>
+            </div>
+            <div class="curse" data-curse hidden>
+              <span class="curse__icon" data-curse-icon aria-hidden="true"></span>
+              <div><p class="curse__name" data-curse-name></p><p class="curse__rule" data-curse-rule></p><p class="curse__quip" data-curse-quip></p></div>
+              <button class="btn" type="button" data-fight>Entra nell’arena <span class="arrow">→</span></button>
+            </div>
+          </div>
+          <div class="arena" data-arena hidden><canvas width="800" height="480" aria-hidden="true"></canvas><button class="toy-btn" type="button" data-dash>Scatto</button></div>
+        <div class="toy__start" data-toy-start>
+          <button class="btn" type="button" data-toy-go>Tira la leva <span class="arrow">→</span></button>
+          <p class="toy__keys">Poi muoviti con frecce, WASD o il dito · Spazio o il pulsante Scatto per scattare</p>
+        </div>
+        <div class="toy__end" data-toy-end hidden>
+          <p class="toy__end-k" data-end-k></p>
+          <p class="toy__end-t" data-end-t></p>
+          <div class="btn-row"><button class="btn btn--ghost" type="button" data-toy-again>Tira di nuovo</button></div>
+        </div>
+        </div>
+        <div class="toy__bar"><span>Vita<b data-h-hearts>❤❤❤</b></span><span>Tempo<b data-h-time>15</b></span><span>Maledizione<b data-h-curse>–</b></span></div>
+        <p class="sr-only" role="status" aria-live="polite" data-toy-live></p>
+        <div hidden>
+          <span data-msg="c-mirror">Specchio, specchio</span>
+          <span data-msg="r-mirror">I comandi sono invertiti.</span>
+          <span data-msg="q-mirror">La sinistra è destra e la destra è sbagliata. Proprio come le tue scelte di vita!</span>
+          <span data-msg="c-big">Ossa grosse</span>
+          <span data-msg="r-big">La tua hitbox è grande il doppio.</span>
+          <span data-msg="q-big">Più di te da amare. E da colpire!</span>
+          <span data-msg="c-butter">Pavimento al burro</span>
+          <span data-msg="r-butter">Scivoli. Fermarsi è solo un suggerimento.</span>
+          <span data-msg="q-butter">I nostri sponsor hanno offerto la cera. Generosamente.</span>
+          <span data-msg="c-dark">Luci spente</span>
+          <span data-msg="r-dark">Vedi solo a pochi passi da te.</span>
+          <span data-msg="q-dark">Ci siamo scordati di pagare la luce. Il pubblico ha pagato i pomodori.</span>
+          <span data-msg="c-coffee">Troppo caffè</span>
+          <span data-msg="r-coffee">Ti muovi quasi il doppio più veloce. Buona fortuna a sterzare.</span>
+          <span data-msg="q-coffee">Settimo espresso! Il tuo cuore sta bene. Probabilmente.</span>
+          <span data-msg="c-glass">Ossa di vetro</span>
+          <span data-msg="r-glass">Un colpo e sei fuori, ma lo scatto si ricarica il doppio più in fretta.</span>
+          <span data-msg="q-glass">Maneggiare con cura. Il nostro pubblico non lo farà!</span>
+          <span data-msg="win-k">Sei sopravvissuto</span>
+          <span data-msg="win-t">Viktor è deluso. Il pubblico vuole la rivincita.</span>
+          <span data-msg="lose-k">Splat</span>
+          <span data-msg="lose-t">Fuori dopo {s} secondi. Viktor è entusiasta. Tiri di nuovo?</span>
+        </div>
+      </section>
+
       <nav class="proj-foot-nav" aria-label="Altro">
         <a href="../index.html#work"><span class="dir">← Indietro</span>Tutti i progetti</a>
         <a href="../projects/gimica.html" style="text-align:right"><span class="dir">Successivo →</span>Gimica</a>
@@ -148,6 +205,6 @@
     </div>
   </main>
 
-  <script src="../../js/v3.js?v=86"></script>
+  <script src="../../js/v3.js?v=87"></script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <script src="../../js/lang.js?v=86"></script>
+  <script src="../../js/lang.js?v=87"></script>
   <title>Love at First Bite · Aitor Morales</title>
   <meta name="description" content="Love at First Bite, un dating sim con vampiri di Honey Bun Games. Design di Aitor Morales. Gioca la demo su itch.io o aggiungilo ai desideri su Steam.">
   <link rel="canonical" href="https://aitormorales.com/it/projects/love-at-first-bite.html">
@@ -36,7 +36,7 @@
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Dem.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Med.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Boo.woff2" crossorigin>
-  <link rel="stylesheet" href="../../css/v3.css?v=86">
+  <link rel="stylesheet" href="../../css/v3.css?v=87">
   <link rel="expect" href="#main-content" blocking="render">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"VideoGame","name":"Love at First Bite","genre":["Dating Sim","Visual Novel","Indie"],"gamePlatform":["PC","Windows","macOS","Android","iOS"],"author":{"@type":"Person","name":"Aitor Morales"},"publisher":{"@type":"Organization","name":"Honey Bun Games","url":"https://honeybungames.com/"},"url":"https://store.steampowered.com/app/3206530/Love_at_first_Bite/"}
@@ -105,7 +105,7 @@
         </div>
       </div>
       <div class="project-shot">
-        <picture><source srcset="../../assets/img/projects/love-at-first-bite/cover.webp" type="image/webp"><img src="../../assets/img/projects/love-at-first-bite/cover.png" alt="Key art di Love at First Bite" style="view-transition-name:vt-hero" fetchpriority="high" decoding="sync"></picture>
+        <picture><source srcset="../../assets/img/projects/love-at-first-bite/cover-hd.webp" type="image/webp"><img src="../../assets/img/projects/love-at-first-bite/cover-hd.png" alt="Key art di Love at First Bite" style="view-transition-name:vt-hero" fetchpriority="high" decoding="sync"></picture>
       </div>
     </section>
 
@@ -128,7 +128,7 @@
       <!-- The demo itself, playable in place: the strongest artifact a case study can
            show. Loads the itch.io web build only when the visitor presses play. -->
       <div class="game-embed" data-upload="11929999" data-w="1280" data-h="740" data-page="https://honeybun-games.itch.io/love-at-first-bite" data-title="Love at First Bite — demo giocabile">
-        <picture><source srcset="../../assets/img/projects/love-at-first-bite/cover.webp" type="image/webp"><img class="ve-poster" src="../../assets/img/projects/love-at-first-bite/cover.png" alt="Gioca la demo di Love at First Bite" width="1280" height="740" loading="lazy"></picture>
+        <picture><source srcset="../../assets/img/projects/love-at-first-bite/cover-hd.webp" type="image/webp"><img class="ve-poster" src="../../assets/img/projects/love-at-first-bite/cover-hd.png" alt="Gioca la demo di Love at First Bite" width="1280" height="740" loading="lazy"></picture>
         <span class="ve-label">Demo giocabile</span>
         <button class="ve-play" type="button" aria-label="Gioca la demo di Love at First Bite nel browser"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button>
       </div>
@@ -162,6 +162,97 @@
         </div>
       </section>
 
+      <section class="toy toy--swipe" data-toy="swipe" aria-labelledby="toy-title">
+        <div class="toy__head">
+          <p class="toy__eyebrow"><i aria-hidden="true"></i>Giocabile · la meccanica principale</p>
+          <h2 class="toy__title" id="toy-title">Chi c’è nel menù stasera?</h2>
+          <p class="toy__lead">La versione rapida della demo qui sopra, presa dal sito di Honey Bun Games. Sei un vampiro su un’app di incontri: scorri a destra sugli umani per placare la sete, e a sinistra su chiunque sembri un po’ troppo… immortale. Trascina la scheda, tocca Gnam o Bleah, o usa le frecce.</p>
+        </div>
+        <div class="toy__stage">
+          <div class="phone">
+            <div class="phone__screen">
+              <div class="app-top">
+                <p class="app-night">Notte <b>1</b></p>
+                <span class="app-home" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#lb-home"/></svg></span>
+                <div class="app-thirst">
+                  <svg class="app-thirst__drop" viewBox="0 0 24 24" aria-hidden="true"><use href="#lb-drop"/></svg>
+                  <div class="app-thirst__bar" role="meter" aria-label="Sete" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" data-thirst><span></span></div>
+                </div>
+                <div class="app-queue" aria-hidden="true" data-queue></div>
+              </div>
+              <div class="deck" data-deck tabindex="0" aria-label="Profili di incontri. Freccia destra per scorrere a destra, freccia sinistra per scorrere a sinistra.">
+              <article class="pcard" data-human="false">
+                <div class="pcard__photo"><picture><source type="image/avif" srcset="../../assets/img/toys/swipe/damian.avif"><img src="../../assets/img/toys/swipe/damian.webp" width="600" height="750" alt="Foto profilo di Damian" loading="lazy" decoding="async" draggable="false"></picture></div>
+                <span class="stamp stamp--yum" aria-hidden="true">♥ Gnam! ♥</span><span class="stamp stamp--yuck" aria-hidden="true">✕ Bleah ✕</span>
+                <div class="pcard__info"><h3 class="pcard__name">Damian, 27<span class="pcard__ish"> circa</span></h3><p class="pcard__pro">Lui</p><p class="pcard__about">Chi sono</p><p class="pcard__bio">Intenditore di vini e nottambulo certificato. Allergico al pane all’aglio, agli specchi e alle mattine. Beviamo qualcosa? Il drink sei tu.</p></div>
+              </article>
+              <article class="pcard" data-human="true">
+                <div class="pcard__photo"><picture><source type="image/avif" srcset="../../assets/img/toys/swipe/william.avif"><img src="../../assets/img/toys/swipe/william.webp" width="536" height="670" alt="Foto profilo di William" loading="lazy" decoding="async" draggable="false"></picture></div>
+                <span class="stamp stamp--yum" aria-hidden="true">♥ Gnam! ♥</span><span class="stamp stamp--yuck" aria-hidden="true">✕ Bleah ✕</span>
+                <div class="pcard__info"><h3 class="pcard__name">William</h3><p class="pcard__pro">Lui</p><p class="pcard__about">Chi sono</p><p class="pcard__bio">Ho una playlist per ogni occasione e adoro scoprire suoni nuovi. Troviamo i nostri brani preferiti e balliamo tutta la notte.</p></div>
+              </article>
+              <article class="pcard" data-human="false">
+                <div class="pcard__photo"><picture><source type="image/avif" srcset="../../assets/img/toys/swipe/viktor.avif"><img src="../../assets/img/toys/swipe/viktor.webp" width="524" height="656" alt="Foto profilo di Viktor" loading="lazy" decoding="async" draggable="false"></picture></div>
+                <span class="stamp stamp--yum" aria-hidden="true">♥ Gnam! ♥</span><span class="stamp stamp--yuck" aria-hidden="true">✕ Bleah ✕</span>
+                <div class="pcard__info"><h3 class="pcard__name">Viktor, 26</h3><p class="pcard__pro">Lui</p><p class="pcard__about">Chi sono</p><p class="pcard__bio">Cerco qualcuno a cui non dispiaccia un morso a tarda notte ogni tanto. Saltiamo i convenevoli e passiamo subito alla portata principale.</p></div>
+              </article>
+              <article class="pcard" data-human="true">
+                <div class="pcard__photo"><picture><source type="image/avif" srcset="../../assets/img/toys/swipe/rowan.avif"><img src="../../assets/img/toys/swipe/rowan.webp" width="600" height="750" alt="Foto profilo di Rowan" loading="lazy" decoding="async" draggable="false"></picture></div>
+                <span class="stamp stamp--yum" aria-hidden="true">♥ Gnam! ♥</span><span class="stamp stamp--yuck" aria-hidden="true">✕ Bleah ✕</span>
+                <div class="pcard__info"><h3 class="pcard__name">Rowan, 24</h3><p class="pcard__pro">Lui</p><p class="pcard__about">Chi sono</p><p class="pcard__bio">Fiorista, appassionato di sole e amante dei nodini all’aglio. Io porto i fiori se tu porti la conversazione. Appuntamento al picnic?</p></div>
+              </article>
+              </div>
+              <div class="app-actions">
+                <button class="chip chip--yuck" type="button" data-swipe-btn="left"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#lb-x"/></svg>Bleah</button>
+                <button class="chip chip--yum" type="button" data-swipe-btn="right"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#lb-heart"/></svg>Gnam!</button>
+              </div>
+              <div class="app-result" data-result hidden>
+                <div class="app-result__card">
+                  <img class="app-result__fangs" src="../../assets/img/toys/swipe/fangs.webp" width="480" height="209" alt="" loading="lazy" decoding="async" data-result-fangs>
+                  <p class="app-result__kicker" data-result-kicker></p>
+                  <p class="app-result__title" data-result-title></p>
+                  <p class="app-result__sub" data-result-sub></p>
+                  <div class="app-result__actions" data-result-actions hidden>
+                    <button class="chip chip--yum" type="button" data-swipe-restart>Gioca ancora</button>
+                    <a class="chip chip--steam" href="https://store.steampowered.com/app/3206530/Love_at_first_Bite/" target="_blank" rel="noopener">Aggiungi alla lista dei desideri su Steam</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="toy__bar"><span>Grafica e interfaccia del gioco · demo realizzata per honeybungames.com</span></div>
+        <p class="sr-only" role="status" aria-live="polite" data-toy-live></p>
+        <div hidden>
+          <span data-msg="yy-k">Ti è andata bene…</span>
+          <span data-msg="yy-t">Che bel bocconcino!</span>
+          <span data-msg="yy-s">Hai recuperato le forze.</span>
+          <span data-msg="yv-k">E così…</span>
+          <span data-msg="yv-t">erano entrambi vampiri</span>
+          <span data-msg="yv-s">Stanotte niente sangue.</span>
+          <span data-msg="nv-k">Buon istinto…</span>
+          <span data-msg="nv-t">quello morde a sua volta</span>
+          <span data-msg="nv-s">Nessuno è stato morso. La tua sete cresce lo stesso.</span>
+          <span data-msg="nh-k">Mmm…</span>
+          <span data-msg="nh-t">la cena è scappata</span>
+          <span data-msg="nh-s">Era umano. La tua sete cresce.</span>
+          <span data-msg="over-k">Sei morto di sete…</span>
+          <span data-msg="over-t">GAME OVER</span>
+          <span data-msg="over-s">Vuoi riprovare?</span>
+          <span data-msg="dawn-k">Sta sorgendo il sole…</span>
+          <span data-msg="dawn-t">Notte 1 superata!</span>
+          <span data-msg="dawn-s">Hai catturato {n} umani su {of}. Il gioco completo ha molte più notti (e denti).</span>
+          <span data-msg="new-night">Nuova notte. Ancora quattro profili.</span>
+        </div>
+        <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+          <symbol id="lb-user" viewBox="0 0 24 24"><circle cx="12" cy="7.5" r="4.5"/><path d="M3.5 21a8.5 8.5 0 0 1 17 0Z"/></symbol>
+          <symbol id="lb-drop" viewBox="0 0 24 24"><path d="M12 2.5c3.6 4.4 6.5 8.2 6.5 11.6A6.5 6.5 0 0 1 5.5 14.1C5.5 10.7 8.4 6.9 12 2.5Z"/></symbol>
+          <symbol id="lb-home" viewBox="0 0 24 24"><path d="M12 3 2.5 11h2.7v9.5h5.3v-6h3v6h5.3V11h2.7Z"/></symbol>
+          <symbol id="lb-x" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" d="m6 6 12 12M18 6 6 18"/></symbol>
+          <symbol id="lb-heart" viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2.2 0 3.7 1.3 4.6 2.6.3.4 1 .4 1.3 0 .9-1.3 2.4-2.6 4.6-2.6 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21Z"/></symbol>
+        </svg>
+      </section>
+
       <div class="gallery">
         <figure><picture><source srcset="../../assets/img/projects/love-at-first-bite/shot-1.webp" type="image/webp"><img src="../../assets/img/projects/love-at-first-bite/shot-1.png" alt="Gameplay di Love at First Bite" loading="lazy"></picture></figure>
         <figure><picture><source srcset="../../assets/img/projects/love-at-first-bite/shot-2.webp" type="image/webp"><img src="../../assets/img/projects/love-at-first-bite/shot-2.png" alt="Scorrere i profili in Love at First Bite" loading="lazy"></picture></figure>
@@ -175,6 +266,6 @@
     </div>
   </main>
 
-  <script src="../../js/v3.js?v=86"></script>
+  <script src="../../js/v3.js?v=87"></script>
 </body>
 </html>

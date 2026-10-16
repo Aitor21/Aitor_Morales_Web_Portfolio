@@ -6,6 +6,10 @@
 (function () {
   "use strict";
   document.documentElement.classList.add("js");
+  /* This file's absolute URL, read once while it runs. The tag's src is relative
+     ("../js/v3.js"), and after a pjax swap changes the address the browser resolves
+     it against the NEW page, one folder off; the toy loader needs the real thing. */
+  var SELF_SRC = (document.currentScript && document.currentScript.src) || "";
   var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   var fine = matchMedia("(hover:hover) and (pointer:fine)").matches;
   var coarse = matchMedia("(hover:none) and (pointer:coarse)").matches;
@@ -480,6 +484,26 @@
       }, { threshold: 0.6 });
       io.observe(b);
     });
+  }
+
+  /* ===================== Playable toys (per mount) =====================
+     Each case study carries a small playable slice of its game ([data-toy]). The
+     code lives in js/toys.js and is fetched the first time such a page is shown:
+     pages arrive through pjaxSwap, which never runs a page's own scripts, so the
+     loader has to live here. Same ?v= as this file, so a deploy busts both. */
+  var toysQueue = null;
+  function initToys() {
+    var els = document.querySelectorAll("[data-toy]");
+    if (!els.length) return;
+    var run = function () { els.forEach(function (el) { window.AMToys.mount(el); }); };
+    if (window.AMToys) return run();
+    if (toysQueue) return toysQueue.push(run);
+    toysQueue = [run];
+    var s = document.createElement("script");
+    s.src = SELF_SRC ? SELF_SRC.replace("js/v3.js", "js/toys.js") : "/js/toys.js";
+    s.onload = function () { var q = toysQueue; toysQueue = null; q.forEach(function (f) { f(); }); };
+    s.onerror = function () { toysQueue = null; };
+    document.head.appendChild(s);
   }
 
   /* ===================== Menu (persistent chrome) =====================
@@ -1957,6 +1981,7 @@
     setupSlides();
     initReveals();
     initCountUp();
+    initToys();
     initMagnetic();
     initCardParallax();
     initPigeon();
@@ -2011,6 +2036,7 @@
   function trackEvent(name) {
     trackSend("e=true&p=" + encodeURIComponent(name) + "&t=" + encodeURIComponent(location.pathname));
   }
+  window.amTrack = trackEvent;   // the toys report plays and wins through the same pipe
   function initTrackClicks() {
     document.addEventListener("click", function (e) {
       var el = e.target && e.target.closest && e.target.closest("a[href],[data-copy]");

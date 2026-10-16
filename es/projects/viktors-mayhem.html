@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <script src="../../js/lang.js?v=86"></script>
+  <script src="../../js/lang.js?v=87"></script>
   <title>Viktor's Mayhem · Aitor Morales</title>
   <meta name="description" content="Viktor's Mayhem (La Ruleta del Infortunio): un concurso donde una tragaperras elige tu maldición y peleas una arena con ella. Diseño de Aitor Morales.">
   <link rel="canonical" href="https://aitormorales.com/es/projects/viktors-mayhem.html">
@@ -36,7 +36,7 @@
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Dem.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Med.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../assets/font/Futura-Boo.woff2" crossorigin>
-  <link rel="stylesheet" href="../../css/v3.css?v=86">
+  <link rel="stylesheet" href="../../css/v3.css?v=87">
   <link rel="expect" href="#main-content" blocking="render">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"VideoGame","name":"Viktor's Mayhem","alternateName":"La Ruleta del Infortunio","genre":"Action","gamePlatform":["PC","Windows","macOS"],"author":{"@type":"Person","name":"Aitor Morales"},"url":"https://teresa-costas.itch.io/la-ruleta-del-infortunio"}
@@ -141,6 +141,63 @@
         </div>
       </section>
 
+      <section class="toy toy--slots" data-toy="slots" aria-labelledby="toy-title">
+        <div class="toy__head">
+          <p class="toy__eyebrow"><i aria-hidden="true"></i>Jugable · la mecánica central</p>
+          <h2 class="toy__title" id="toy-title">Tira de la palanca. Acepta tu maldición.</h2>
+          <p class="toy__lead">La tragaperras elige una desgracia y luego sobrevives quince segundos al público del plató lanzando tomates. Cada maldición cambia cómo tienes que jugar, no solo un número. Haz un impulso entre los tomates cuando haga falta.</p>
+        </div>
+        <div class="toy__stage" data-toy-focus tabindex="0" aria-label="Concurso. Tira de la palanca, luego muévete con las flechas o WASD y haz un impulso con Espacio.">
+          <div class="slot" data-slot>
+            <div class="slot__body">
+              <div class="slot__frame" aria-hidden="true"><div class="reel" data-reel></div><div class="reel" data-reel></div><div class="reel" data-reel></div></div>
+              <button class="lever" type="button" data-lever aria-label="Tirar de la palanca"></button>
+            </div>
+            <div class="curse" data-curse hidden>
+              <span class="curse__icon" data-curse-icon aria-hidden="true"></span>
+              <div><p class="curse__name" data-curse-name></p><p class="curse__rule" data-curse-rule></p><p class="curse__quip" data-curse-quip></p></div>
+              <button class="btn" type="button" data-fight>Entrar en la arena <span class="arrow">→</span></button>
+            </div>
+          </div>
+          <div class="arena" data-arena hidden><canvas width="800" height="480" aria-hidden="true"></canvas><button class="toy-btn" type="button" data-dash>Impulso</button></div>
+        <div class="toy__start" data-toy-start>
+          <button class="btn" type="button" data-toy-go>Tirar de la palanca <span class="arrow">→</span></button>
+          <p class="toy__keys">Después muévete con las flechas, WASD o el dedo · Espacio o el botón Impulso para esquivar</p>
+        </div>
+        <div class="toy__end" data-toy-end hidden>
+          <p class="toy__end-k" data-end-k></p>
+          <p class="toy__end-t" data-end-t></p>
+          <div class="btn-row"><button class="btn btn--ghost" type="button" data-toy-again>Tirar otra vez</button></div>
+        </div>
+        </div>
+        <div class="toy__bar"><span>Vida<b data-h-hearts>❤❤❤</b></span><span>Tiempo<b data-h-time>15</b></span><span>Maldición<b data-h-curse>–</b></span></div>
+        <p class="sr-only" role="status" aria-live="polite" data-toy-live></p>
+        <div hidden>
+          <span data-msg="c-mirror">Espejito, espejito</span>
+          <span data-msg="r-mirror">Tus controles van al revés.</span>
+          <span data-msg="q-mirror">Izquierda es derecha y derecha es un error. ¡Como tus decisiones vitales!</span>
+          <span data-msg="c-big">De huesos grandes</span>
+          <span data-msg="r-big">Tu hitbox es el doble de grande.</span>
+          <span data-msg="q-big">Más de ti para querer. ¡Y para acertar!</span>
+          <span data-msg="c-butter">Suelo de mantequilla</span>
+          <span data-msg="r-butter">Resbalas. Frenar es solo una sugerencia.</span>
+          <span data-msg="q-butter">Nuestros patrocinadores pusieron la cera del suelo. Con generosidad.</span>
+          <span data-msg="c-dark">Apagón</span>
+          <span data-msg="r-dark">Solo ves a unos pasos de ti.</span>
+          <span data-msg="q-dark">Se nos olvidó pagar la luz. El público sí pagó los tomates.</span>
+          <span data-msg="c-coffee">Demasiado café</span>
+          <span data-msg="r-coffee">Te mueves casi el doble de rápido. Suerte con la dirección.</span>
+          <span data-msg="q-coffee">¡Séptimo espresso! Tu corazón está bien. Seguramente.</span>
+          <span data-msg="c-glass">Huesos de cristal</span>
+          <span data-msg="r-glass">Un golpe y fuera, pero tu impulso se recarga el doble de rápido.</span>
+          <span data-msg="q-glass">Manéjese con cuidado. ¡Nuestro público no lo hará!</span>
+          <span data-msg="win-k">Has sobrevivido</span>
+          <span data-msg="win-t">Viktor está decepcionado. El público exige la revancha.</span>
+          <span data-msg="lose-k">¡Plaf!</span>
+          <span data-msg="lose-t">Fuera tras {s} segundos. Viktor está encantado. ¿Otra tirada?</span>
+        </div>
+      </section>
+
       <nav class="proj-foot-nav" aria-label="Más">
         <a href="../index.html#work"><span class="dir">← Volver</span>Todos los proyectos</a>
         <a href="../projects/gimica.html" style="text-align:right"><span class="dir">Siguiente →</span>Gimica</a>
@@ -148,6 +205,6 @@
     </div>
   </main>
 
-  <script src="../../js/v3.js?v=86"></script>
+  <script src="../../js/v3.js?v=87"></script>
 </body>
 </html>
